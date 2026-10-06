@@ -1,0 +1,46 @@
+name: Monorepo CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  # job 1 - API / https://docs.github.com/es/actions/tutorials/build-and-test-code/net
+  ci-dotnet:
+    runs-on: ubuntu-26.04
+    defaults:
+      run:
+        working-directory: Api
+    steps:
+      - uses: actions/checkout@v5
+      - name: .NET Build
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.112"
+          cache: true
+          cache-dependency-path: "Api/**/*.csproj"
+      - run: dotnet restore src/Api.csproj
+      - run: dotnet restore tests/Api.Tests.csproj
+      - run: dotnet build src/Api.csproj --no-restore --configuration Release
+      - run: dotnet build tests/Api.Tests.csproj --no-restore --configuration Release
+      - run: dotnet test --project=tests/Api.Tests.csproj --no-build --configuration Release
+  # job 2 - App
+  ci-angular:
+    runs-on: ubuntu-26.04
+    needs: ci-dotnet
+    defaults:
+      run:
+        working-directory: App
+    steps:
+      - uses: actions/checkout@v5
+      - name: Angular Build
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24.20.0"
+          cache: "npm"
+          cache-dependency-path: App/package-lock.json
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
