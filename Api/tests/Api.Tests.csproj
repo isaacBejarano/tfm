@@ -19,4 +19,8 @@
     <PackageReference Include="xunit.v3.mtp-v2" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\Api.csproj" />
+  </ItemGroup>
+
 </Project>
