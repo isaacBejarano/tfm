@@ -113,7 +113,7 @@ The .NET API was created with this **dotnet CLI** command,
 executed from the solution's root path `tfm/`:
 
 ```Shell
-dotnet new webapi --name=Api --output Api/src -controllers=true --dry-run
+dotnet new webapi --name=Api --output Api/src -controllers=true
 ```
 
 ## API unit tests
