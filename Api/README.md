@@ -1,4 +1,4 @@
-# Serve PostgreSQL with Docker Compose files
+# IaC - PostgreSQL with Docker Compose
 
 ```bash
 docker compose --file compose.dev.yaml up --detach --dry-run
@@ -39,3 +39,60 @@ To remove local volume "db-postgres/" persitence, execute command at `Api/` root
 ```bash
 sudo rm -r data-postgres
 ```
+<br>
+
+# .NET API 
+
+## Requirements
+The **SDK** for **.NET** version `10.0.112` must be installed in your machine:
+
+https://dotnet.microsoft.com/es-es/download/dotnet/10.0 
+
+
+
+## Scaffolding
+The `Api.csproj` project was created within the `Api/` folder with this command:
+
+```bash
+dotnet new webapi --name=Api --output=src -controllers=true
+```
+
+And the `Api.Tests.csproj` project was created within the `Api/` folder with this command:
+
+```bash
+dotnet new xunit3 --name=Api.Tests --output=tests --language="C#" --framework=net10.0
+```
+
+From within the `Api/` folder, a refere from the **Api** project was linked to the **Api.Tests** project by using:
+
+```bash
+dotnet add tests/Api.Tests.csproj reference src/Api.csproj
+```
+
+## Unit Testing with xUnit
+
+For testing with xUnit version 3, the Solution must use the modern **Microsoft Testing Platform (MTP)**.
+
+A `Api/global.json` file wa screated to enable **MTP**:
+
+```json
+{
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
+  }
+}
+``` 
+
+## Commands for development
+
+Fro the root `Api/` folder, esexute this command to serve the API locally:
+
+```bash
+dotnet run --project src
+``` 
+
+And thi sone to test the previous `Api` project:
+
+```bash
+dotnet test --project tests
+``` 
