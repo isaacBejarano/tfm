@@ -7,7 +7,7 @@ An **Angular 22** compatible version with **Node.js** must be installed in your 
 
 ## App set up
 The Angular App was created with this **Angular CLI** command, 
-executed from the solution's **root** path `monopollo/`:
+executed from the solution's **root** path `tfm/`:
 
 ```Shell
 ng new App --commit=false --inline-style --inline-template --package-manager=npm --routing=true --skip-git --skip-install --style=tailwind --ssr=false --zoneless=true --ai-config=none
@@ -70,7 +70,7 @@ npm run coverage
 And the Vitest CLI suggested then in Terminal to add that dependency.
 
 ## App scripts for development
-Be sure to be located at the App path: `monopollo/App/`. Once there, execute the following **NPM scripts** to:
+Be sure to be located at the App path: `tfm/App/`. Once there, execute the following **NPM scripts** to:
 
 * Run the App in dev mode: 
   ```Shell
@@ -90,7 +90,7 @@ Be sure to be located at the App path: `monopollo/App/`. Once there, execute the
   ```
   
 ## App scripts for production
-Be sure to be located at the App path: `monopollo/App/`. Once there, execute the following **NPM scripts** to build the production-ready compile: 
+Be sure to be located at the App path: `tfm/App/`. Once there, execute the following **NPM scripts** to build the production-ready compile: 
 
 ```Shell  
 npm run build
@@ -110,7 +110,7 @@ https://angular.dev/
 The **SDK** for .NET version `10.0.112` must be installed in your machine:
 - https://dotnet.microsoft.com/es-es/download/dotnet/10.0
 The .NET API was created with this **dotnet CLI** command, 
-executed from the solution's root path `monopollo/`:
+executed from the solution's root path `tfm/`:
 
 ```Shell
 dotnet new webapi --name=Api --output Api/src -controllers=true --dry-run
@@ -122,7 +122,7 @@ dotnet new webapi --name=Api --output Api/src -controllers=true --dry-run
 The .NET template for **xUnit** version 3 (`xunit.v3`) must be already installed in your machine:
 https://www.nuget.org/packages/xunit.v3
 
-For testing with **xUnit version 3**, the **Solution** must use the modern **Microsoft Testing Platform** (MTP). To enable it, place a `global.json` file at the path of the Api: `monopollo/Api/`
+For testing with **xUnit version 3**, the **Solution** must use the modern **Microsoft Testing Platform** (MTP). To enable it, place a `global.json` file at the path of the Api: `tfm/Api/`
 
 The exact configuration for the **global.json** file must be this:
 
@@ -135,33 +135,30 @@ The exact configuration for the **global.json** file must be this:
 ```  
 
 ### Set up
-The testing project with **xUnit** for the API, was created by executing this **dotnet CLI** command from the solution's root path `monopollo/`:
+The testing project with **xUnit** for the API, was created by executing this **dotnet CLI** command from the solution's root path `tfm/`:
 
 ```Shell
 dotnet new xunit3 --name=Api.Tests --output=Api/tests --language="C#" --framework=net10.0
 ```
 
-To be able to run unit tests on the API project, a reference was created in the `Api.Tests.proj` file by executing this **dotnet CLI** command from the solution's root path `monopollo/`:
+To be able to run unit tests on the API project, a reference was created in the `Api.Tests.proj` file by executing this **dotnet CLI** command from the solution's root path `tfm/`:
 
 ```Shell
 dotnet add Api/tests/Api.Tests.csproj reference Api/src/Api.csproj
 ```
 
 ## API commands for development
-* Be sure to be located at the API source path: `monopollo/Api/src/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
+* Be sure to be located at the API source path: `tfm/Api/src/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
 
   ```Shell
   dotnet run
   ```
 
-* Be sure to be located at the API source path: `monopollo/Api/tests/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
+* Be sure to be located at the API source path: `tfm/Api/tests/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
 
   ```Shell
   dotnet test
   ```
-
-<!-- TODO: dotnet publish -->
-<!-- FIXME: Modify License if needed -->
 
 **Official documentation**:
 https://dotnet.microsoft.com/en-us/apps/aspnet
