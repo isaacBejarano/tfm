@@ -484,10 +484,6 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# Docker
-db-data/*
-compose.yaml
-
 # .NET Cahce/Debug (sub)folders
 **/bin/
 **/obj/
@@ -496,3 +492,7 @@ compose.yaml
 *.pfx
 *.pem
 *.key
+
+# TODO: Docker Compose standarized volume names
+datab-maria/*
+data-postgres/*

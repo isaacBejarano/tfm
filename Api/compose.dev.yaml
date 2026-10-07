@@ -1,0 +1,26 @@
+# Infrastructure as Code (IaC) #
+################################
+
+services:
+  db:
+    container_name: tfm-server-postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PW} # masterpassword for Server superuser 'postgres'
+    volumes:
+      - ./data-postgres:/var/lib/postgresql # "container config (v18+) --> /var/lib/postgresql
+
+volumes:
+  data-postgres:
+    # driver: default
+
+# configs #
+
+# secrets #
+
+# include #
+
+# models #

@@ -1,0 +1,91 @@
+# (1) TODO: Always .gitignore .env
+# (2) TODO: Always .gitignore named volumes & always use your standarized names
+#     PostgreSQL standarized Volumne Name = "data-postgres"
+#     MariaDB standarized Volumne Name = "data-maria"
+# (3)
+#   Registry --> https://hub.docker.com/
+#   Compose (docs) --> https://docs.docker.com/reference/compose-file/services/
+#   Compose Postgres --> https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/
+#     PgAdmin (tool) --> https://www.pgadmin.org/
+#   Compose MariaDB --> https://mariadb.com/docs/server/server-management/automated-mariadb-deployment-and-administration/docker-and-mariadb/setting-up-a-lamp-stack-with-docker-compose
+# (4) docker inspect <container ID> to get 'IPAddress'
+# (5)
+#   Create 'compose.dev.yaml' for DEV --> run docker compose -f compose.dev.yaml up -d --dry-run
+#   Create 'compose.yaml' for PROD --> run docker compose up -d --dry-run
+# (6) Query the container with built-in PSQL Terminal --> docker exec -it <container> psql --username=<x> --dbname=<y>
+
+# Infrastructure as Code (IaC) #
+################################
+
+## SCHEMA ##
+############
+
+services: # containers
+  # SRV1
+  db:
+    container_name: proj-db
+    image: postgres
+    restart: always # "unless-stopped" en DEV
+    ports:
+      - "5432:5432" # tipical for PostgreSQL
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data-postgres:/var/lib/postgresql # "container config for v18+ is to place a single mount at /var/lib/postgresql which will then place PostgreSQL data in a subdirectory, allowing usage of "pg_upgrade --link" without mount point boundary issues"
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    # networks:
+    #   proj-backend:
+
+  # db-maria: # container's custom name
+  #   image: mariadb # official image name <-- (cmd) docker search mariadb -f is-official=true
+  #   restart: always
+  #   ports:
+  #     - "3306:3306" # port mapping <host:container> tipical for MariaDB
+  #   environment:
+  #     MYSQL_DATABASE: ${MARIA_DB}
+  #     MYSQL_ROOT_PASSWORD: ${MARIA_ROOT_PASSWORD}
+  #     MYSQL_USER: ${MARIA_USER}
+  #     MYSQL_PASSWORD: ${MARIA_PASSWORD}
+  #   volumes:
+  #     - ./data-postgres:/var/lib/mysql/data # <host persistence>:<container's 'var/lib/<custom>'>
+  #   networks:
+  #   networks:
+  #     proj-backend: # custom name to invoque a network
+
+  # SRV2
+  # backend:
+  #   build: .
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy # <-- 'healthcheck' must be true
+
+  # SRV3...
+
+# networks:
+#   proj-backend:
+#     ipam:
+#       driver: default
+
+volumes:
+  data-postgres:
+    driver: default
+  # db-maria:
+  #   driver: default
+
+# configs #
+
+# secrets #
+
+# include #
+
+# models #
+
+# name # optional
+
+# version # It is obsolete. Don't use it!
