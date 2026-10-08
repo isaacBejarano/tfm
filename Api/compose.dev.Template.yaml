@@ -27,7 +27,7 @@ services: # containers
     image: postgres
     restart: always # "unless-stopped" en DEV
     ports:
-      - "5432:5432" # tipical for PostgreSQL
+      - '5432:5432' # tipical for PostgreSQL
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
