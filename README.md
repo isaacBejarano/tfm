@@ -1,11 +1,13 @@
-# App - initial bolierplate
+# 🚀 Angular App
 
-## Prerequisitres
+## Requirements
+
 An **Angular 22** compatible version with **Node.js** must be installed in your machine. Version `24.20.0` is recommended:
 - https://angular.dev/reference/versions
 - https://angular.dev/installation
 
 ## App set up
+
 The Angular App was created with this **Angular CLI** command, 
 executed from the solution's **root** path `tfm/`:
 
@@ -13,7 +15,8 @@ executed from the solution's **root** path `tfm/`:
 ng new App --commit=false --inline-style --inline-template --package-manager=npm --routing=true --skip-git --skip-install --style=tailwind --ssr=false --zoneless=true --ai-config=none
 ```
 
-## App install
+## App dependencies installation
+
 Once created, install the Angular project dependecies from the solution's **root** path:
 
 ```Shell
@@ -21,7 +24,8 @@ cd App
 npm i
 ```
 
-## App unit tests
+## 🧪 App unit tests (Vitest)
+
 To opt in for **Vitest**, a `vitest.config,ts` config file was created at Angular's project root level:
 
 ```TypeScript
@@ -69,7 +73,8 @@ npm run coverage
 
 And the Vitest CLI suggested then in Terminal to add that dependency.
 
-## App scripts for development
+## 👉 App NPM scripts for development
+
 Be sure to be located at the App path: `tfm/App/`. Once there, execute the following **NPM scripts** to:
 
 * Run the App in dev mode: 
@@ -84,12 +89,14 @@ Be sure to be located at the App path: `tfm/App/`. Once there, execute the follo
     ```Shell  
   npm run coverage
   ```
-* Run E2E tests: 
-  ```Shell  
-  npm run end
+* Use available schematics (such as `components`, `directives`, or  `pipes`) scaffold project files:
+  ```bash
+  ng generate --help
   ```
+📌 Remember to use the `--dry-run` flag to preview location and file genration before actually scaffolding.
   
-## App scripts for production
+## 👉 App NPM scripts for production
+
 Be sure to be located at the App path: `tfm/App/`. Once there, execute the following **NPM scripts** to build the production-ready compile: 
 
 ```Shell  
@@ -98,67 +105,147 @@ npm run build
 
 That compilation will be created at the App's `dist/` folder. The subfolder to be deployed to a web server is `broswer/`.
 
-**Official documentation**:
+## 📓 Additional resources
+
+**Angular CLI** reference:
+https://angular.dev/tools/cli
+
+**Angular documentation**:
 https://angular.dev/
 
+<br>
 
-# API - initial bolierplate
+# 🌐 .NET API 
 
-## API setup & install
+## Requirements
+The **SDK** for **.NET** version `10.0.112` must be installed in your machine:
 
-### Prerequisitres
-The **SDK** for .NET version `10.0.112` must be installed in your machine:
-- https://dotnet.microsoft.com/es-es/download/dotnet/10.0
-The .NET API was created with this **dotnet CLI** command, 
-executed from the solution's root path `tfm/`:
+https://dotnet.microsoft.com/es-es/download/dotnet/10.0   
 
-```Shell
-dotnet new webapi --name=Api --output Api/src -controllers=true
+## API set up
+
+The `Api.csproj` project was created within the `Api/` folder with this command:
+
+```bash
+dotnet new webapi --name=Api --output=src -controllers=true
 ```
 
-## API unit tests
+And the `Api.Tests.csproj` project was created within the `Api/` folder with this command:
 
-### Prerequisites
-The .NET template for **xUnit** version 3 (`xunit.v3`) must be already installed in your machine:
-https://www.nuget.org/packages/xunit.v3
+```bash
+dotnet new xunit3 --name=Api.Tests --output=tests --language="C#" --framework=net10.0
+```
 
-For testing with **xUnit version 3**, the **Solution** must use the modern **Microsoft Testing Platform** (MTP). To enable it, place a `global.json` file at the path of the Api: `tfm/Api/`
+From within the `Api/` folder, a refere from the **Api** project was linked to the **Api.Tests** project by using:
 
-The exact configuration for the **global.json** file must be this:
+```bash
+dotnet add tests/Api.Tests.csproj reference src/Api.csproj
+```
 
-```JSON
+## 🧪 API unit tests (xUnit)
+
+For testing with xUnit version 3, the Solution must use the modern **Microsoft Testing Platform (MTP)**.
+
+A `Api/global.json` file wa screated to enable **MTP**:
+
+```json
 {
   "test": {
     "runner": "Microsoft.Testing.Platform"
   }
 }
-```  
-
-### Set up
-The testing project with **xUnit** for the API, was created by executing this **dotnet CLI** command from the solution's root path `tfm/`:
-
-```Shell
-dotnet new xunit3 --name=Api.Tests --output=Api/tests --language="C#" --framework=net10.0
 ```
 
-To be able to run unit tests on the API project, a reference was created in the `Api.Tests.proj` file by executing this **dotnet CLI** command from the solution's root path `tfm/`:
+## 👉 API commands for development
 
-```Shell
-dotnet add Api/tests/Api.Tests.csproj reference Api/src/Api.csproj
-```
+From the root `Api/` folder, execute this command to serve the API locally:
 
-## API commands for development
-* Be sure to be located at the API source path: `tfm/Api/src/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
+```bash
+dotnet run --project src
+``` 
 
-  ```Shell
-  dotnet run
-  ```
+And thi sone to test the previous `Api` project:
 
-* Be sure to be located at the API source path: `tfm/Api/tests/`. Once there, execute this **dotnet CLI** command to serve the API in local development mode: 
+```bash
+dotnet test --project tests
+``` 
 
-  ```Shell
-  dotnet test
-  ```
+## 👉 API Scaffolding
 
-**Official documentation**:
+From the path `Api/`, use the `--project` **flag** apropiately to decide where the create the new scaffodled files.
+
+Use also the `--help` **flag** to show assitence and decide more thorougly how to scaffold new project files.
+
+📌 Remember to use the `--dry-run` **flag** to preview location and file generation before actually scaffolding.
+
+* Llist of all **creational commands**:
+  ```bash
+  dotnet new list --project src
+  ``` 
+* Example of creating a Record in the project `Api.csproj`
+  ```bash
+  dotnet new record --project src/Api.csproj --output src/Dtos      
+  ``` 
+* The previous example but in the project `Api.Tests.csproj`
+  ```bash
+  dotnet new record --project tests/Api.Tests.csproj --output tests/Dtos
+  ``` 
+
+## 📓 Additional resources
+
+**.NET documentation**:
 https://dotnet.microsoft.com/en-us/apps/aspnet
+
+<br>
+
+# 💾 Infrastructure as Code (IaC)
+
+## 🐘 PostgreSQL DB
+
+### 👉 Local development with Docker Compose
+
+Docker `compose.yaml` files have been used to virtualize a PostgrSQL database and persist DB data in this same project by mounting its volumes.
+
+First, *dry-run* the Docker `compose.dev.yaml` from the `Api/` foder:
+
+```bash
+docker compose --file compose.dev.yaml up --detach --dry-run
+```
+If no errors occurred during the simulation, then execute...
+
+```bash
+docker compose --file compose.dev.yaml up --detach
+```
+
+Once the virtualized server is running, access to any created DB is granted. The default DB is 'postgres'. Further DB must be created by the **Backend**, by using the **PSQL Terminal** or by using a **Client** like `pgAdmin`.
+
+Connect to default `postgres` Maintenance DB running inside the composed container `tfm-server-postgres psql`.
+
+```bash
+docker exec -it tfm-server-postgres psql --username postgres 
+```
+List DB on the **PSQL Terminal** with `\l`.
+Then exit the PSQL Terminal with `\q`.
+
+Then create a custom DB with the **SQL script** located at `scripts/**/*.sql`. Finally connect to the custom DB `db_tfm` with custom user `isk` recently added to the Server...
+
+```bash
+docker exec -it tfm-server-postgres psql --username isk --dbname db_tfm
+```
+...and keep using **PSQL comands** like the previous `\l` or `\q`.
+
+To stop the cointanier and remove volumes, pass in the `-v` **flag**. 
+
+```bash
+docker compose --file compose.dev.yaml down -v
+```
+
+To remove local volume "db-postgres/" persitence, execute command at `Api/` root level. This might be needed when the `POSTGRES_PASSWORD` has changed in the `.env` file. If a volume exists locally, the old password might still exist. Delete local volume folder before mouting the new one with the new password. 
+
+🚨 Be carefull though! 
+
+This command will remove all peristed data from your local volume!
+
+```bash
+sudo rm -r data-postgres
+```
