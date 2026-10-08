@@ -1,3 +1,5 @@
+> Solution version: `0.0.0`
+
 # 🚀 Angular App
 
 ## Requirements
@@ -105,15 +107,12 @@ npm run build
 
 That compilation will be created at the App's `dist/` folder. The subfolder to be deployed to a web server is `broswer/`.
 
-## 📓 Additional resources
-
-**Angular CLI** reference:
-https://angular.dev/tools/cli
-
-**Angular documentation**:
-https://angular.dev/
+> [!NOTE] Angular Resources
+> * **CLI reference**: https://angular.dev/tools/cli
+> * **Documentation**: https://angular.dev
 
 <br>
+
 
 # 🌐 .NET API 
 
@@ -191,12 +190,11 @@ Use also the `--help` **flag** to show assitence and decide more thorougly how t
   dotnet new record --project tests/Api.Tests.csproj --output tests/Dtos
   ``` 
 
-## 📓 Additional resources
-
-**.NET documentation**:
-https://dotnet.microsoft.com/en-us/apps/aspnet
+> [!NOTE] .NET Resources
+> **Documentation**: https://dotnet.microsoft.com/en-us/apps/aspnet
 
 <br>
+
 
 # 💾 Infrastructure as Code (IaC)
 
