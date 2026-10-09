@@ -2,16 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[Route("api/v1/[controller]")]
 [ApiController]
-[Route("[controller]")]
 public class SmokeController : ControllerBase {
-  [HttpGet("/smoke/almost")]
+  [HttpGet("almost")]
   public ActionResult<DtoResponse<DtoId>> GetSmokeAlmost() {
     var dto = new DtoResponse<DtoId>([], "");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
-  [HttpGet("/smoke/full")]
+  [HttpGet("full")]
   public ActionResult<DtoResponse<DtoId>> GetSmokeFull() {
     var itemEmpty = new DtoId(Guid.Empty);
     var itemFull = new DtoId(Guid.NewGuid());

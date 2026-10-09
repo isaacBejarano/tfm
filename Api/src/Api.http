@@ -1,5 +1,5 @@
 ### HTTPS only
-@Api = https://localhost:7247
+@Api = https://localhost:7247/api/v1
 
 ### SMOKE TEST 1
 GET {{Api}}/smoke/almost
