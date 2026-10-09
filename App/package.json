@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "coverage": "ng test --coverage",
-    "ci:test": "vitest run"
+    "cicd:test": "vitest run"
   },
   "private": true,
   "packageManager": "npm@11.19.0",
