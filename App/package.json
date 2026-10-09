@@ -7,8 +7,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "vitest",
-    "coverage": "vitest --coverage",
+    "test": "ng test",
+    "coverage": "ng test --coverage",
     "ci:test": "vitest run"
   },
   "private": true,

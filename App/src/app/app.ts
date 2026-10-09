@@ -11,6 +11,7 @@ import { DtoId, DtoResponse } from './shared/typings/smoke.dto';
   selector: 'app-root',
   templateUrl: './app.html',
 })
+// implements OnInit
 export class App implements OnInit {
   // DI
   private readonly _http = inject(HttpClient);
@@ -19,8 +20,8 @@ export class App implements OnInit {
   readonly title = signal('Kübello');
   private readonly _domain = 'https://localhost:7247';
   private readonly _api = this._domain + '/api/v1';
-
   readonly count = signal(0);
+
   readonly smoked = toSignal(
     this._http.get<DtoResponse<DtoId>>(this._api + '/smoke/full').pipe(
       tap(console.table),
