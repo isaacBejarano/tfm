@@ -6,8 +6,8 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class SmokeController : ControllerBase {
   [HttpGet("/smoke/almost")]
-  public ActionResult<DtoResponse<object>> GetSmokeAlmost() {
-    var dto = new DtoResponse<object>([], "");
+  public ActionResult<DtoResponse<DtoId>> GetSmokeAlmost() {
+    var dto = new DtoResponse<DtoId>([], "");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 

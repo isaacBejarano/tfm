@@ -20,10 +20,17 @@ var api = builder.Build();
 // 4. Middleware HTTP (Use)
 ////
 
+// [dev mode] -> https priority by order -> launchSettings.json
+if (!api.Environment.IsDevelopment()) {
+  api
+    .UseHsts() // hsts-ready browsers
+    .UseHttpsRedirection(); // fallback
+}
+
 api
-  // .UseHttpsRedirection()
   .UseAuthorization()
   .UseRequestLocalization();
+
 /* TODO: LOCALE
   https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-10.0
 
