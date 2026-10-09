@@ -12,6 +12,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
   .AddOpenApi() // https://aka.ms/aspnet/openapi
+  .AddCors(opts => // policy headers
+    {
+      opts.AddPolicy("DevPolicies", policy => {
+        string[] allowedOrigins = builder.Configuration
+          .GetSection("CorsSettings:AllowedOrigins")
+          .Get<string[]>()
+          ?? [];
+
+        if (allowedOrigins.Length > 0) {
+          policy
+            .WithOrigins(allowedOrigins) // never use "*" for CORS. Be explicit!
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        }
+      });
+    })
   .AddControllers(); // last!
 
 
@@ -22,17 +38,21 @@ var api = builder.Build();
 // 4. Middleware HTTP (Use)
 ////
 
+// headers policy
+if (api.Environment.IsDevelopment()) { api.UseCors("DevPolicies"); }
+else { api.UseCors(); } // Same Origin Policy (SOP)
+
 // [dev mode] -> https priority by order -> launchSettings.json
 if (!api.Environment.IsDevelopment()) {
   api.UseHsts(); // hsts-ready browsers
 }
 api
   .UseHttpsRedirection() // fallback
-  .UseRequestLocalization()
+  .UseRequestLocalization() // TODO: Locale
   .UseAuthorization();
 
 
-/* TODO: LOCALE
+/* [LOCALE]
   https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-10.0
 
   Client send header 'Accept-Language'
@@ -45,9 +65,7 @@ api
 
 // api documentation route (dev only)
 if (api.Environment.IsDevelopment()) { api.MapOpenApi(); }
-// TODO: Don't use OpenAPI Swagger
-// - Debug HTTP with HTTP files instead
-// - Test Endpoints with Angular directly
+// Debug HTTP with HTTP files
 
 api.MapControllers();
 

@@ -29,9 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -67,7 +65,13 @@
               "buildTarget": "App:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "ssl": true,
+            "sslCert": "../../../.local/share/mkcert/localhost+2.pem",
+            "sslKey": "../../../.local/share/mkcert/localhost+2-key.pem",
+            "proxyConfig": "./src/proxy.conf.json"
+          }
         },
         "test": {
           "builder": "@angular/build:unit-test"

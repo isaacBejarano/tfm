@@ -1,0 +1,25 @@
+<h1 class="p-1 mt-4 m-auto w-xs border border-pink-700/75 rounded-sm">
+  {{ title() }}
+</h1>
+
+<div class="relative m-auto w-xs">
+  <ul class="p-1 mt-4 border border-sky-700/75 rounded-sm">
+    @for (smoked of smoked(); track smoked.id) {
+      <li>{{ smoked.id }}</li>
+    } @empty {
+      <p class="text-red-500">No hay humo de momento...</p>
+    }
+  </ul>
+
+  <small
+    class="absolute -top-3 -right-5 size-8 p-2 flex justify-center text-sky-600 border border-sky-800 bg-gray-900 rounded-full"
+  >
+    <span class="self-center">
+      {{ count() }}
+    </span>
+  </small>
+</div>
+
+<main>
+  <router-outlet />
+</main>
