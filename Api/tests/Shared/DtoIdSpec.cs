@@ -1,10 +1,10 @@
-using Api.Shared.Dtos;
+using Api.Shared;
 
-namespace Api.Tests;
+namespace Api.Tests.Shared;
 
-public class SuiteSharedDtos : IDisposable {
+public class DtoIdSpec : IDisposable {
   // ~before each (ctor)
-  // public SuiteSharedDtos() { }
+  // public DtoIdSpec() { }
 
   // ~tear down
   public void Dispose() { }
@@ -15,8 +15,8 @@ public class SuiteSharedDtos : IDisposable {
   [Theory]
   [InlineData("00000000-0000-0000-0000-000000000000")]
   [InlineData("8f3c129e-4b71-4a9f-9273-e4d6a8b3c102")]
-  public void DtoId_Id_IS_Guid_empty_or_new(Guid _id) {
-    Assert.IsType<DtoId>(new DtoId(_id));
+  public void DtoId_Id_IS_Guid_empty_or_new(Guid id) {
+    Assert.IsType<DtoId>(new DtoId(id));
     Assert.IsType<DtoId>(new DtoId(_idEmpty));
     Assert.IsType<DtoId>(new DtoId(_idNew));
   }

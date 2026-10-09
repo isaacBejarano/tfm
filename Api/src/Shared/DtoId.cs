@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Shared.Dtos;
+namespace Api.Shared;
 
 // Validating DTO super
 public record DtoId(

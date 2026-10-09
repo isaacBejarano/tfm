@@ -1,4 +1,4 @@
-using Api.Shared.Dtos;
+using Api.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
