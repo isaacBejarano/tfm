@@ -21,7 +21,7 @@ var api = builder.Build();
 ////
 
 api
-  .UseHttpsRedirection()
+  // .UseHttpsRedirection()
   .UseAuthorization()
   .UseRequestLocalization();
 /* TODO: LOCALE
