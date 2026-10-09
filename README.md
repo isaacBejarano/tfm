@@ -1,4 +1,4 @@
-> Solution version: `0.0.0`
+> Solution version: `0.0.0-alfa`
 
 # 🚀 Angular App
 
