@@ -1,3 +1,4 @@
+using Api.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -6,7 +7,7 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class SmokeController : ControllerBase {
   [HttpGet]
-  public string GetSmoke() {
-    return "smoke";
+  public DtoId GetSmoke() {
+    return new DtoId(Guid.Empty);
   }
 }
