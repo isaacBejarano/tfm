@@ -1,6 +1,5 @@
 import { RedirectFunction, Route } from '@angular/router';
 import { Home } from '@home/home';
-
 // TODO: review after Arquitecture of Information
 type SpaPaths =
   // public

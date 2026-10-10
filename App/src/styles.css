@@ -1,3 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+/** DEVICE WIDTH
+* Mobile First -> .w-full
+* Tablet -> .max-w-md <- RESPONSIVE BREAKPOINT :md
+* Desktop -> .max-w-[1536px] <- RESPONSIVE BREAKPOINT :2xl
+*/
+
+/* CUSTOM CSS VARS */
+@theme {
+  /* iPad Mini */
+  --w-tablet: 768px;
+  /* big screen */
+  --w-big: 1536px;
+}

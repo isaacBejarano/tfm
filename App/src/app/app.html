@@ -1,33 +1,39 @@
-<!-- TODO: header -->
-<!-- TODO: menu -->
+<!-- Mandatory ROW 1 - index.html:grid-row-auto -->
+<!-- TODO: <snackbar
+  class="sticky top-0 z-3 mx-2 md:mx-0"
+  [msg]="msg()"
+  [open]="open()"
+  [snackbarIcon]="snackbarIcon()"
+/> -->
+<div class="FIXME: text-red-500">SNAKBAR</div>
 
-<ul>
-  <li routerLink="empty">Home</li>
-  <li routerLink="rgpd">Rgpd</li>
-</ul>
+<!-- Mandatory ROW 2 - index.html:grid-row-auto -->
+<!-- TODO: <loader class="sticky top-0 z-2" /> -->
+<div class="FIXME: text-red-500">LOADER</div>
 
-<!-- TODO: main -->
+<!-- Mandatory ROW 3 - index.html:grid-row-auto -->
+<!-- TODO:  <app-header legend="KüBELLO" logo="kuebello-logo" /> -->
+<header class="bg-mist-950/50 border border-mist-900/75">
+  <!-- TODO: menu -->
+  <nav class="max-w-(--w-big) mx-auto p-2 flex gap">
+    <a class="hover:text-rose-500 cursor-pointer" href="javascript:void(0)" routerLink="">
+      Inicio
+    </a>
+  </nav>
+</header>
 
-<h1 class="p-1 mt-4 m-auto w-xs border border-pink-700/75 rounded-sm">Hello, {{ title() }}</h1>
-
-<div class="relative m-auto w-xs">
-  <ul class="p-1 mt-4 border border-sky-700/75 rounded-sm">
-    @for (smoked of smoked(); track smoked.id) {
-      <li>{{ smoked.id }}</li>
-    } @empty {
-      <p class="text-red-500">No hay humo de momento...</p>
-    }
-  </ul>
-
-  <small
-    class="absolute -top-3 -right-5 size-8 p-2 flex justify-center text-sky-600 border border-sky-800 bg-gray-900 rounded-full"
-  >
-    <span class="self-center">
-      {{ count() }}
-    </span>
-  </small>
-</div>
-
-<main>
+<!-- Mandatory ROW 4 - index.html:grid-row-1fr -->
+<main
+  class="w-full max-w-(--w-big) mx-auto p-2 2xl:py-10 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)] text-justify"
+>
   <router-outlet />
 </main>
+
+<!-- Mandatory ROW 5 - index.html:grid-row-auto -->
+<footer class="bg-mist-950/50 border border-mist-900/75">
+  <nav class="max-w-(--w-big) mx-auto p-2 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]">
+    <a href="javascript:void(0)" class="hover:text-rose-500 cursor-pointer" routerLink="rgpd">
+      Protección de Datos
+    </a>
+  </nav>
+</footer>
