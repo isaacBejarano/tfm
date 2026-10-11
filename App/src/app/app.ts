@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
 
 @Component({
-  imports: [RouterOutlet, CommonModule, RouterLinkWithHref],
+  imports: [RouterOutlet, RouterLinkWithHref],
   selector: 'app-root',
   templateUrl: './app.html',
 })
