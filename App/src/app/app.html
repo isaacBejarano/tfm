@@ -1,38 +1,79 @@
-<!-- Mandatory ROW 1 - index.html:grid-row-auto -->
 <!-- TODO: <snackbar
   class="sticky top-0 z-3 mx-2 md:mx-0"
   [msg]="msg()"
   [open]="open()"
   [snackbarIcon]="snackbarIcon()"
 /> -->
-<div class="FIXME: text-red-500">SNAKBAR</div>
+<div class="FIXME: fixed top-0 left-2/5 text-center text-red-500 border border-amber-200">
+  SNAKBAR
+</div>
 
-<!-- Mandatory ROW 2 - index.html:grid-row-auto -->
 <!-- TODO: <loader class="sticky top-0 z-2" /> -->
-<div class="FIXME: text-red-500">LOADER</div>
+<div class="FIXME: fixed top-0 left-1/2 text-red-500 border border-pink-500">LOADER</div>
 
-<!-- Mandatory ROW 3 - index.html:grid-row-auto -->
+<!-- Mandatory ROW 1 - index.html:grid-row-auto -->
 <!-- TODO:  <app-header legend="KüBELLO" logo="kuebello-logo" /> -->
-<header class="bg-mist-950/50 border border-mist-900/75">
+<header
+  id="header"
+  class="w-full sticky top-0 bg-linear-to-b from-mist-950 from-90% to-mist-950/50 border border-mist-900/75"
+>
   <!-- TODO: menu -->
-  <nav class="max-w-(--w-big) mx-auto p-2 flex gap">
-    <a class="hover:text-rose-500 cursor-pointer" href="javascript:void(0)" routerLink="">
-      Inicio
+  <div class="max-w-(--w-desktop) mx-auto p-2">
+    <!-- logo -->
+    <div class="flex justify-between">
+      <div
+        class="w-full h-[50px] bg-[url(/favicon.webp)] bg-no-repeat inset-shadow-sm inset-shadow-black animate-fade-in"
+      ></div>
+
+      <p
+        class="max-w-[360px] 2xl:max-w-[482px] bg-[url(/img/logo-clip.webp)] bg-clip-text bg-bottom-right text-5xl 2xl:text-7xl text-transparent font-black animate-[fade-in_1s_ease-in_1.5s_normal_backwards]"
+      >
+        Kübello
+      </p>
+
+      <div
+        class="w-full h-[50px] invisible md:visible bg-[url(/img/banner.webp)] bg-no-repeat bg-right inset-shadow-sm inset-shadow-black animate-[fade-in_1s_ease-in_2s_normal_backwards]"
+      ></div>
+    </div>
+    <!-- menu -->
+    <nav class="p-3 2xl:p-2 flex gap-4">
+      <a
+        class="hover:text-rose-500 cursor-pointer animate-fade-in"
+        href="javascript:void(0)"
+        routerLink=""
+      >
+        Inicio
+      </a>
+      <a
+        class="hover:text-rose-500 cursor-pointer animate-[fade-in_1.5s_ease-in_1s_normal_backwards]"
+      >
+        ¡Regístrate!
+      </a>
+      <!-- <a
+      class="hover:text-rose-500 cursor-pointer animate-[fade-in_1.5s_ease-in_1.5s_normal_backwards]"
+    >
+      ¡Regístrate!
     </a>
-  </nav>
+    <a
+      class="hover:text-rose-500 cursor-pointer animate-[fade-in_1.5s_ease-in_2s_normal_backwards]"
+    >
+      ¡Regístrate!
+    </a> -->
+    </nav>
+  </div>
 </header>
 
-<!-- Mandatory ROW 4 - index.html:grid-row-1fr -->
+<!-- Mandatory ROW 2 - index.html:grid-row-1fr -->
 <main
-  class="w-full max-w-(--w-big) mx-auto p-2 2xl:py-10 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)] text-justify"
+  class="w-full max-w-(--w-desktop) mx-auto p-2 2xl:py-10 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)] text-justify"
 >
   <router-outlet />
 </main>
 
-<!-- Mandatory ROW 5 - index.html:grid-row-auto -->
+<!-- Mandatory ROW 3 - index.html:grid-row-auto -->
 <footer class="bg-mist-950/50 border border-mist-900/75">
-  <nav class="max-w-(--w-big) mx-auto p-2 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]">
-    <a href="javascript:void(0)" class="hover:text-rose-500 cursor-pointer" routerLink="rgpd">
+  <nav class="max-w-(--w-desktop) mx-auto p-2 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]">
+    <a href="#header" class="hover:text-rose-500 cursor-pointer" routerLink="rgpd">
       Protección de Datos
     </a>
   </nav>
