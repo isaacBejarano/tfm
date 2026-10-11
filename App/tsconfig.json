@@ -16,7 +16,8 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@rgpd/*": ["./src/app/rgpd/*"],
-      "@home/*": ["./src/app/home/*"]
+      "@home/*": ["./src/app/home/*"],
+      "@img/*": ["./public/img/*"]
     }
   },
   "angularCompilerOptions": {
