@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, DOCUMENT, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 
@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 export class Home {
   // DI
   private readonly _http = inject(HttpClient);
+  private readonly _docu = inject(DOCUMENT);
 
   // CTRL
   ////
@@ -27,4 +28,11 @@ export class Home {
     of(['']),
     { initialValue: [] },
   );
+
+  // SEO
+  ngAfterViewInit(): void {
+    const canonical: Element | null = this._docu.querySelector('[rel="canonical"]');
+    if (!canonical) return;
+    canonical.setAttribute('href', 'https://kuebello.netlify.app');
+  }
 }

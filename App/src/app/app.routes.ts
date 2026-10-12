@@ -1,5 +1,7 @@
 import { RedirectFunction, Route } from '@angular/router';
 import { Home } from '@home/home';
+
+// TODO: Add private routes to 'robots.txt' to prevent SEO crowling there
 // TODO: review after Arquitecture of Information
 type SpaPaths =
   // public
