@@ -1,14 +1,13 @@
 import { RedirectFunction, Route } from '@angular/router';
 import { Home } from '@home/home';
 
-// TODO: Add private routes to 'robots.txt' to prevent SEO crowling there
 // TODO: review after Arquitecture of Information
 type SpaPaths =
-  // public
-  | '' // home c <login> c <signup> c logout() + (pass recovery?)
+  // PUBLIC
+  | '' // home
   | 'rgpd'
   | '**'
-  // private (auth)
+  // PRIVATE
   | 'veggie/edit'
   | 'user/:id/dashboard' // weatherforecast (add grafics if time) + town selector -> list of multiple 'agendas' may exist for a single user (e.g. 2 houses)
   | 'user/:id/edit' // self profile edit
@@ -22,22 +21,29 @@ type SpaRote = Omit<Route, 'path'> & {
 type SpaRoutes = SpaRote[];
 const title = 'Kübello';
 const routes: SpaRoutes = [
+  // PUBLIC -> TODO: allow SEO crowling by adding ActivatedRoute data custom flag "isCanonical" (app.ts)
   {
     title,
     path: '',
     pathMatch: 'full',
-    component: Home, // eager --> it has the <login> compo and some nice UX pictures like a Landing
+    component: Home, // eager --> it has the <login> and <signup> compo [+ logout() + pass recovery?]
+    data: { isCanonical: true }, // only public routes!
     // canActivate: [isNotLoggedGuard]
   },
   {
     title: `${title} | RGPD`,
     path: 'rgpd', // FIXME: TS path alias
-    // loadComponent: () => import('./rgpd/rgpd').then((m) => m.Rgpd), // lazy
     loadComponent: () => import('@rgpd/rgpd').then((m) => m.Rgpd), // lazy
+    data: { isCanonical: true }, // only public routes!
   },
-  // TODO: Rest of routes here...
-  { path: '**', pathMatch: 'full', redirectTo: '' }, // 404 redirect
+  //...
+  // PRIVATE -> TODO: add route first fragment to 'robots.txt' to prevent SEO crowling on them
+  //...
+  // LAST!
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '', // wildcard to Home
+  },
 ];
 export { routes };
-
-// TODO: locale 'ES'
