@@ -8,6 +8,7 @@ import {
   RouterLinkWithHref,
   RouterOutlet,
 } from '@angular/router';
+import { env } from '@env/env.dev';
 import { filter, map, tap } from 'rxjs';
 
 @Component({
@@ -25,10 +26,13 @@ export class App {
   private readonly _meta = inject(Meta);
 
   // CTRL
+  ////
+
+  private readonly _env = env;
   readonly title = signal('Kübello');
 
   constructor() {
-    this._router.events
+    const canonicalBase = this._router.events
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         filter((e) => e instanceof NavigationEnd),
@@ -43,7 +47,7 @@ export class App {
             console.error('SEO config.');
             return;
           }
-          canonical.setAttribute('href', `https://localhost/${path}`);
+          canonical.setAttribute('href', `${this._env.host}/${path}`);
           robots.setAttribute('content', 'follow, index');
         }),
       )
