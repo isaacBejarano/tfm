@@ -8,8 +8,8 @@ import {
   RouterLinkWithHref,
   RouterOutlet,
 } from '@angular/router';
-import { env } from '@env/env.dev';
 import { filter, map, tap } from 'rxjs';
+import { WebService } from './shared/services/web.service';
 
 @Component({
   imports: [RouterOutlet, RouterLinkWithHref],
@@ -28,7 +28,7 @@ export class App {
   // CTRL
   ////
 
-  private readonly _env = env;
+  private readonly _webSrv = inject(WebService);
   readonly title = signal('Kübello');
 
   constructor() {
@@ -47,7 +47,7 @@ export class App {
             console.error('SEO config.');
             return;
           }
-          canonical.setAttribute('href', `${this._env.host}/${path}`);
+          canonical.setAttribute('href', `${this._webSrv.domain.prod.host}/${path}`);
           robots.setAttribute('content', 'follow, index');
         }),
       )

@@ -18,7 +18,7 @@
       "@rgpd/*": ["./src/app/rgpd/*"],
       "@home/*": ["./src/app/home/*"],
       "@img/*": ["./public/img/*"],
-      "@env/*": ["./src/env/*"]
+      "@shared/*": ["./src/app/shared/*"]
     }
   },
   "angularCompilerOptions": {
