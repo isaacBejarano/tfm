@@ -53,8 +53,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "src/env/env.dev.ts",
-                  "with": "src/env/env.prod.ts"
+                  "replace": "src/env/env.prod.ts",
+                  "with": "src/env/env.dev.ts"
                 }
               ]
             }
