@@ -1,20 +1,269 @@
-<!-- https://es.wikipedia.org/wiki/Reglamento_General_de_Protecci%C3%B3n_de_Datos
-  https://www.boe.es/doue/2016/119/L00001-00088.pdf -->
-<h1 class="text-rose-500">Política de Protección de Datos</h1>
+<h1 class="text-rose-500 text-lg">Política de Privacidad</h1>
 
-<p>
+<p class="mb-4">
   Hay diversos artículos del <b>Reglamento General de Protección de Datos (RGPD)</b> que regulan el
   procesamiento y protección de los datos que los usuarios pueden introducir en la aplicación
-  <span class="text-rose-500">{{ appName }} </span>. Esta lista contiene los artículos involucrados
-  y a continuación, en las siguentes secciones de este artículo, se encuentra explicada la relación
-  y gestión de los datos de los usuarios que hace {{ appName }} en lrelación al <b>RGPD</b>.
+  <b>{{ appName }} </b>. Esta lista contiene los artículos involucrados y a continuación, en las
+  siguentes secciones de este artículo, se encuentra explicada la relación y gestión de los datos de
+  los usuarios que hace {{ appName }} en relación al <b>RGPD</b>.
 </p>
 
-<p>
-  Para saber más sobre la <b>RGPD</b>, pude consultarse la publicación del mismo en el
-  <b>Diario Oficial de la Unión Europea</b>:
-  <br />
-  <a href="https://www.boe.es/doue/2016/119/L00001-00088.pdf">
-    https://www.boe.es/doue/2016/119/L00001-00088.pdf
-  </a>
+<hr class="my-4" />
+
+<h2 class="font-medium text-rose-600">Artículo 5, 17 y 19</h2>
+<h3 class="mb-2 font-medium">
+  Principios relativos al tratamiento, derecho de supresión y obligación de notificación
+</h3>
+
+<p class="mb-1">
+  En cuanto a garantizar la <b>minimización de datos</b> y la
+  <b> integridad y confidencialidad</b> de los datos personales, {{ appName }} sólo requerirá del
+  usuario u usuaria los sigueintes campos de formulario:
 </p>
+
+<ol class="ml-5 mb-4 list-decimal">
+  <li>Correo electrónico</li>
+  <li>
+    Contraseña pata acceder a la aplicación <b> {{ appName }} </b>
+  </li>
+</ol>
+
+<p class="mb-4">
+  El campo de contraseña será encriptado para cumplir con la <b>pseudonimización</b> de datos
+  sensibles del usuario; y ambas credenciales serán persistidas en una base de datos proivada de
+  {{ appName }} sin acceso permitido a ninguna persona que no sea un
+  <b>responsable del tratamiento de datos</b> de la solución; a saber un responsable con privilegio
+  de administración.
+</p>
+
+<p class="mb-1">
+  En cuanto al <b>plazo de conservación</b> de las credenciales de acceso de los usuarios, éste será
+  limitado en el tiempo una vez que el usuario u usuaria decida darse de baja del sistema (eliminar
+  su perfil). En ese supósito, {{ appName }} se compromete a:
+</p>
+
+<ol class="ml-5 mb-4 list-decimal">
+  <li>
+    Conservar los datos por un periodo máximo de 30 dias: un periodo de gracia para poder gestionar
+    impagos u otros requerimientos fiscales inconclusos. Esete periodo de gracia se puede extender
+    por otros 30 dias de manera continuada, sin exceder el año, en caso que el litigio con el
+    usuario no haya podido resolverse en el plazo inicial previsto de 30 dias después de su baja en
+    el sistema.
+  </li>
+  <li>
+    Una vez ya no exista obligación legal o contractual del usuario con {{ appName }}, el sistema
+    anonimizará por completo su registro en la base de datos. Ese registro se podrá conservar por un
+    año para poder formar parte de la contabilidad o analítica interna requerida para el año fiscal.
+    Una vez finalizado el año fiscal, {{ appName }} borrará integramente todo registro del usuario
+    dado de baja así como datos asociados, de manera que ya no quede rastro del mismo en la base de
+    datos ni siquiera de manera anonimizada, cumpliendo así con el principio de
+    <b>derecho al olvido</b>.
+  </li>
+  <li>
+    Siempre que sea posible, {{ appName }} se compromete a comunicar al usuario por correo
+    electrónico, el dia exacto en el que su cuenta será archivada y anonimizada durante el periodo
+    de tiempo antes descrito; o bien comunicarle el dia exacto en el que su cuenta será eliminada
+    totalmente del sistema (derecho al olvido). La comunicación con el usuario en este sentido y
+    para cualquier otra necesidad de comunicación, se llevará a cabo por la solución a través del
+    uso del protocolo seguro para envio de correos electrónico
+    <b> <abbr title="Simple Mail Transfer Protocol Secure">SMTPS</abbr> </b>. También constará en el
+    cuerpo del mensaje, los datos de contacto del responsable del tratamiento de datos, por si el
+    usuario necesita comunicar algun detalle o reclamación adicional antes que se archive o cancele
+    su cuenta en el sistema.
+  </li>
+</ol>
+
+<p class="mb-1">
+  Finalmente, la aplicación cliente está publicada en un servico <i lang="en">serverless</i> o
+  <i lang="en">edge</i>: <b>Netlify</b>. Como responsable de la infraestructura y disposición
+  pública de la aplicación cliente, así como de medidas de seguridad para con la misma, Netlify
+  detalla su compromiso en la protección de los Datos en su página oficial:
+</p>
+<a
+  class="cursor-pointer underline text-blue-500"
+  href="https://www.netlify.com/gdpr-ccpa/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  https://www.netlify.com/gdpr-ccpa/
+</a>
+
+<hr class="my-4" />
+
+<h2 class="font-medium text-rose-600">Artículo 6</h2>
+<h3 class="mb-2 font-medium">Licitud del tratamiento</h3>
+
+<p class="mb-4">
+  El tratamiento de los datos personales del usuario u usaria por parte de {{ appName }}, se
+  considerará lícito cuando el el interesado de su consentimiento para el tratamiento de sus datos
+  personales para poder crear u nperfil de usuario par acceder al sistema. Sin este consentimiento,
+  no se podrá crear una cuenta o perfil de usuario y por lo tanto el acceso a {{ appName }} no será
+  posible. Para la conformidad, el usuario deberá aceptar la <b>Política de Privacidad</b> en el
+  momento del registro, haciendo clic en la casilla (<i lang="en">checkbox</i>) correspondiente.
+</p>
+
+<hr class="my-4" />
+
+<h2 class="font-medium text-rose-600">Artículo 25</h2>
+<h3 class="mb-2 font-medium">Protección de datos desde el diseño y por defecto</h3>
+
+<p class="mb-1">
+  Al registrarse un usuario o acceder al sistema, el reglamento exige la implementación por parte de
+  la solución de software aquellas medidas técnicas que ayuden a mantener la privacided de los
+  usuarios y usuarias. Estas medidas son:
+</p>
+
+<ol class="ml-5 mb-4 list-decimal">
+  <li>La minimización de datos.</li>
+  <li>Seudonimización.</li>
+  <li>Integrar las garantías necesarias en el tratamiento de los datos.</li>
+</ol>
+
+<p class="mb-4">
+  Por lo que respecta a la <b>minimización de datos</b>, {{ appName }} sólo recoge los datos de
+  <b> "email" </b> y <b> "contraseña" </b> en los formularios de registro de usuarios nuevos y en el
+  proceso de acceso al sistema. De esta manera, la solución informática no requiere del usuario
+  ningún dato personal adicional.
+</p>
+
+<p class="mb-4">
+  Por otro lado, el encriptado de las credenciales los usuarios y usuarias en la base de datos,
+  permite la <b>seudonimización</b> a la que hace referencia el artículo. Además la solución hace
+  uso del protocolo <b>HTTPS</b> con certificado digital de seguridad <b>SSL</b>, para garantizar la
+  encriptación del de la comunicación entre la interfaz (la aplicación cliente) y la API (la
+  aplicación corriendo en el servidor).
+</p>
+
+<p class="mb-4">
+  Como medidas para garantizar la protección de datos, la solución también se vale de un sistema de
+  identificación de los mismos, a través de la tècnica de autenticación y atorización basada en
+  <i lang="en">tokens</i> de acceso y de refresco de sesión. La aplicación garantiza que el token de
+  acceso no se persistirá ni en la base de datos ni en ninguna capa de persietcnia del navegador o
+  plataforma donde viva la aplicación cliente (como podria ser el <i lang="en">localStorage</i> de
+  un navegador). Para mejorar la experiencia de usuario (
+  <abbr title="User Experience">
+    <i lang="en"> UX </i>
+  </abbr>
+  ), la solución también se compromete a configurar las
+  <b>
+    <i lang="en"> cookies </i>
+  </b>
+  de refresco de sesión, pero con una configuración segura (<code>HttpOnly</code>,<code>
+    SameSite=Strict
+  </code>
+  y uso del protocolo HTTPS antes mencionado). Adiccionalmente, cabe destacar que las
+  <b>
+    <i lang="en"> cookies </i>
+  </b>
+  de refresco de sesión no guardan ninguna información personal del usuario u usuaria.
+  <!-- TODO: Preguntar modal al user si acepta cookies antes de intentar login o signup. Sinó no se habilita el formulario. -->
+  La solución {{ appName }} se compromete a informar con la presente página a los usuarios de cómo
+  son tratados sus datos personales al resgistrarse e iniciar sesión en la aplicación.
+</p>
+
+<p class="mb-4">
+  Así mismo también se les informa de la imposibildad de usar la aplicación si no dan el
+  consentimiento, en el momento del registro de usuario, a través de la selección de un
+  <i lang="en">checkbox</i>
+  <!-- TODO: checkbox acepto cookies y se guarda en DB ese consentimeitno Boolean -->
+  en el mismo formulario de registro. Para este menester, se informa claramente que las únicas
+  <b> <i lang="en"> cookies </i> de origen </b>
+  usadas por la aplicación són de refresco de sesión para mejorar la experiencia de usuario, son
+  propias de la solución y no se usan <i lang="en"> cookies </i> de terceros. La persistencia de las
+  <b> <i lang="en"> cookies </i> de refresco de sesión </b> sólo se peristiran durante 15 dias.
+  <!-- TODO: 15 dias de cookie  -->
+</p>
+
+<p class="mb-4">
+  El proceso de autenticación y autorización gracias al diseño de software basado en los
+  <b> <i lang="en"> tokens </i> de acceso </b> y a las
+  <b> <i lang="en"> cookies </i> de refresco </b> es una medida adoptada para intentar garantizar el
+  tratamiento de los datos de usuario de manera segura. Ambos mecanismos constituyen una mitigación
+  de los ataques informáticos conocidos como <i lang="en">Cross Site Scripting (CSS)</i> y
+  <i lang="en">Cross Site Request Forgery (CSRF)</i>. Para ello, un requisito que también se cumple,
+  como se ha explicado anteriormente, es la transmisión de datos segura a través del protocolo
+  <b>
+    <abbr title="HyperText Transfer Protocol">HTTPS</abbr>
+  </b>
+  que encripta los datos en tránsito entre la aplicación cliente (la interfaz) y la aplicación de
+  servidor (API), gracias al
+  <b>
+    certificado
+    <abbr title="Secure Sockets Layer">SSL</abbr>
+  </b>
+</p>
+
+<p class="mb-4">
+  En cualquier caso, las <b> <i lang="en"> cookies </i> de origen </b> de refresco de essión usadas
+  en {{ appName }} son <b>estrictamente necesarias</b>, se usan para el requisito técnico para el
+  buen funcionamiento del proceso de autenticación y aurorización de usuarios y usarias. Por ese
+  motivo, no es necesario pedir a los usuarios el consentimiento para acceder al sistema, tal como
+  fija la
+  <b>Ley de Servicios de la Sociedad de la Información (LSSI)</b>
+</p>
+
+<p class="mb-4">
+  Conforme a la ley, los usuarios podran acceder a usus datos de perfil, modificarlos y eliminar su
+  perfil o cuenta en el sistema. Al eliminarse una cuenta, se mantienen los Datos de los usuarios
+  durante 1 año. Al vencimiento de ese periodo, los datos son eliminados completamente de la base de
+  datos. Al eliminar (cancelar) una cuenta, las <i lang="en"> cookies </i> de reresco perisstiran
+  todavia los 15 dias previstos por razones técnicas.
+</p>
+
+<hr class="my-4" />
+
+<h2 class="font-medium text-rose-600">Artículo 32</h2>
+<h3 class="mb-2 font-medium">Seguridad del tratamiento</h3>
+
+<p class="mb-1">
+  Para garantizar un nivel de seguridad adecuado al riesgo, y también tal como se ha definido en
+  puntos anteriores de esta declaración de la política de privacidad de {{ appName }}, se
+  implementan las siguientes medidas en la solución:
+</p>
+
+<ol class="ml-5 mb-4 list-disc">
+  <li>Seudonimización y cifrado de datos personales.</li>
+  <li>
+    Uso de base de datos provadas con copias de seguridad periódicas para garantizar la
+    confidencialidad, integridad, disponibilidad y resiliencia permanentes de los sistemas y
+    servicios de tratamiento.
+  </li>
+  <li>
+    Capacidad de re-encendido de la API y de la base de datos así como del blocado de registros en
+    la base de datos gracias a la copia de seguridad, para garantizar la capacidad de restaurar la
+    disponibilidad y el acceso a los datos personales de forma rápida en caso de incidente físico o
+    técnico.
+  </li>
+</ol>
+
+<hr class="my-4" />
+
+<h2 class="font-medium text-rose-600">Referencias legales</h2>
+
+<ol class="ml-5 mb-4 list-disc">
+  <li>
+    <a
+      class="cursor-pointer underline text-blue-500"
+      href="https://www.boe.es/doue/2016/119/L00001-00088.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      REGLAMENTO (UE) 2016/679 DEL PARLAMENTO EUROPEO Y DEL CONSEJO
+    </a>
+  </li>
+  <li>
+    <a
+      class="cursor-pointer underline text-blue-500"
+      href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-13758"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio
+      electrónico.
+    </a>
+  </li>
+</ol>
+
+<!-- TODO: backups de DB para cumplir con la lley Articulo 32 -->
+<!-- TODO: security: cifra tanto el email como el pass -->
+<!-- TODO: popup informa de soft delete -->

@@ -21,6 +21,6 @@ describe('Home', () => {
     const fixture = TestBed.createComponent(Home);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Kübello');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Tu planificador hortícola');
   });
 });

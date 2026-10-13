@@ -6,6 +6,7 @@ type SpaPaths =
   // PUBLIC
   | '' // home
   | 'rgpd'
+  | 'cookies'
   | '**'
   // PRIVATE
   | 'veggie/edit'
@@ -32,8 +33,14 @@ const routes: SpaRoutes = [
   },
   {
     title: `${title} | RGPD`,
-    path: 'rgpd', // FIXME: TS path alias
+    path: 'rgpd',
     loadComponent: () => import('@rgpd/rgpd').then((m) => m.Rgpd), // lazy
+    data: { isCanonical: true }, // only public routes!
+  },
+  {
+    title: `${title} | Cokies`,
+    path: 'cookies',
+    loadComponent: () => import('@cookies/cookies').then((m) => m.Cookies), // lazy
     data: { isCanonical: true }, // only public routes!
   },
   //...

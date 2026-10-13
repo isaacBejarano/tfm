@@ -15,8 +15,9 @@
     "module": "preserve",
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@rgpd/*": ["./src/app/rgpd/*"],
       "@home/*": ["./src/app/home/*"],
+      "@rgpd/*": ["./src/app/rgpd/*"],
+      "@cookies/*": ["./src/app/cookies/*"],
       "@img/*": ["./public/img/*"],
       "@shared/*": ["./src/app/shared/*"]
     }

@@ -14,7 +14,7 @@ public class SmokeController : ControllerBase {
   [HttpGet("full")]
   public ActionResult<DtoResponse<DtoId>> GetSmokeFull() {
     var itemEmpty = new DtoId(Guid.Empty);
-    var itemFull = new DtoId(Guid.NewGuid());
+    var itemFull = new DtoId(Guid.CreateVersion7());
     var dto = new DtoResponse<DtoId>([itemEmpty, itemFull], "You got smoked!");
     return StatusCode(StatusCodes.Status200OK, dto);
   }

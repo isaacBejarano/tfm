@@ -10,7 +10,7 @@ public class DtoIdSpec : IDisposable {
   public void Dispose() { }
 
   private static readonly Guid _idEmpty = Guid.Empty;
-  private static readonly Guid _idNew = Guid.NewGuid();
+  private static readonly Guid _idNew = Guid.CreateVersion7();
 
   [Theory]
   [InlineData("00000000-0000-0000-0000-000000000000")]

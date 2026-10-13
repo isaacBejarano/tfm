@@ -24,10 +24,10 @@
 
   @keyframes unroll {
     0% {
-      width: 0;
+      width: 100%;
     }
     100% {
-      width: 100%;
+      width: 0;
     }
   }
   @keyframes unfold-top {
@@ -47,32 +47,6 @@
     }
   }
 }
-
-/* @utility animate-unfold {
-  animation: unfold 5s ease-in-out 0s 1 normal both running;
-}
-@keyframes unfold-right {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
-} */
-
-/* @utility animate-slide-up {
-  animation: slide-up var(--tw-animate-duration, 0.3s) ease-out 1s forwards;
-}
-@keyframes slide-up {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-} */
 
 /* FIXME: remove */
 .red {
