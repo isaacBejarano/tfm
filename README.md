@@ -203,6 +203,8 @@ Use also the `--help` **flag** to show assitence and decide more thorougly how t
 ### 👉 Local development with Docker Compose
 
 Docker `compose.yaml` files have been used to virtualize a PostgrSQL database and persist DB data in this same project by mounting its volumes.
+In that **YAML** file, an environment file `.env` has been used. To secure th edefault conenction to the Postgres DB Server, a password must be set in the `.env` file. 
+That same password must be use later when using a Postgres CLI like `pgAdmin` to access the Server and the default `postgres` DB. The .env variable name to set in the **.env** file is: `POSTGRES_PW`.
 
 First, *dry-run* the Docker `compose.dev.yaml` from the `Api/` foder:
 

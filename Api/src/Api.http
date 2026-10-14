@@ -8,3 +8,7 @@ Content-Type: application/json
 ### SMOKE TEST 2
 GET {{Api}}/smoke/full
 Content-Type: application/json
+
+### SMOKE TEST 3 - EFCore
+GET {{Api}}/smoke/postgress
+Content-Type: application/json
