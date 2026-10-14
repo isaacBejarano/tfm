@@ -1,7 +1,7 @@
 -- Script: Create a DB with UTF-8 encoding, locale 'en_US' and Backend OWNER
 -- Creation: Isaac Bejarano, 2026/10/07
 
--- create user for Backend != postgres
+-- create user for Backend != 'postgres'
 CREATE USER isk;
 
 -- create DB with Backend user

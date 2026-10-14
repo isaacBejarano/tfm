@@ -225,7 +225,8 @@ docker exec -it tfm-server-postgres psql --username postgres
 List DB on the **PSQL Terminal** with `\l`.
 Then exit the PSQL Terminal with `\q`.
 
-Then create a custom DB with the **SQL script** located at `scripts/**/*.sql`. Finally connect to the custom DB `db_tfm` with custom user `isk` recently added to the Server...
+In this project, a custom DB for the projec's API was created with the **SQL script** located at `scripts/**/*.sql`. 
+To connect to it (DB `db_tfm`) with the custom user `isk` recently added to the Server, one can log in to that DB using a Postgres Client like `PgAdmin` (version 4) or you can us the `PSQL` **CLI** via Terminal, similarly to the way the previous connection using default user `postgres` worked.
 
 ```bash
 docker exec -it tfm-server-postgres psql --username isk --dbname db_tfm
