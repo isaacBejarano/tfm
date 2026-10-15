@@ -5,6 +5,7 @@ namespace Api.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
 public class SmokeController() : ControllerBase {
+
   [HttpGet("almost")]
   public ActionResult<DtoResponse<DtoId>> GetSmokeAlmost() {
     var dto = new DtoResponse<DtoId>([], "");

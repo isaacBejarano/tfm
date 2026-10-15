@@ -1,7 +1,4 @@
-using Api.Database;
-using Api.Dtos;
-using Api.Models;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
