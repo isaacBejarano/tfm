@@ -9,11 +9,13 @@ Content-Type: application/json
 GET {{Api}}/smoke/full
 Content-Type: application/json
 
-### POST /api/user - TEST "no payload"
+
+
+### POST "/user" - TEST "no payload"
 POST {{Api}}/user
 Content-Type: application/json
 
-### POST /api/user - TEST "payload empty fields show all their error msg"
+### POST "/user" - TEST "payload empty fields show all their error msg"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -23,7 +25,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST /api/user - TEST "payload wrong field:email too short"
+### POST "/user" - TEST "payload wrong field:email too short"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -33,7 +35,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST /api/user - TEST "payload wrong field:email pattern"
+### POST "/user" - TEST "payload wrong field:email pattern"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -43,7 +45,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST /api/user - TEST "payload field:email OK"
+### POST "/user" - TEST "payload field:email OK"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -53,7 +55,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST /api/user - TEST "payload field:name OK"
+### POST "/user" - TEST "payload field:name OK"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -63,7 +65,7 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST /api/user - TEST "payload field:password too short"
+### POST "/user" - TEST "payload field:password too short"
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -73,13 +75,36 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST /api/user - TEST creation attempt -> 201 Created
-### POST /api/user - TEST creation repeats -> 409 Comflict
+### POST "/user" - TEST creation attempt (no 'name') -> 201 Created
 POST {{Api}}/user
 Content-Type: application/json
 
 {
   "email":"Kalush@yopmail.com",
   "password":"12345678",
-  "name":"C"
+  "name":null
 }
+
+### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"abcdefgh",
+  "name":"Kalush"
+}
+
+
+
+### GET "/user" - TEST list of users TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+GET {{Api}}/user
+Content-Type: application/json
+
+
+@Id = 01a14087-f10f-779a-93e5-b47dbc3966f4
+
+### get ID value from first cal to POST "/user"
+### GET "/user/:id" - TEST user profile TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+GET {{Api}}/user/{{Id}}
+Content-Type: application/json

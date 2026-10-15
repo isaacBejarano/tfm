@@ -4,42 +4,34 @@
 
 public interface IUserRepositoryService {
 
-  // POST user/
+  // POST "user/" <- signup
   public User? Create(User user);
 
-  // // GET user/
-  // public IEnumerable<User> ReadAll();
 
+  // GET "user/" <- admin list users TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+  public IEnumerable<User> ReadAll();
 
-  // // POST auth/
-  // public User? ReadByCreds(DtoUserCreds payload);
+  // GET user/:id <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+  public User? ReadById(Guid id);
 
-  // // GET user/:id
-  // public User? ReadById(Guid id);
 
   // // PATCH user/:id
   // public User? Update(DtoUserCreds creds, DtoUserCreds edit);
 
+
   // // DELETE user/:id
-  // public bool Delete(DtoId payload);
-
-  // // POST user/:id/archive
-  // public User? Archive(DtoId payload);
-
-  // // POST user/:id/restore
-  // public User? Restore(DtoId payload);
+  // public bool DeleteHard(DtoId payload);
 }
 
 
 // REST
 
 
-// Create a new product POST  /api/products
+// Create a new user -> POST /api/user
 
-// Read a list of all products GET /api/products
-// Read a product by ID GET / api / products / id
-// Read a product by category GET /api/products? category = category
+// Read a list of all users -> GET /api/user
+// Read a user by ID -> GET /api/user/:id
 
-// Update a product  PUT / api / products / id
+// Update a user -> PUT /api/user/:id
 
-// Delete a product DELETE  /api/products/id
+// Delete (Hard) a user -> DELETE /api/user/:id
