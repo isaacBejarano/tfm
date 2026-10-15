@@ -1,0 +1,84 @@
+### HTTPS only
+@Api = https://localhost:7247/api/v1
+
+### SMOKE TEST 1
+GET {{Api}}/smoke/almost
+Content-Type: application/json
+
+### SMOKE TEST 2
+GET {{Api}}/smoke/full
+Content-Type: application/json
+
+### POST /api/user - TEST "no payload"
+POST {{Api}}/user
+Content-Type: application/json
+
+### POST /api/user - TEST "payload empty fields show all their error msg"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"",
+  "password":"",
+  "name":""
+}
+
+### POST /api/user - TEST "payload wrong field:email too short"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"12345",
+  "password":"",
+  "name":""
+}
+
+### POST /api/user - TEST "payload wrong field:email pattern"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"@yopmail.com",
+  "password":"",
+  "name":""
+}
+
+### POST /api/user - TEST "payload field:email OK"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"",
+  "name":""
+}
+
+### POST /api/user - TEST "payload field:name OK"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"",
+  "name":"C"
+}
+
+### POST /api/user - TEST "payload field:password too short"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"1234567",
+  "name":"C"
+}
+
+### POST /api/user - TEST "payload field:password too short"
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"12345678",
+  "name":"C"
+}

@@ -1,6 +1,4 @@
 global using Api.Shared;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 
 // 1. BUILDER (pattern) //
