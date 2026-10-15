@@ -1,8 +1,9 @@
 global using Api.Database;
 global using Api.Dtos;
+global using Api.Interfaces;
 global using Api.Models;
+global using Api.Repositories;
 global using Api.Shared;
-
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // chainable when 'IServiceCollection' returned
 builder.Services
+  .AddDbContext<SessionContext>()
+  .AddScoped<IUserRepositoryService, UserRepositoryService>() // IoC/DI container
   .AddOpenApi() // https://aka.ms/aspnet/openapi
   .AddCors(opts => // policy headers
     opts.AddPolicy("DevPolicies", policy => {

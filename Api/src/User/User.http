@@ -73,7 +73,8 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST /api/user - TEST "payload field:password too short"
+### POST /api/user - TEST creation attempt -> 201 Created
+### POST /api/user - TEST creation repeats -> 409 Comflict
 POST {{Api}}/user
 Content-Type: application/json
 
