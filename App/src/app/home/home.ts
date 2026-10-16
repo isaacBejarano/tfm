@@ -27,6 +27,46 @@ export class Home {
   );
 }
 
-
 // REGEXP PASS -> ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$
 // REGEXP EMAIL -> ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
+
+/* TODO:
+
+### HTTPS only
+@Api = https://localhost:7247/api/v1
+
+### SMOKE TEST 1 -> 200 OK
+GET {{Api}}/smoke/almost
+Content-Type: application/json
+
+
+### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345",
+  "name":"Kalush"
+}
+
+
+### POST "/auth" - TEST login (right password & acces token) -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345"
+}
+
+
+
+
+
+
+
+
+
+
+*/

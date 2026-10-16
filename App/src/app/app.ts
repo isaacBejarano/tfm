@@ -9,10 +9,12 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { filter, map, tap } from 'rxjs';
-import { WebService } from './shared/services/web.service';
+
+import { Btn } from '@shared/components/btn/btn';
+import { WebService } from '@shared/services/web.service';
 
 @Component({
-  imports: [RouterOutlet, RouterLinkWithHref],
+  imports: [RouterOutlet, RouterLinkWithHref, Btn],
   selector: 'app-root',
   templateUrl: './app.html',
 })
