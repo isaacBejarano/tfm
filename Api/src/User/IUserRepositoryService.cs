@@ -8,11 +8,17 @@ public interface IUserRepositoryService {
   public User? Create(User user);
 
 
+
+  // POST "auth/" <- login
+  public User? ReadByEmail(string email);
+
   // GET "user/" <- admin list users TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
   public IEnumerable<User> ReadAll();
 
-  // GET user/:id <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+  // GET "user/:id" <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
   public User? ReadById(Guid id);
+
+
 
 
   // // PATCH user/:id

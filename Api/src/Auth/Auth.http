@@ -1,0 +1,99 @@
+### HTTPS only
+@Api = https://localhost:7247/api/v1
+
+
+### POST "/auth" - TEST "no payload" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+### POST "/auth" - TEST "all empty fields invalid" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"",
+  "password":""
+}
+
+### POST "/auth" - TEST "invalid field:email too short & other fields invalid" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"12345",
+  "password":""
+}
+
+### POST "/auth" - TEST "invalid field:email pattern & other fields invalid" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"mysite..1234@yopmail.com",
+  "password":""
+}
+
+### POST "/auth" - TEST "field:email OK & invalid field:password required" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":""
+}
+
+### POST "/auth" - TEST "invalid field:password too short & field:password required OK" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"1234567"
+}
+
+### POST "/auth" - TEST "invalid field:password pattern & other fields OK" --> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"12345678"
+}
+
+
+### POST "/auth" - TEST "wrong email" -> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Lovelace@yopmail.com",
+  "password":"Ab@12345"
+}
+
+### POST "/auth" - TEST "wrong password" -> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@00000"
+}
+
+### TODO: POST "/auth" - TEST login (no acces token) -> 401 Unauthorized
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345"
+}
+
+### POST "/auth" - TEST login (right password & acces token) -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345"
+}
+

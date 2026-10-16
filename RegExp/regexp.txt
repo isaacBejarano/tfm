@@ -1,0 +1,40 @@
+// REGULAR EXPRESSIONS
+////
+
+/** RegExp Pattern: **eMail**
+ *
+ * Valid characters in the local part:
+ * - !#$%&'*+/=?^_`{|}~-
+ *
+ *  e.g. Valid:
+ *  - `mysite@yopmail.com`
+ *  - `my.ownsite@yopmail.org`
+ *  - `mysite@yopmail.me.net`
+ *
+ *  e.g. Invalid:
+ *  - `mysite.yopmail.com` [@ is not present]
+ *  - `@yopmail.me.net` [ No character before @ ]
+
+ *  - `mysite@.yopmail.my` [ tld (Top Level domain) can not start with dot "." ]
+ *  - `mysite@.yopmail.org` [ tld can not start with dot "." ]
+ *  - `mysite()*@yopmail.com` [ here the regular expression only allows character, digit, underscore, and dash ]
+ *  - `.mysite@yopmail.org` [ an email should not be start with "." ]
+ *  - `mysite..1234@yopmail.com` [double dots are not allowed]
+ */
+
+REGEXP -> ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
+
+
+/** RegExp Pattern: **Password**
+ *
+ * Requires at least:
+ * - 1 uppercase letter
+ * - 1 lowercase letter
+ * - 1 number
+ * - 1 special character
+ *
+ * Valid special characters:
+ * - `~!@#$%^&*()_+-={}|[]\:";'<>?,./
+ */
+
+REGEXP -> ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$

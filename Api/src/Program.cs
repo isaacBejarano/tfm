@@ -97,7 +97,9 @@ api
 ////
 
 // api documentation route (dev only)
-if (api.Environment.IsDevelopment()) { api.MapOpenApi(); }
+if (api.Environment.IsDevelopment()) {
+  api.MapOpenApi("swagger/openapi/v1.yaml"); // ctrl (doc) --> route '/swagger/openapi/v1.yaml'
+}
 // TIP -> debug HTTP with HTTP files instead
 
 api.MapControllers();

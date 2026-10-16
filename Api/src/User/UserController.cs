@@ -6,17 +6,17 @@ namespace Api.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBase {
+public class UserController(
+  IUserRepositoryService _userRepoSrv // DI
+  ) : ControllerBase {
 
   // POST "/user"
   [HttpPost]
-  public ActionResult<DtoResponse<DtoUser>> Signup([FromBody] DtoUser payload) {
+  public ActionResult<DtoResponse<object>> Signup([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
-    // TODO: 4. Seed users, 1 admin X, 1 admin Tribunal, 1 superadmin me
 
-
-    // HASHING
+    // HASHING -> password
     var payloadHasher = new PasswordHasher<DtoUser>(); //
     string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
 
@@ -34,20 +34,21 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
     var entityPasswordHashVerifiy = entityHasher.VerifyHashedPassword(entity, entity.Password, payload.Password);
 
     if (entityPasswordHashVerifiy != PasswordVerificationResult.Success) {
-      var dtoErr = new DtoResponse<DtoUser>([], "Error en el registro de Usuario.");
+      var dtoErr = new DtoResponse<object>([], "Error en el registro de Usuario.");
       return StatusCode(StatusCodes.Status500InternalServerError, dtoErr);
     }
 
     // persist model
     User? user = _userRepoSrv.Create(entity);
+
     if (user == null) {
-      var dtoErr = new DtoResponse<DtoUser>([], "Usuario ya registrado.");
+      var dtoErr = new DtoResponse<object>([], "Usuario ya registrado.");
       return StatusCode(StatusCodes.Status409Conflict, dtoErr);
     }
 
 
     // DTO -> no item here; security policy
-    var dto = new DtoResponse<DtoUser>([], "Usuario registrado con éxito.");
+    var dto = new DtoResponse<object>([], "Usuario registrado con éxito.");
     return StatusCode(StatusCodes.Status201Created, dto);
   }
 
@@ -82,7 +83,7 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
 
 
   // GET "/api/user/:id"
-  [HttpGet("{id}")]
+  [HttpGet("{id:Guid}")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
 
@@ -112,6 +113,7 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
+  // TODO: check path variable checkin
   // [HttpGet("int/{id:int}")] // GET /api/test2/int/3
   // https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-10.0
 

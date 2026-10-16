@@ -18,6 +18,12 @@ public class UserRepositoryService(
     return tracked.Entity;
   }
 
+
+  // POST "auth/" <- login
+  public User? ReadByEmail(string email) {
+    return _ctx.Users.FirstOrDefault(u => u.Email == email);
+  }
+
   // GET "user/"
   public IEnumerable<User> ReadAll() {
     return [.. _ctx.Users]; // clone

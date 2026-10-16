@@ -1,21 +1,12 @@
 ### HTTPS only
 @Api = https://localhost:7247/api/v1
 
-### SMOKE TEST 1
-GET {{Api}}/smoke/almost
-Content-Type: application/json
 
-### SMOKE TEST 2
-GET {{Api}}/smoke/full
-Content-Type: application/json
-
-
-
-### POST "/user" - TEST "no payload"
+### POST "/user" - TEST "no payload" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
-### POST "/user" - TEST "payload empty fields show all their error msg"
+### POST "/user" - TEST "all empty fields invalid" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -25,7 +16,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "payload wrong field:email too short"
+### POST "/user" - TEST "invalid field:email too short & other fields invalid" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -35,17 +26,17 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "payload wrong field:email pattern"
+### POST "/user" - TEST "invalid field:email pattern & other fields invalid" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"@yopmail.com",
+  "email":"mysite..1234@yopmail.com",
   "password":"",
   "name":""
 }
 
-### POST "/user" - TEST "payload field:email OK"
+### POST "/user" - TEST "field:email OK & invalid field:password required & invalid field:name too short" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -55,7 +46,7 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "payload field:name OK"
+### POST "/user" - TEST "invalid field:password too short & other fields OK" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -65,7 +56,7 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST "/user" - TEST "payload field:password too short"
+### POST "/user" - TEST "invalid field:password too short & field:password required OK" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -75,14 +66,23 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST "/user" - TEST creation attempt (no 'name') -> 201 Created
+### POST "/user" - TEST "invalid field:password pattern & other fields OK" --> 400 Bad Request
 POST {{Api}}/user
 Content-Type: application/json
 
 {
   "email":"Kalush@yopmail.com",
   "password":"12345678",
-  "name":null
+  "name":"C"
+}
+
+### POST "/user" - TEST creation attempt (no 'name') -> 201 Created
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345"
 }
 
 ### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
@@ -91,7 +91,7 @@ Content-Type: application/json
 
 {
   "email":"Kalush@yopmail.com",
-  "password":"abcdefgh",
+  "password":"Ab@12345",
   "name":"Kalush"
 }
 
