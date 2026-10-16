@@ -13,29 +13,30 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
   public ActionResult<DtoResponse<DtoUser>> Signup([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
-    // TODO: 3. Hash password nativelly!
-    // https://learn.microsoft.com/es-es/dotnet/api/microsoft.aspnetcore.identity.passwordhasher-1?view=aspnetcore-9.0
-    // var passwordHasher = new PasswordHasher<User>();
-    // user.Password = passwordHasher.HashPassword(user, "MiPasswordSeguro123");
-
     // TODO: 4. Seed users, 1 admin X, 1 admin Tribunal, 1 superadmin me
 
 
     // HASHING
-    var hashingOpts = new PasswordHasherOptions();
-    var userDtoHasher = new PasswordHasher<DtoUser>();
-    string passwordHashed = userDtoHasher.HashPassword(payload, payload.Password);
+    var payloadHasher = new PasswordHasher<DtoUser>(); //
+    string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
+
 
     // DB REPO //
 
     // payload dto -> model
     User entity = new() {
       Email = payload.Email,
-      Password = payload.Password,
+      Password = payloadPasswordHashed,
       Name = payload.Name,
     };
 
+    var entityHasher = new PasswordHasher<User>();
+    var entityPasswordHashVerifiy = entityHasher.VerifyHashedPassword(entity, entity.Password, payload.Password);
 
+    if (entityPasswordHashVerifiy != PasswordVerificationResult.Success) {
+      var dtoErr = new DtoResponse<DtoUser>([], "Error en el registro de Usuario.");
+      return StatusCode(StatusCodes.Status500InternalServerError, dtoErr);
+    }
 
     // persist model
     User? user = _userRepoSrv.Create(entity);
@@ -44,16 +45,9 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
       return StatusCode(StatusCodes.Status409Conflict, dtoErr);
     }
 
-    // DTO //
 
-    // model -> res dto
-    DtoUser item = new(
-        Id: user.Id,
-        Email: user.Email,
-        Name: user.Name,
-        Password: user.Password);
-
-    var dto = new DtoResponse<DtoUser>([item], "Usuario registrado con éxito.");
+    // DTO -> no item here; security policy
+    var dto = new DtoResponse<DtoUser>([], "Usuario registrado con éxito.");
     return StatusCode(StatusCodes.Status201Created, dto);
   }
 
