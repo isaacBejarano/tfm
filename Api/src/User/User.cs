@@ -9,8 +9,8 @@ namespace Api.Models;
 [Index(nameof(Email), IsUnique = true)]
 public class User : Audit {
   public Guid Id { get; init; } = Guid.CreateVersion7();
-  public string? Email { get; set; }
-  public string? Password { get; set; }
+  public required string Email { get; set; } // Dto must map!
+  public required string Password { get; set; } // Dto must map!
   public string? Name { get; set; } = "Anónimo";
 }
 

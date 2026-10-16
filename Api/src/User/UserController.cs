@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -20,6 +21,11 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
     // TODO: 4. Seed users, 1 admin X, 1 admin Tribunal, 1 superadmin me
 
 
+    // HASHING
+    var hashingOpts = new PasswordHasherOptions();
+    var userDtoHasher = new PasswordHasher<DtoUser>();
+    string passwordHashed = userDtoHasher.HashPassword(payload, payload.Password);
+
     // DB REPO //
 
     // payload dto -> model
@@ -28,6 +34,8 @@ public class UserController(IUserRepositoryService _userRepoSrv) : ControllerBas
       Password = payload.Password,
       Name = payload.Name,
     };
+
+
 
     // persist model
     User? user = _userRepoSrv.Create(entity);
