@@ -1,3 +1,3 @@
-type SnackIcons = 'icon-warning' | 'icon-check';
+type IconSnackbar = 'icon-warning' | 'icon-check';
 
-export type { SnackIcons };
+export type { IconSnackbar };

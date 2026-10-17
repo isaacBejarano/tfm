@@ -70,7 +70,9 @@ import { Btn } from '@shared/components/btn/btn';
   `,
 })
 export class Header {
-  // DUMMY CTRL
+  // CTRL
+  ////
+
   readonly legend = input.required<string>();
 
   // TODO: rouer + user claims

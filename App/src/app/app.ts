@@ -11,6 +11,8 @@ import { LoaderService } from '@app/common/components/loader/loader.service';
 import { Footer } from '@common/components/footer/footer';
 import { Header } from '@common/components/header/header';
 import { Loader } from '@common/components/loader/loader';
+import { Snackbar } from '@common/components/snackbar/snackbar';
+import { SnackbarService } from '@common/components/snackbar/snackbar.service';
 import { WebService } from '@shared/services/web.service';
 
 @Component({
@@ -29,6 +31,7 @@ export class App implements OnDestroy {
   private readonly _overlay = inject(Overlay);
   private readonly _webSrv = inject(WebService);
   private readonly _loaderService = inject(LoaderService);
+  private readonly _snackbarService = inject(SnackbarService);
 
   // CTRL
   ////
@@ -37,29 +40,28 @@ export class App implements OnDestroy {
 
   // Loader state
   private readonly _showLoader = toSignal<boolean, false>(
-    this._loaderService.loading$(), // unsubscribed by toSignal & App destruction
+    this._loaderService.loading$(), // unsubscribed by toSignal
     { initialValue: false },
   );
 
-  // TODO: Snackbar state
-  // private readonly _showSnackbar = toSignal<boolean, false>(
-  //   this._snackbarService.showing$(), // unsubscribed by toSignal & App destruction
-  //   { initialValue: false },
-  // );
+  // Snackbar state
+  private readonly _showSnackbar = toSignal<boolean, false>(
+    this._snackbarService.notifying$(), // unsubscribed by toSignal
+    { initialValue: false },
+  );
 
   // CDK Overlay config
 
   private readonly _overlayOutletForLoader: OverlayRef = this._overlay.create({
-    hasBackdrop: false,
+    hasBackdrop: true,
     positionStrategy: this._overlay.position().global().centerHorizontally().centerVertically(),
     scrollStrategy: this._overlay.scrollStrategies.block(),
   });
 
-  private readonly _overlayOutletForSnack: OverlayRef = this._overlay.create({
-    hasBackdrop: true,
-    backdropClass: 'snack',
-    positionStrategy: this._overlay.position().global().centerHorizontally().bottom(),
-    scrollStrategy: this._overlay.scrollStrategies.block(),
+  private readonly _overlayOutletForSnackbar: OverlayRef = this._overlay.create({
+    hasBackdrop: false,
+    positionStrategy: this._overlay.position().global().centerHorizontally().top(),
+    scrollStrategy: this._overlay.scrollStrategies.reposition(),
   });
 
   constructor() {
@@ -93,21 +95,21 @@ export class App implements OnDestroy {
         : this._overlayOutletForLoader.detach(),
     );
 
-    // TODO: SIGUE LA LOGICA DE INTERCEPCION SIMILAR A LA DEL LOADER!
-    // effect(() =>
-    //   this._showSnackbar()
-    //     ? this._overlayOutletForSnack.attach(new ComponentPortal(Snackbar))
-    //     : this._overlayOutletForSnack.detach(),
-    // );
+    // CDK Overlay the Snackbar
+    effect(() =>
+      this._showSnackbar()
+        ? this._overlayOutletForSnackbar.attach(new ComponentPortal(Snackbar))
+        : this._overlayOutletForSnackbar.detach(),
+    );
   }
 
   ngOnDestroy(): void {
     this._overlayOutletForLoader.dispose();
-    this._overlayOutletForSnack.dispose();
+    this._overlayOutletForSnackbar.dispose();
   }
 
   // FIXME: remove SMOKE TEST
   smoke() {
-    this._http.get(this._webSrv.domain.api.get() + '/smoke/full').subscribe(console.warn); // 1-tie subscription
+    this._http.get(this._webSrv.domain.api.get() + '/smoke/full').subscribe(console.log); // 1-tie subscription
   }
 }

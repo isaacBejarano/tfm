@@ -1,35 +1,16 @@
-@let icon = snackbarIcon();
-
-<dialog
-  class="w-full md:w-sm md:mx-auto mt-3 bg-pink-900/50 border border-gray-600 rounded-sm"
-  #snakbar
-  [open]="open()"
+<div
+  class="max-w-sm 2xl:max-w-md mt-20 md:mt-22 p-4 z-5 border border-amber-300/25 bg-mist-800 rounded-xl animate-[fade-in_0.25s_ease-in_0s_1_normal_backwards]"
 >
-  <form
-    class="flex items-top gap-2 p-3 bg-gray-900 rounded-sm shadow-lg shadow-neutral-700/35"
-    method="dialog"
+  <svg
+    class="block mx-auto fill-current size-10"
+    viewBox="0 0 100 100"
+    [class.text-lime-500]="icon() === 'icon-check'"
+    [class.text-rose-500]="icon() === 'icon-warning'"
   >
-    <div class="flex justify-center items-center">
-      <div class="size-11 p-1.5 rounded-full flex items-center">
-        <svg class="fill-current" [class.pb-1]="icon === 'icon-warning'" viewBox="0 0 100 100">
-          <use [attr.xlink:href]="[`./svg/icon-sprite.xml#${icon}`]" />
-        </svg>
-      </div>
-    </div>
+    <use [attr.xlink:href]="[`./svg/icon-sprite.xml#${icon()}`]" />
+  </svg>
 
-    <p class="flex-1 self-center text-amber-200/75">
-      {{ msg() }}
-    </p>
-
-    <app-btn
-      ($click)="snakbar.close()"
-      type="button"
-      label="SNACKBAR"
-      ariaLabel="Botón para cerrar esta notificación."
-    >
-      <svg class="size-5 stroke-current stroke-2 rotate-45" viewBox="0 0 100 100">
-        <use href="./svg/icon-sprite.xml#icon-plus" />
-      </svg>
-    </app-btn>
-  </form>
-</dialog>
+  <p class="text-amber-200/75">
+    {{ msg() }}
+  </p>
+</div>

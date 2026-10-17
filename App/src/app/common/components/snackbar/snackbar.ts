@@ -1,20 +1,27 @@
-import { Component, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
-import { Btn } from '@shared/components/btn/btn';
-import { SnackIcons } from '@shared/types/icons';
+import { SnackbarService } from '@common/components/snackbar/snackbar.service';
+import { IconSnackbar } from '@shared/types/icons';
 
 @Component({
-  imports: [Btn],
   selector: 'app-snack',
   templateUrl: './snackbar.html',
 })
 export class Snackbar {
-  // DUMMY
-  readonly msg = input.required<string>();
-  readonly open = input.required<boolean>();
-  readonly snackbarIcon = input.required<SnackIcons>();
+  // DI
+  readonly _snackbarSrv = inject(SnackbarService);
 
-  close() {
-    console.log('closing snackbar...');
-  }
+  // CTRL
+  ////
+
+  readonly msg = toSignal<string, string>(
+    this._snackbarSrv.msg$(), // unsubscribed by toSignal
+    { initialValue: '' },
+  );
+
+  readonly icon = toSignal<IconSnackbar, IconSnackbar>(
+    this._snackbarSrv.icon$(), // unsubscribed by toSignal
+    { initialValue: 'icon-check' },
+  );
 }

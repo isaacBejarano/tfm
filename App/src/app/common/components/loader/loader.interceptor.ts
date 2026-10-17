@@ -4,12 +4,12 @@ import { LoaderService } from '@common/components/loader/loader.service';
 import { catchError, filter, finalize, throwError } from 'rxjs';
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
-  const _progressbarSrv = inject(LoaderService); // DI
-  _progressbarSrv.load(true);
+  const _loaderSrv = inject(LoaderService); // DI
+  _loaderSrv.load(true);
 
   return next(req).pipe(
     filter((e) => e.type === HttpEventType.Response),
     catchError((errorRes: HttpErrorResponse) => throwError(() => errorRes)),
-    finalize(() => _progressbarSrv.load(false)),
+    finalize(() => _loaderSrv.load(false)), // updat laoder state
   );
 };
