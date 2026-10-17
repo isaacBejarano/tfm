@@ -22,6 +22,8 @@ export class App {
   private readonly _docu = inject(DOCUMENT);
   private readonly _meta = inject(Meta);
 
+  // private readonly _overlay = inject(Overlay);
+
   // CTRL
   ////
 

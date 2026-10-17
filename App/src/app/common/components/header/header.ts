@@ -52,7 +52,7 @@ import { Btn } from '@shared/components/btn/btn';
             @if (role() === 'user') {
               <app-btn route="/" label="Agenda" color="rose" />
             }
-            <!-- TODO: NIS selector @profile -->
+            <!-- TODO: INE selector @profile -->
             <app-btn route="/" label="Perfil" color="rose" />
             @if (role() !== 'user') {
               <app-btn route="/" label="Usuarios" color="blue" />
@@ -71,5 +71,5 @@ export class Header {
 
   // TODO: rouer + user claims
   readonly role = signal<'user' | 'admin' | 'super'>('user');
-  readonly isRoutePublic = signal<boolean>(true);
+  readonly isRoutePublic = signal<boolean>(false);
 }
