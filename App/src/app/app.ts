@@ -4,6 +4,7 @@ import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, tap } from 'rxjs';
 
+import { Overlay } from '@angular/cdk/overlay';
 import { Footer } from '@common/components/footer/footer';
 import { Header } from '@common/components/header/header';
 import { WebService } from '@shared/services/web.service';
@@ -22,7 +23,7 @@ export class App {
   private readonly _docu = inject(DOCUMENT);
   private readonly _meta = inject(Meta);
 
-  // private readonly _overlay = inject(Overlay);
+  private readonly _overlay = inject(Overlay);
 
   // CTRL
   ////
