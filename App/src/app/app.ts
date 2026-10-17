@@ -107,9 +107,4 @@ export class App implements OnDestroy {
     this._overlayOutletForLoader.dispose();
     this._overlayOutletForSnackbar.dispose();
   }
-
-  // FIXME: remove SMOKE TEST
-  smoke() {
-    this._http.get(this._webSrv.domain.api.get() + '/smoke/full').subscribe(console.log); // 1-tie subscription
-  }
 }

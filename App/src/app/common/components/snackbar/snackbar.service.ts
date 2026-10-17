@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { IconSnackbar } from '@shared/types/icons';
+import { IconSnackbar } from '@app/shared/types/icons.type';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 type SnackbarConfig = { msg: string; open: boolean; snackbarIcon: IconSnackbar };

@@ -1,8 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input, OnInit, output, TemplateRef, viewChild } from '@angular/core';
 import { RouterLinkWithHref } from '@angular/router';
-
-type BtnColor = 'default' | 'rose' | 'blue';
+import { BtnColor } from '@shared/components/btn/btn-color.type';
 
 @Component({
   imports: [NgTemplateOutlet, RouterLinkWithHref],
@@ -22,7 +21,7 @@ export class Btn implements OnInit {
   readonly type = input.required<'button' | 'submit'>();
   readonly ariaLabel = input<string>('Botón'); // for icon btn without text
   readonly disabled = input<boolean>(false); // required, etc.
-  readonly label = input.required<string>();
+  readonly label = input<string>();
   readonly route = input<string>('#');
   readonly color = input<BtnColor>('default');
 
@@ -37,9 +36,11 @@ export class Btn implements OnInit {
     route: this.route(),
   }));
 
+  private readonly _templateRefDefault = viewChild.required<TemplateRef<unknown>>('default');
   private readonly _templateRefRose = viewChild.required<TemplateRef<unknown>>('rose');
   private readonly _templateRefBlue = viewChild.required<TemplateRef<unknown>>('blue');
-  private readonly _templateRefDefault = viewChild.required<TemplateRef<unknown>>('default');
+  private readonly _templateRefGreen = viewChild.required<TemplateRef<unknown>>('green');
+  private readonly _templateRefRed = viewChild.required<TemplateRef<unknown>>('red');
   //...
 
   private _colorSelector: Record<string, TemplateRef<unknown>> = {};
@@ -49,6 +50,8 @@ export class Btn implements OnInit {
       default: this._templateRefDefault(),
       rose: this._templateRefRose(),
       blue: this._templateRefBlue(),
+      green: this._templateRefGreen(),
+      red: this._templateRefRed(),
       //...
     };
   }

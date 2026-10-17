@@ -9,9 +9,8 @@ type SpaPaths =
   | 'cookies'
   | '**'
   // PRIVATE
-  | 'veggie/edit'
-  | 'user/:id/edit' // self profile edit
-  | 'user/:id/agenda' // self veggie agenda - weekly (and monthly?)
+  | 'user/:id/edit' // self profile edit -> edit profile & select zone & veggies to plan
+  | 'user/:id/agenda' // self veggie agenda - weekly (and monthly?) -> link to edit if agenda empty
   | 'admin/:id/edit/user/:id' // admins cannot modify agendas, only users profile
   | 'admin/:id/list/user'; // admins cannot modify agendas, only users profile
 type SpaRote = Omit<Route, 'path'> & {

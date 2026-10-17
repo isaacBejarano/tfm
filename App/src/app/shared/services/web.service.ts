@@ -1,7 +1,15 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
+import { Router } from '@angular/router';
+import { from, Observable } from 'rxjs';
 
 @Service()
 export class WebService {
+  // DI
+  private readonly _router = inject(Router);
+
+  // SRV
+  ////
+
   readonly domain = {
     dev: {
       host: 'https://localhost',
@@ -18,4 +26,9 @@ export class WebService {
         `${this.domain.dev.host}:${this.domain.dev.port}/${this.domain.api.prefix}/${this.domain.api.version}`,
     },
   };
+
+  navigateToDynamicRoute(route: string): Observable<boolean> {
+    const fragments = route.split('/').filter((fragment) => fragment !== '');
+    return from(this._router.navigate(fragments));
+  }
 }

@@ -1,46 +1,57 @@
-import { Component, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { of } from 'rxjs';
-import { WebService } from '../shared/services/web.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
+
+import { DtoUser } from '@app/auth/types/dto-user.type';
+import { FormAuth } from '@shared/components/form-auth/form-auth';
+import { StoreService } from '@shared/services/store.service';
+import { WebService } from '@shared/services/web.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
+  imports: [FormAuth],
 })
-export class Home {
+export class Home implements OnDestroy {
   // DI
-  // private readonly _http = inject(HttpClient);
+  private readonly _http = inject(HttpClient);
   private readonly _webSrv = inject(WebService);
+  private readonly _storeSrv = inject(StoreService);
 
   // CTRL
   ////
 
   readonly count = signal(0);
-  readonly smoked = toSignal(
-    // this._http.get<DtoResponse<DtoId>>(this._webSrv.domain.api.get() + '/smoke/full').pipe(
-    //   filter((dto) => dto.count > 0),
-    //   tap((dto) => this.count.set(dto.count)),
-    //   map((dto) => dto.items),
-    // ),
-    of(['']),
-    { initialValue: [] },
-  );
+  readonly store = computed(() => this._storeSrv.state());
+
+  protected signup(payload: DtoUser): void {
+    // TODO: encapsulate into AuthSrv
+    this._http
+      .post(this._webSrv.domain.api.get() + '/user', payload)
+      .pipe(switchMap(() => this._webSrv.navigateToDynamicRoute('login')))
+      .subscribe(console.log); // 1-time subscription
+  }
+
+  protected login(payload: DtoUser): void {
+    // TODO: encapsulate into AuthSrv
+    this._http
+      .post(this._webSrv.domain.api.get() + '/auth', payload)
+      .pipe(switchMap(() => this._webSrv.navigateToDynamicRoute('user/:id/agenda')))
+      .subscribe(console.log); // 1-time subscription
+  }
+
+  ngOnDestroy(): void {
+    this._storeSrv.setState('formAuth', 'none');
+  }
 }
 
-// REGEXP PASS -> ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$
-// REGEXP EMAIL -> ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
-
-/* TODO:
+/*
 
 ### HTTPS only
 @Api = https://localhost:7247/api/v1
 
-### SMOKE TEST 1 -> 200 OK
-GET {{Api}}/smoke/almost
-Content-Type: application/json
 
-
-### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
+### POST "/user" - TEST signup -> 201 Created
 POST {{Api}}/user
 Content-Type: application/json
 
@@ -51,7 +62,38 @@ Content-Type: application/json
 }
 
 
-### POST "/auth" - TEST login (right password & acces token) -> 200 OK
+### POST "/user" - TEST signup repeating -> 409 Conflict
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@12345",
+  "name":"Kalush"
+}
+
+
+### POST "/auth" - TEST "wrong email" -> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Lovelace@yopmail.com",
+  "password":"Ab@12345"
+}
+
+
+### POST "/auth" - TEST "wrong password" -> 400 Bad Request
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Ab@00000"
+}
+
+
+### POST "/auth" - TEST login (right creds) -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 

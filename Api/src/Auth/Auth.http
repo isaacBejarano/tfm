@@ -79,16 +79,7 @@ Content-Type: application/json
   "password":"Ab@00000"
 }
 
-### TODO: POST "/auth" - TEST login (no acces token) -> 401 Unauthorized
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345"
-}
-
-### POST "/auth" - TEST login (right password & acces token) -> 200 OK
+### POST "/auth" - TEST login (right creds) -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
