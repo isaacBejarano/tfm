@@ -1,0 +1,74 @@
+<ng-container [ngTemplateOutlet]="templateLoaded()" [ngTemplateOutletContext]="myContext()">
+</ng-container>
+
+<ng-template
+  #default
+  let-def
+  let-label="label"
+  let-route="route"
+  let-size="size"
+  let-ariaLabel="ariaLabel"
+  let-disabled="disabled"
+  let-type="type"
+>
+  <button
+    [aria-label]="ariaLabel"
+    class="py-2 px-3 cursor-pointer border border-mauve-500/50 rounded-xl hover:-translate-y-1 hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]"
+    [routerLink]="route"
+    [disabled]="disabled"
+    [type]="type"
+  >
+    <span>
+      {{ label === '' ? def : label }}
+    </span>
+    <ng-content></ng-content>
+  </button>
+</ng-template>
+
+<ng-template
+  #blue
+  let-def
+  let-label="label"
+  let-route="route"
+  let-size="size"
+  let-ariaLabel="ariaLabel"
+  let-disabled="disabled"
+  let-type="type"
+>
+  <button
+    [aria-label]="ariaLabel"
+    class="py-2 px-3 cursor-pointer border border-blue-500/50 rounded-xl hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]"
+    [routerLink]="route"
+    [disabled]="disabled"
+    [type]="type"
+  >
+    <span>
+      {{ label === '' ? def : label }}
+    </span>
+    <ng-content></ng-content>
+  </button>
+</ng-template>
+
+<ng-template
+  #rose
+  let-def
+  let-label="label"
+  let-route="route"
+  let-size="size"
+  let-ariaLabel="ariaLabel"
+  let-disabled="disabled"
+  let-type="type"
+>
+  <button
+    [aria-label]="ariaLabel"
+    class="py-2 px-3 cursor-pointer border border-rose-500/50 rounded-xl hover:-translate-y-0.5 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]"
+    [routerLink]="route"
+    [disabled]="disabled"
+    [type]="type"
+  >
+    <span>
+      {{ label === '' ? def : label }}
+    </span>
+    <ng-content></ng-content>
+  </button>
+</ng-template>

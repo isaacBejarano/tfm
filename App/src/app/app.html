@@ -1,25 +1,12 @@
-<div class="fixed top-0 left-2/5 text-center text-red-500 border border-amber-200">
-  <!-- SNAKBAR - z3 -->
-  <!-- TODO: <snackbar
-  class="sticky top-0 z-3 mx-2 md:mx-0"
-  [msg]="msg()"
-  [open]="open()"
-  [snackbarIcon]="snackbarIcon()"
-/> -->
-  <!-- role="alert" -->
-</div>
-
 <!-- Mandatory ROW 1 - index.html:grid-row-auto -->
-<div
-  class="w-full sticky top-0 bg-linear-to-b from-mist-950 from-90% to-mist-950/50 border border-mist-900/75"
->
-  <app-header legend="Kübello" />
-</div>
+<app-header legend="Kübello" />
 
 <!-- Mandatory ROW 2 - index.html:grid-row-1fr -->
 <main
   class="w-full max-w-(--w-desktop) mx-auto p-2 md:p-4 2xl:p-6 2xl:py-10 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)] text-justify"
 >
+  <button type="button" (click)="smoke()">SMOKE</button>
+
   <router-outlet />
 </main>
 

@@ -9,8 +9,8 @@ import { Btn } from '@shared/components/btn/btn';
       <nav
         class="max-w-(--w-desktop) mx-auto p-3 2xl:p-2 flex flex-wrap justify-center gap-8 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
       >
-        <app-btn route="rgpd" label="Política de Protección de Datos" />
-        <app-btn route="cookies" label="Política de Cookies" />
+        <app-btn route="rgpd" type="button" label="Política de Protección de Datos" />
+        <app-btn route="cookies" type="button" label="Política de Cookies" />
       </nav>
     </footer>
   `,

@@ -1,0 +1,35 @@
+@let icon = snackbarIcon();
+
+<dialog
+  class="w-full md:w-sm md:mx-auto mt-3 bg-pink-900/50 border border-gray-600 rounded-sm"
+  #snakbar
+  [open]="open()"
+>
+  <form
+    class="flex items-top gap-2 p-3 bg-gray-900 rounded-sm shadow-lg shadow-neutral-700/35"
+    method="dialog"
+  >
+    <div class="flex justify-center items-center">
+      <div class="size-11 p-1.5 rounded-full flex items-center">
+        <svg class="fill-current" [class.pb-1]="icon === 'icon-warning'" viewBox="0 0 100 100">
+          <use [attr.xlink:href]="[`./svg/icon-sprite.xml#${icon}`]" />
+        </svg>
+      </div>
+    </div>
+
+    <p class="flex-1 self-center text-amber-200/75">
+      {{ msg() }}
+    </p>
+
+    <app-btn
+      ($click)="snakbar.close()"
+      type="button"
+      label="SNACKBAR"
+      ariaLabel="Botón para cerrar esta notificación."
+    >
+      <svg class="size-5 stroke-current stroke-2 rotate-45" viewBox="0 0 100 100">
+        <use href="./svg/icon-sprite.xml#icon-plus" />
+      </svg>
+    </app-btn>
+  </form>
+</dialog>

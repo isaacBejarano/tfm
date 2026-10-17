@@ -1,4 +1,4 @@
-import { Component, DestroyRef, DOCUMENT, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, DOCUMENT, effect, inject, OnDestroy, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -7,10 +7,10 @@ import { filter, map, tap } from 'rxjs';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
+import { LoaderService } from '@app/common/components/loader/loader.service';
 import { Footer } from '@common/components/footer/footer';
 import { Header } from '@common/components/header/header';
 import { Loader } from '@common/components/loader/loader';
-import { LoaderService } from '@common/services/loader.service';
 import { WebService } from '@shared/services/web.service';
 
 @Component({
@@ -18,17 +18,17 @@ import { WebService } from '@shared/services/web.service';
   selector: 'app-root',
   templateUrl: './app.html',
 })
-export class App implements OnInit {
+export class App implements OnDestroy {
   // DI
+  private readonly _docu = inject(DOCUMENT);
+  private readonly _meta = inject(Meta);
+  private readonly _http = inject(HttpClient);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
-  private readonly _docu = inject(DOCUMENT);
-  private readonly _meta = inject(Meta);
   private readonly _overlay = inject(Overlay);
-  private readonly _loaderService = inject(LoaderService);
   private readonly _webSrv = inject(WebService);
-  private readonly _http = inject(HttpClient);
+  private readonly _loaderService = inject(LoaderService);
 
   // CTRL
   ////
@@ -41,11 +41,24 @@ export class App implements OnInit {
     { initialValue: false },
   );
 
+  // TODO: Snackbar state
+  // private readonly _showSnackbar = toSignal<boolean, false>(
+  //   this._snackbarService.showing$(), // unsubscribed by toSignal & App destruction
+  //   { initialValue: false },
+  // );
+
   // CDK Overlay config
-  private readonly _overlayOutlet: OverlayRef = this._overlay.create({
-    hasBackdrop: false, // true for ARIA only if overlay holds an intertactive component (e.g. close alert msg)
-    backdropClass: 'overlay-full-blocking',
+
+  private readonly _overlayOutletForLoader: OverlayRef = this._overlay.create({
+    hasBackdrop: false,
     positionStrategy: this._overlay.position().global().centerHorizontally().centerVertically(),
+    scrollStrategy: this._overlay.scrollStrategies.block(),
+  });
+
+  private readonly _overlayOutletForSnack: OverlayRef = this._overlay.create({
+    hasBackdrop: true,
+    backdropClass: 'snack',
+    positionStrategy: this._overlay.position().global().centerHorizontally().bottom(),
     scrollStrategy: this._overlay.scrollStrategies.block(),
   });
 
@@ -73,18 +86,28 @@ export class App implements OnInit {
       .subscribe();
 
     // CDK Overlay the Loader
+
     effect(() =>
       this._showLoader()
-        ? this._overlayOutlet.attach(new ComponentPortal(Loader))
-        : this._overlayOutlet.detach(),
+        ? this._overlayOutletForLoader.attach(new ComponentPortal(Loader))
+        : this._overlayOutletForLoader.detach(),
     );
+
+    // TODO: SIGUE LA LOGICA DE INTERCEPCION SIMILAR A LA DEL LOADER!
+    // effect(() =>
+    //   this._showSnackbar()
+    //     ? this._overlayOutletForSnack.attach(new ComponentPortal(Snackbar))
+    //     : this._overlayOutletForSnack.detach(),
+    // );
   }
 
-  ngOnInit(): void {
-    // FIXME: remove SMOKE TEST
+  ngOnDestroy(): void {
+    this._overlayOutletForLoader.dispose();
+    this._overlayOutletForSnack.dispose();
+  }
+
+  // FIXME: remove SMOKE TEST
+  smoke() {
     this._http.get(this._webSrv.domain.api.get() + '/smoke/full').subscribe(console.warn); // 1-tie subscription
   }
 }
-
-// TODO: locale 'ES'
-// TODO: enable Firefox eRader
