@@ -19,7 +19,8 @@
       "@rgpd/*": ["./src/app/rgpd/*"],
       "@cookies/*": ["./src/app/cookies/*"],
       "@img/*": ["./public/img/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@common/*": ["./src/app/common/*"]
     }
   },
   "angularCompilerOptions": {

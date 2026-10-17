@@ -1,20 +1,15 @@
 import { Component, DestroyRef, DOCUMENT, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterLinkWithHref,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, tap } from 'rxjs';
 
-import { Btn } from '@shared/components/btn/btn';
+import { Footer } from '@common/components/footer/footer';
+import { Header } from '@common/components/header/header';
 import { WebService } from '@shared/services/web.service';
 
 @Component({
-  imports: [RouterOutlet, RouterLinkWithHref, Btn],
+  imports: [RouterOutlet, Header, Footer],
   selector: 'app-root',
   templateUrl: './app.html',
 })

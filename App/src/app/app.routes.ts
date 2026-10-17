@@ -10,11 +10,10 @@ type SpaPaths =
   | '**'
   // PRIVATE
   | 'veggie/edit'
-  | 'user/:id/dashboard' // weatherforecast (add grafics if time) + town selector -> list of multiple 'agendas' may exist for a single user (e.g. 2 houses)
   | 'user/:id/edit' // self profile edit
   | 'user/:id/agenda' // self veggie agenda - weekly (and monthly?)
-  | 'admin/:id/edit/user/:id' // admins cannot modify agendas or dashboards, only users profile
-  | 'admin/:id/list/user'; // admins cannot modify agendas or dashboards, only users profile
+  | 'admin/:id/edit/user/:id' // admins cannot modify agendas, only users profile
+  | 'admin/:id/list/user'; // admins cannot modify agendas, only users profile
 type SpaRote = Omit<Route, 'path'> & {
   path: SpaPaths;
   redirectTo?: SpaPaths | RedirectFunction;
