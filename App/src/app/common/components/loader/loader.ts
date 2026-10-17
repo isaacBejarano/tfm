@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  imports: [],
   selector: 'app-loader',
   template: `
-    <!-- https://css-tricks.com/single-element-loaders-the-spinner/ -->
-    <p>loader works!</p>
+    <div
+      role="status"
+      aria-label="Cargando..."
+      class="w-dvw h-dvh flex justify-center items-start border border-blue-600/25 bg-rose-600/5"
+    >
+      <div class="loader mt-3 w-[70px] text-rose-500"></div>
+    </div>
   `,
 })
 export class Loader {}

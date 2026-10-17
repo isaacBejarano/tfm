@@ -48,7 +48,55 @@
   }
 }
 
+/* OTHER CSS FILES */
+
 /* FIXME: remove */
 .red {
   outline: 1px solid red;
+}
+
+/* CSS components */
+
+/** TODO: (CITE) Loader component based on a CodePen project
+ * Title: Single Element Loaders: The Spinner
+ * Author: Temani Afif
+ * Published: Jun 10, 2022
+ * Link: https://css-tricks.com/single-element-loaders-the-spinner/
+ */
+.loader {
+  aspect-ratio: 1;
+  display: grid;
+  mask-image: conic-gradient(from 15deg, #0003, #000);
+  animation: anime-rotation-speed 1s steps(12) infinite;
+}
+
+.loader,
+.loader::before,
+.loader::after {
+  background:
+    radial-gradient(closest-side at 50% 12.5%, currentColor 90%, #0000 98%) 50% 0 / 20% 80% repeat-y,
+    radial-gradient(closest-side at 12.5% 50%, currentColor 90%, #0000 98%) 0 50% / 80% 20% repeat-x;
+}
+
+.loader::before,
+.loader::after {
+  content: '';
+  grid-area: 1 / 1;
+}
+
+.loader::before {
+  transform: rotate(30deg);
+}
+
+.loader::after {
+  transform: rotate(60deg);
+}
+
+@keyframes anime-rotation-speed {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
 }
