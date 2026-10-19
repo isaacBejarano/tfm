@@ -39,11 +39,13 @@ public class AuthController(
       return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
     }
 
+    // model -> res dto
+    DtoId itemId = new(entity.Id);
+
     // TODO: return JWT in <headers> if authenticated user. No body
 
-
-    // DTO -> no item here; security policy
-    var dto = new DtoResponse<object>([], "Usuario autenticado.");
+    // DTO -> only ID to go agenda by user ID
+    var dto = new DtoResponse<object>([itemId], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }

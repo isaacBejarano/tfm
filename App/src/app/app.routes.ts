@@ -42,7 +42,13 @@ const routes: SpaRoutes = [
     data: { isCanonical: true }, // only public routes!
   },
   //...
-  // PRIVATE -> TODO: add route first fragment to 'robots.txt' to prevent SEO crowling on them
+  // PRIVATE -> TODO: add route first fragment to 'robots.txt' to prevent SEO crowling .e.g. /user/, /admin/ (no child routes)
+  {
+    title: `${title}`,
+    path: 'user/:id/agenda',
+    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
+    // TODO: AUTH guard
+  },
   //...
   // LAST!
   {

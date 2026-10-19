@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, OnDestroy } from '@angular/core';
-import { of, switchMap } from 'rxjs';
+import { filter, map, of, switchMap } from 'rxjs';
 
 import { FormAuth } from '@app/auth/form-auth/form-auth';
-import { UserPayload } from '@app/auth/models/dto-user.type';
+import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
+import { DtoId, DtoResponse } from '../shared/types/dto-response.type';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +24,7 @@ export class Home implements OnDestroy {
 
   readonly store = computed(() => this._storeSrv.state());
 
-  // FIXME: Omit ID to payload
-  protected signup(payload: UserPayload): void {
-    payload.id = `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; // fake
+  protected signup(payload: UserPayloadSignup | UserPayloadLogin): void {
     // TODO: encapsulate into AuthSrv
     this._http
       .post(this._webSrv.domain.api.get() + '/user', payload)
@@ -37,12 +36,19 @@ export class Home implements OnDestroy {
       .subscribe(console.log); // 1-time subscription
   }
 
-  protected login(payload: UserPayload): void {
-    payload.id = `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; // fake
+  protected login(payload: UserPayloadLogin): void {
     // TODO: encapsulate into AuthSrv
     this._http
-      .post(this._webSrv.domain.api.get() + '/auth', payload)
-      .pipe(switchMap(() => this._webSrv.navigateToDynamicRoute('user/:id/agenda')))
+      .post<DtoResponse<DtoId>>(this._webSrv.domain.api.get() + '/auth', payload)
+      .pipe(
+        filter((res) => res.count === 1),
+        map((res) => res.items[0].id),
+        switchMap((id) => {
+          this._storeSrv.setState('formAuth', 'none');
+          this._storeSrv.setState('accesToken', 'FIXME:');
+          return of(this._webSrv.navigateToDynamicRoute(`user/${id}/agenda`));
+        }),
+      )
       .subscribe(console.log); // 1-time subscription
   }
 
@@ -126,14 +132,4 @@ Content-Type: application/json
   "email":"Lovelace@yopmail.com",
   "password":"Love@12345"
 }
-
-
-
-
-
-
-
-
-
-
 */

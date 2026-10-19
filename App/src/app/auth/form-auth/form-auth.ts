@@ -11,8 +11,7 @@ import {
 } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { User, UserPayload, UserPayloadOptionals } from '@app/auth/models/dto-user.type';
-import { FormType } from '@app/auth/types/form.type';
+import { User, UserPayloadLogin, UserPayloadSignup } from '@app/auth/models/dto-user.type';
 import { Btn } from '@shared/components/btn/btn';
 
 @Component({
@@ -30,7 +29,7 @@ export class FormAuth implements OnInit {
   private readonly _destroyRef = inject(DestroyRef);
 
   // I/O
-  readonly excludeFields = input<(keyof UserPayloadOptionals)[]>();
+  readonly excludeFields = input<(keyof (UserPayloadLogin & UserPayloadSignup))[]>();
 
   // MODEL + FORM
 
@@ -74,9 +73,10 @@ export class FormAuth implements OnInit {
 
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise']);
-  protected readonly formAuth = input<FormType>();
-  protected readonly $formAuth = output<UserPayload>();
-  private readonly _debounceForm$$ = new BehaviorSubject<UserPayload | null>(null); // UX -> block rapid multiple submit
+  protected readonly $userPayload = output<UserPayloadLogin | UserPayloadSignup>();
+  private readonly _debounceForm$$ = new BehaviorSubject<
+    UserPayloadLogin | UserPayloadSignup | null
+  >(null); // UX -> block rapid multiple submit
 
   // FIXME : debaunceForm not working
   ngOnInit(): void {
@@ -85,7 +85,7 @@ export class FormAuth implements OnInit {
         takeUntilDestroyed(this._destroyRef),
         filter((credentials) => credentials !== null),
         distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
-        tap((credentials) => this.$formAuth.emit(credentials)),
+        tap((credentials) => this.$userPayload.emit(credentials)),
         tap(() => this._debounceForm$$.next(null)),
       )
       .subscribe();
@@ -119,12 +119,20 @@ export class FormAuth implements OnInit {
     }
 
     const form: User = this.form().value();
-    const payload: UserPayload = {
-      id: form.id,
-      email: form.email,
-      password: form.password,
-      name: this.form.name().value().trim() === '' ? null : form.name,
-    };
+    let payload: UserPayloadLogin | UserPayloadSignup;
+
+    if ((this.excludeFields() ?? []).includes('name')) {
+      payload = {
+        email: form.email,
+        password: form.password,
+      } as UserPayloadLogin;
+    } else {
+      payload = {
+        email: form.email,
+        password: form.password,
+        name: this.form.name().value().trim() === '' ? null : form.name,
+      } as UserPayloadSignup;
+    }
 
     this._debounceForm$$.next(payload);
   }

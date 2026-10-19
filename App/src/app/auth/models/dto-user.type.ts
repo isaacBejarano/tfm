@@ -5,10 +5,10 @@ type User = {
   name: string; // nullable when sent as paylaod
 };
 
-type UserPayload = Omit<User, 'name'> & UserPayloadOptionals;
-type UserPayloadOptionals = { name: string | null };
+type UserPayloadSignup = Omit<User, 'id'> & { name: string | null };
+type UserPayloadLogin = Omit<User, 'id' | 'name'>;
 
-export type { User, UserPayload, UserPayloadOptionals };
+export type { User, UserPayloadLogin, UserPayloadSignup };
 
 /*
  * VALIDATIONS [id]

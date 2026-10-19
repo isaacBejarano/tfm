@@ -72,7 +72,7 @@ export class App implements OnDestroy {
         filter((e) => e instanceof NavigationEnd),
         map(() => this._activatedRoute.firstChild), // e.g. class_App -> class _Rgpd
         filter((route) => route !== null),
-        filter((route) => route.snapshot.data['isCanonical']),
+        filter((route) => route.snapshot.data['isCanonical'] ?? false),
         map((route) => route.snapshot.routeConfig?.path ?? ''),
         tap((path) => {
           const canonical: HTMLLinkElement | null = this._docu.querySelector('[rel="canonical"]');

@@ -74,18 +74,20 @@
 
     <!-- TODO: optional field -->
     <!-- Name -->
-    <div class="pb-2">
-      <label class="inline-block mb-1" for="js-name"> Nombre </label>
-      <input
-        class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-        #name
-        id="js-name"
-        type="text"
-        [class]="setFieldStyle(form.name)"
-        [formField]="form.name"
-        autocomplete="off"
-      />
-    </div>
+    @if (!(excludeFields() ?? []).includes('name')) {
+      <div class="pb-2">
+        <label class="inline-block mb-1" for="js-name"> Nombre </label>
+        <input
+          class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+          #name
+          id="js-name"
+          type="text"
+          [class]="setFieldStyle(form.name)"
+          [formField]="form.name"
+          autocomplete="off"
+        />
+      </div>
+    }
 
     <!-- Submit -->
     <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />

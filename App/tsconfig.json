@@ -18,6 +18,7 @@
       "@home/*": ["./src/app/home/*"],
       "@rgpd/*": ["./src/app/rgpd/*"],
       "@cookies/*": ["./src/app/cookies/*"],
+      "@agenda/*": ["./src/app/agenda/*"],
       "@img/*": ["./public/img/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@common/*": ["./src/app/common/*"],

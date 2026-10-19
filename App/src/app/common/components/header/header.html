@@ -24,7 +24,7 @@
             <app-btn label="Usuarios" [css]="btnGray" />
           }
           <app-btn label="Perfil" [css]="btnRose" />
-          <app-btn label="Salir" [css]="btnRose" />
+          <app-btn label="Salir" [css]="btnRose" ($click)="logout()" />
         </nav>
       </header>
 
