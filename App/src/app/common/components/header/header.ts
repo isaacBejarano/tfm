@@ -19,9 +19,9 @@ export class Header {
   // I/O
   readonly legend = input.required<string>();
 
-  readonly btnRose: string = Btn.style('rose');
-  readonly btnGray: string = Btn.style('gray');
-  readonly btnBlue: string = Btn.style('blue');
+  readonly btnRose: string = Btn.style('rose', 'outline', 'normal', ['raise', 'fade']);
+  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', 'fade']);
+  readonly btnBlue: string = Btn.style('blue', 'outline', 'normal', ['raise', 'fade']);
 
   // TODO: rouer + user claims
   readonly role = signal<'user' | 'admin' | 'super'>('user');

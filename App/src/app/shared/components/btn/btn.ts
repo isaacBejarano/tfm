@@ -37,17 +37,37 @@ export class Btn {
     this.$click.emit();
   }
 
-  static style(color: 'gray' | 'rose' | 'blue' | 'green' | 'red', shape: 'slim' = 'slim'): string {
-    return {
-      slim: {
-        gray: 'py-2 px-3 cursor-pointer border border-mauve-500/50 rounded-xl hover:-translate-y-1 hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
-        rose: 'py-2 px-3 cursor-pointer border border-rose-500/50 rounded-xl hover:-translate-y-0.5 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
-        blue: 'py-2 px-3 cursor-pointer border border-blue-500/50 rounded-xl hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
-        green:
-          'py-2 px-3 cursor-pointer border border-green-500/50 rounded-xl hover:-translate-y-0.5 hover:border-green-500 hover:shadow-green-500 hover:shadow-sm active:text-green-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
-        red: 'py-2 px-3 cursor-pointer border border-red-500/50 rounded-xl hover:-translate-y-0.5 hover:border-red-500 hover:shadow-red-500 hover:shadow-sm active:text-red-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
-      },
-      //...
-    }[shape][color];
+  static style(
+    color: 'gray' | 'rose' | 'blue' | 'green' | 'red',
+    look: 'outline' = 'outline',
+    shape: 'normal' = 'normal',
+    fx: ('raise' | 'fade')[] = ['raise'],
+  ): string {
+    const colors = {
+      gray: 'border-mauve-500/50 hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-white text-mist-300 hover:text-mist-200',
+      rose: 'border-rose-500/50 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500',
+      blue: 'border-blue-500/50 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500',
+      green:
+        'border-green-500/50 hover:border-green-500 hover:shadow-green-500 hover:shadow-sm active:text-green-500',
+      red: 'border-red-500/50 hover:border-red-500 hover:shadow-red-500 hover:shadow-sm active:text-red-500',
+    };
+
+    const looks = {
+      outline: 'border rounded-xl',
+      // solid, transparent...
+    };
+
+    const shapes = {
+      normal: 'py-2 px-3 ',
+      // slim, fat...
+    };
+
+    const effects = [
+      ['raise', 'transition-all duration-250 hover:-translate-y-0.5'], // hover
+      ['fade', 'transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]'],
+      // none...
+    ];
+
+    return `cursor-pointer ${colors[color]} ${looks[look]} ${shapes[shape]} ${fx.map((f) => effects.find((assoc) => assoc[0] === f))}`;
   }
 }

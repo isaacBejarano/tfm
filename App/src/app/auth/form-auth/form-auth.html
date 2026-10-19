@@ -49,16 +49,15 @@
           autocomplete="off"
         />
 
-        <!-- <app-btn
+        <app-btn
           ($click)="togglePasswordType(password)"
-          type="button"
-          color="green"
-          ariaLabel="Botón de visualizar y ocultar la contraseña"
+          ariaLabel="Botón para mostrar y ocultar la contraseña"
+          [css]="btnGray"
         >
           <svg class="size-5 fill-current" viewBox="0 0 100 100">
-            <use [attr.xlink:href]="['svg/icon-sprite.xml#icon-eye']" />
+            <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
           </svg>
-        </app-btn> -->
+        </app-btn>
       </div>
 
       @let errorsPassword = form.password().errors();
@@ -110,6 +109,6 @@
     </div>
 
     <!-- Submit -->
-    <!-- <app-btn type="submit" label="Enviar" /> -->
+    <app-btn type="submit" label="Enviar" [css]="btnGray" />
   </div>
 </form>

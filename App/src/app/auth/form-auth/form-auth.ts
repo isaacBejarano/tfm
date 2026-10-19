@@ -13,11 +13,12 @@ import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
 import { User, UserPayload, UserPayloadOptionals } from '@app/auth/models/dto-user.type';
 import { FormType } from '@app/auth/types/form.type';
+import { Btn } from '@shared/components/btn/btn';
 
 @Component({
   selector: 'app-form-auth',
   templateUrl: './form-auth.html',
-  imports: [FormField],
+  imports: [Btn, FormField],
   styles: `
     :host {
       display: block;
@@ -80,6 +81,7 @@ export class FormAuth implements OnInit {
   // CTRL
   ////
 
+  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise']);
   protected readonly formAuth = input<FormType>();
   protected readonly $formAuth = output<UserPayload>();
   private readonly _debounceForm$$ = new BehaviorSubject<UserPayload | null>(null); // UX -> block rapid multiple submit
@@ -96,12 +98,6 @@ export class FormAuth implements OnInit {
       .subscribe();
   }
 
-  // FIXME: delete base
-  protected setBtnStyleBase() {
-    if (!this.form().dirty()) return 'gray';
-    return this.form().valid() ? 'green' : 'red';
-  }
-
   protected setFieldStyle(field: FieldTree<string | number, string>): string {
     if (field().dirty() && field().errors().length > 0) return 'border border-red-700';
     else if (field().dirty() && field().errors().length === 0) return 'border border-green-600';
@@ -115,8 +111,8 @@ export class FormAuth implements OnInit {
   // FIXME:
   protected togglePasswordIcon(password: HTMLInputElement): string {
     return password.type === 'password'
-      ? './svg/icon-sprite.xml#icon-eye'
-      : './svg/icon-sprite.xml#icon-eye-off';
+      ? 'svg/icon-sprite.xml#icon-eye'
+      : 'svg/icon-sprite.xml#icon-eye-off';
   }
 
   protected onSubmit(): void {

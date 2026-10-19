@@ -17,5 +17,5 @@ import { Btn } from '@shared/components/btn/btn';
 })
 export class Footer {
   // DUMMY
-  readonly btnGray: string = Btn.style('gray');
+  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', 'fade']);
 }
