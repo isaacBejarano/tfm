@@ -47,9 +47,7 @@ export class FormAuth implements OnInit {
     minLength(field.email, 6, {
       message: "El campo 'Correo electrónico' debe tener al menos 6 carácteres.",
     });
-    maxLength(field.email, 150, {
-      message: "El campo 'Correo electrónico' debe tener máximo 150 carácteres.",
-    });
+    maxLength(field.email, 64); // Adds MAX_LENGTH property to HTML input & maxLength of AN email's local-part is 64 octets UTF8 -> 64 ch
     pattern(field.email, /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
       message: "El campo 'Correo electrónico' debe tener un patrón válido.",
     });
@@ -58,9 +56,7 @@ export class FormAuth implements OnInit {
     minLength(field.password, 8, {
       message: "El campo 'Contraseña' debe tener al menos 8 carácteres.",
     });
-    maxLength(field.password, 16, {
-      message: "El campo 'Contraseña' debe tener máximo 16 carácteres.",
-    });
+    maxLength(field.password, 16); // Adds MAX_LENGTH property to HTML
     pattern(
       field.password,
       /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$/,
@@ -70,22 +66,19 @@ export class FormAuth implements OnInit {
       },
     );
     // name
-    minLength(field.name, 1, {
-      message: "El campo 'Nombre' debe tener al menos 1 carácter.",
-    });
-    maxLength(field.name, 25, {
-      message: "El campo 'Nombre' debe tener máximo 25 carácteres.",
-    });
+    maxLength(field.name, 25); // Adds MAX_LENGTH property to HTML
   });
 
   // CTRL
   ////
 
+  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise']);
   protected readonly formAuth = input<FormType>();
   protected readonly $formAuth = output<UserPayload>();
   private readonly _debounceForm$$ = new BehaviorSubject<UserPayload | null>(null); // UX -> block rapid multiple submit
 
+  // FIXME : debaunceForm not working
   ngOnInit(): void {
     this._debounceForm$$
       .pipe(
@@ -99,23 +92,25 @@ export class FormAuth implements OnInit {
   }
 
   protected setFieldStyle(field: FieldTree<string | number, string>): string {
-    if (field().dirty() && field().errors().length > 0) return 'border border-red-700';
-    else if (field().dirty() && field().errors().length === 0) return 'border border-green-600';
-    else return 'border border-gray-500';
+    if (field().dirty() && field().errors().length > 0) return `border ${Btn.borderColors['red']}`;
+    else if (field().dirty() && field().errors().length === 0)
+      return `border ${Btn.borderColors['green']}`;
+    else return `border ${Btn.borderColors['gray']}`;
   }
 
   protected togglePasswordType(password: HTMLInputElement): void {
     password.setAttribute('type', password.type === 'password' ? 'text' : 'password'); // mutate by ref
   }
 
-  // FIXME:
   protected togglePasswordIcon(password: HTMLInputElement): string {
     return password.type === 'password'
       ? 'svg/icon-sprite.xml#icon-eye'
       : 'svg/icon-sprite.xml#icon-eye-off';
   }
 
-  protected onSubmit(): void {
+  protected onSubmit(e: Event): void {
+    e.preventDefault();
+
     if (this.form().invalid()) {
       this.form.email().markAsDirty();
       this.form.password().markAsDirty();

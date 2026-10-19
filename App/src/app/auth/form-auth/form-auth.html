@@ -1,7 +1,7 @@
 <form
   class="max-w-125 mx-auto p-4 flex flex-col bg-stone-500/10 border border-stone-500 rounded-sm shadow-sm"
   method="post"
-  (submit)="onSubmit(); $event.preventDefault()"
+  (submit)="onSubmit($event)"
   novalidate
 >
   <div>
@@ -22,11 +22,9 @@
       @if (form.email().dirty() && errorsEmail) {
         <ul>
           @for (error of errorsEmail; track error.kind) {
-            <!-- FIXME: remove error debuggiong -->
-            <!-- {{ error.kind }} -->
+            {{ error.kind }}
             <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              <!-- FIXME: max lengt bloqued  -->
-              @if (['required', 'minLength', 'maxLength', 'pattern'].includes(error.kind)) {
+              @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
                 {{ error.message }}
               }
             </li>
@@ -52,7 +50,7 @@
         <app-btn
           ($click)="togglePasswordType(password)"
           ariaLabel="Botón para mostrar y ocultar la contraseña"
-          [css]="btnGray"
+          [css]="btnGraySlim"
         >
           <svg class="size-5 fill-current" viewBox="0 0 100 100">
             <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
@@ -64,11 +62,8 @@
       @if (form.password().dirty() && errorsPassword) {
         <ul>
           @for (error of errorsPassword; track error.kind) {
-            <!-- FIXME: remove error debuggiong -->
-            <!-- {{ error.kind }} -->
             <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              <!-- FIXME: max lengt bloqued  -->
-              @if (['required', 'minLength', 'maxLength', 'pattern'].includes(error.kind)) {
+              @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
                 {{ error.message }}
               }
             </li>
@@ -78,7 +73,7 @@
     </div>
 
     <!-- TODO: optional field -->
-    <!-- name -->
+    <!-- Name -->
     <div class="pb-2">
       <label class="inline-block mb-1" for="js-name"> Nombre </label>
       <input
@@ -90,25 +85,9 @@
         [formField]="form.name"
         autocomplete="off"
       />
-
-      @let errorsName = form.name().errors();
-      @if (form.password().dirty() && errorsName) {
-        <ul>
-          @for (error of errorsName; track error.kind) {
-            <!-- FIXME: remove error debuggiong -->
-            {{ error.kind }}
-            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              <!-- FIXME: not working on input  -->
-              @if (['minLength', 'maxLength'].includes(error.kind)) {
-                {{ error.message }}
-              }
-            </li>
-          }
-        </ul>
-      }
     </div>
 
     <!-- Submit -->
-    <app-btn type="submit" label="Enviar" [css]="btnGray" />
+    <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />
   </div>
 </form>

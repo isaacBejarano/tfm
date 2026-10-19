@@ -23,8 +23,9 @@ export class Home implements OnDestroy {
 
   readonly store = computed(() => this._storeSrv.state());
 
+  // FIXME: Omit ID to payload
   protected signup(payload: UserPayload): void {
-    payload.id = `a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d`; // fake
+    payload.id = `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; // fake
     // TODO: encapsulate into AuthSrv
     this._http
       .post(this._webSrv.domain.api.get() + '/user', payload)
@@ -37,7 +38,7 @@ export class Home implements OnDestroy {
   }
 
   protected login(payload: UserPayload): void {
-    payload.id = `a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d`; // fake
+    payload.id = `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; // fake
     // TODO: encapsulate into AuthSrv
     this._http
       .post(this._webSrv.domain.api.get() + '/auth', payload)

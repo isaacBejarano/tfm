@@ -37,19 +37,26 @@ export class Btn {
     this.$click.emit();
   }
 
+  static readonly borderColors = {
+    gray: 'border-mauve-500/50',
+    rose: 'border-rose-500/50',
+    blue: 'border-blue-500/50',
+    red: 'border-red-500/50',
+    green: 'border-green-500/50',
+  };
+
   static style(
     color: 'gray' | 'rose' | 'blue' | 'green' | 'red',
     look: 'outline' = 'outline',
-    shape: 'normal' = 'normal',
+    shape: 'normal' | 'slim' = 'normal',
     fx: ('raise' | 'fade')[] = ['raise'],
   ): string {
     const colors = {
-      gray: 'border-mauve-500/50 hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-white text-mist-300 hover:text-mist-200',
-      rose: 'border-rose-500/50 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500',
-      blue: 'border-blue-500/50 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500',
-      green:
-        'border-green-500/50 hover:border-green-500 hover:shadow-green-500 hover:shadow-sm active:text-green-500',
-      red: 'border-red-500/50 hover:border-red-500 hover:shadow-red-500 hover:shadow-sm active:text-red-500',
+      gray: `${Btn.borderColors['gray']} hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-white text-mist-300 hover:text-mist-200`,
+      rose: `${Btn.borderColors['rose']} border-rose-500/50 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500`,
+      blue: `${Btn.borderColors['blue']} border-blue-500/50 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500`,
+      green: `${Btn.borderColors['green']} hover:border-green-500 hover:shadow-green-500 hover:shadow-sm active:text-green-500`,
+      red: `${Btn.borderColors['red']} hover:border-red-500 hover:shadow-red-500 hover:shadow-sm active:text-red-500`,
     };
 
     const looks = {
@@ -58,7 +65,8 @@ export class Btn {
     };
 
     const shapes = {
-      normal: 'py-2 px-3 ',
+      normal: 'px-3 py-2',
+      slim: 'px-2 py-1',
       // slim, fat...
     };
 
