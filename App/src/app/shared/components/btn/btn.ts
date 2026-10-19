@@ -1,66 +1,53 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, input, OnInit, output, TemplateRef, viewChild } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { RouterLinkWithHref } from '@angular/router';
-import { BtnColor } from '@shared/components/btn/btn-color.type';
 
 @Component({
-  imports: [NgTemplateOutlet, RouterLinkWithHref],
   selector: 'app-btn',
-  styles: `
-    :host {
-      display: inherit;
-    }
+  imports: [RouterLinkWithHref],
+  template: `
+    <button
+      [type]="type()"
+      [aria-label]="ariaLabel()"
+      [disabled]="disabled()"
+      [routerLink]="route()"
+      [class]="css()"
+      (click)="onClick($event)"
+    >
+      <span>
+        {{ label() }}
+      </span>
+      <ng-content></ng-content>
+    </button>
   `,
-  templateUrl: './btn.html',
-  host: { '(click)': '$event.stopPropagation(); onClick()' },
 })
-export class Btn implements OnInit {
-  // DUMMY CTRL
-  ////
+export class Btn {
+  // DUMMY
 
-  readonly type = input.required<'button' | 'submit'>();
-  readonly ariaLabel = input<string>('Botón'); // for icon btn without text
-  readonly disabled = input<boolean>(false); // required, etc.
+  // I/O
+  readonly type = input<'button' | 'submit'>('button');
+  readonly ariaLabel = input<string>(); // for btn without text (e.g. with icons only)
+  readonly disabled = input<boolean>(false);
   readonly label = input<string>();
-  readonly route = input<string>('#');
-  readonly color = input<BtnColor>('default');
+  readonly route = input<string>();
+  readonly css = input<string>();
+  protected readonly $click = output<void>();
 
-  protected readonly $click = output<'submit' | 'button'>(); // $focus, etc.
-
-  protected readonly myContext = computed(() => ({
-    $implicit: '¡Presionar',
-    type: this.type(),
-    disabled: this.disabled(),
-    ariaLabel: this.ariaLabel(),
-    label: this.label(),
-    route: this.route(),
-  }));
-
-  private readonly _templateRefDefault = viewChild.required<TemplateRef<unknown>>('default');
-  private readonly _templateRefRose = viewChild.required<TemplateRef<unknown>>('rose');
-  private readonly _templateRefBlue = viewChild.required<TemplateRef<unknown>>('blue');
-  private readonly _templateRefGreen = viewChild.required<TemplateRef<unknown>>('green');
-  private readonly _templateRefRed = viewChild.required<TemplateRef<unknown>>('red');
-  //...
-
-  private _colorSelector: Record<string, TemplateRef<unknown>> = {};
-
-  ngOnInit(): void {
-    this._colorSelector = {
-      default: this._templateRefDefault(),
-      rose: this._templateRefRose(),
-      blue: this._templateRefBlue(),
-      green: this._templateRefGreen(),
-      red: this._templateRefRed(),
-      //...
-    };
+  protected onClick(e: Event) {
+    e.stopPropagation();
+    this.$click.emit();
   }
 
-  protected readonly templateLoaded = computed<TemplateRef<unknown>>(
-    () => this._colorSelector[this.color()],
-  );
-
-  protected onClick() {
-    this.$click.emit(this.type());
+  static style(color: 'gray' | 'rose' | 'blue' | 'green' | 'red', shape: 'slim' = 'slim'): string {
+    return {
+      slim: {
+        gray: 'py-2 px-3 cursor-pointer border border-mauve-500/50 rounded-xl hover:-translate-y-1 hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
+        rose: 'py-2 px-3 cursor-pointer border border-rose-500/50 rounded-xl hover:-translate-y-0.5 hover:border-rose-500 hover:shadow-rose-500 hover:shadow-sm active:text-rose-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
+        blue: 'py-2 px-3 cursor-pointer border border-blue-500/50 rounded-xl hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-blue-500 hover:shadow-sm active:text-blue-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
+        green:
+          'py-2 px-3 cursor-pointer border border-green-500/50 rounded-xl hover:-translate-y-0.5 hover:border-green-500 hover:shadow-green-500 hover:shadow-sm active:text-green-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
+        red: 'py-2 px-3 cursor-pointer border border-red-500/50 rounded-xl hover:-translate-y-0.5 hover:border-red-500 hover:shadow-red-500 hover:shadow-sm active:text-red-500 transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]',
+      },
+      //...
+    }[shape][color];
   }
 }

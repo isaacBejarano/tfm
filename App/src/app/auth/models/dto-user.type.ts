@@ -1,11 +1,14 @@
-type DtoUser = {
+type User = {
   id: string;
   email: string;
   password: string;
-  name: string;
+  name: string; // nullable when sent as paylaod
 };
 
-export type { DtoUser };
+type UserPayload = Omit<User, 'name'> & UserPayloadOptionals;
+type UserPayloadOptionals = { name: string | null };
+
+export type { User, UserPayload, UserPayloadOptionals };
 
 /*
  * VALIDATIONS [id]
@@ -41,7 +44,4 @@ export type { DtoUser };
 
   * REGEXP PASS -> ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$
   * REGEXP EMAIL -> ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
-
-
-
  */

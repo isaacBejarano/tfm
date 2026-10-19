@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, output, signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FieldTree,
@@ -11,22 +11,29 @@ import {
 } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { DtoUser } from '@app/auth/types/dto-user.type';
-import { BtnColor } from '@app/shared/components/btn/btn-color.type';
-import { Btn } from '@shared/components/btn/btn';
+import { User, UserPayload, UserPayloadOptionals } from '@app/auth/models/dto-user.type';
+import { FormType } from '@app/auth/types/form.type';
 
 @Component({
   selector: 'app-form-auth',
   templateUrl: './form-auth.html',
-  imports: [Btn, FormField],
+  imports: [FormField],
+  styles: `
+    :host {
+      display: block;
+    }
+  `,
 })
 export class FormAuth implements OnInit {
   // DI
   private readonly _destroyRef = inject(DestroyRef);
 
+  // I/O
+  readonly excludeFields = input<(keyof UserPayloadOptionals)[]>();
+
   // MODEL + FORM
 
-  protected readonly user = signal<DtoUser>({
+  protected readonly user = signal<User>({
     id: '',
     email: '',
     password: '',
@@ -73,8 +80,9 @@ export class FormAuth implements OnInit {
   // CTRL
   ////
 
-  protected readonly $formAuth = output<DtoUser>();
-  private readonly _debounceForm$$ = new BehaviorSubject<DtoUser | null>(null); // UX -> block rapid multiple submit
+  protected readonly formAuth = input<FormType>();
+  protected readonly $formAuth = output<UserPayload>();
+  private readonly _debounceForm$$ = new BehaviorSubject<UserPayload | null>(null); // UX -> block rapid multiple submit
 
   ngOnInit(): void {
     this._debounceForm$$
@@ -88,8 +96,9 @@ export class FormAuth implements OnInit {
       .subscribe();
   }
 
-  protected setBtnStyleBase(): BtnColor {
-    if (!this.form().dirty()) return 'default';
+  // FIXME: delete base
+  protected setBtnStyleBase() {
+    if (!this.form().dirty()) return 'gray';
     return this.form().valid() ? 'green' : 'red';
   }
 
@@ -103,6 +112,7 @@ export class FormAuth implements OnInit {
     password.setAttribute('type', password.type === 'password' ? 'text' : 'password'); // mutate by ref
   }
 
+  // FIXME:
   protected togglePasswordIcon(password: HTMLInputElement): string {
     return password.type === 'password'
       ? './svg/icon-sprite.xml#icon-eye'
@@ -116,6 +126,15 @@ export class FormAuth implements OnInit {
       this.form.name().markAsDirty();
       return;
     }
-    this._debounceForm$$.next({ ...this.form().value() });
+
+    const form: User = this.form().value();
+    const payload: UserPayload = {
+      id: form.id,
+      email: form.email,
+      password: form.password,
+      name: this.form.name().value().trim() === '' ? null : form.name,
+    };
+
+    this._debounceForm$$.next(payload);
   }
 }

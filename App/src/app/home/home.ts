@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { of, switchMap } from 'rxjs';
 
-import { DtoUser } from '@app/auth/types/dto-user.type';
-import { FormAuth } from '@shared/components/form-auth/form-auth';
+import { FormAuth } from '@app/auth/form-auth/form-auth';
+import { UserPayload } from '@app/auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
-import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,18 +21,23 @@ export class Home implements OnDestroy {
   // CTRL
   ////
 
-  readonly count = signal(0);
   readonly store = computed(() => this._storeSrv.state());
 
-  protected signup(payload: DtoUser): void {
+  protected signup(payload: UserPayload): void {
+    payload.id = `a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d`; // fake
     // TODO: encapsulate into AuthSrv
     this._http
       .post(this._webSrv.domain.api.get() + '/user', payload)
-      .pipe(switchMap(() => this._webSrv.navigateToDynamicRoute('login')))
+      .pipe(
+        switchMap(() => {
+          return of(this._storeSrv.setState('formAuth', 'login'));
+        }),
+      )
       .subscribe(console.log); // 1-time subscription
   }
 
-  protected login(payload: DtoUser): void {
+  protected login(payload: UserPayload): void {
+    payload.id = `a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d`; // fake
     // TODO: encapsulate into AuthSrv
     this._http
       .post(this._webSrv.domain.api.get() + '/auth', payload)
@@ -59,6 +64,16 @@ Content-Type: application/json
   "email":"Kalush@yopmail.com",
   "password":"Ab@12345",
   "name":"Kalush"
+}
+
+### POST "/user" - TEST signup -> 201 Created
+POST {{Api}}/user
+Content-Type: application/json
+
+{
+  "email":"Lovelace@yopmail.com",
+  "password":"Love@12345"
+  "name":"Lovelace"
 }
 
 
@@ -100,6 +115,15 @@ Content-Type: application/json
 {
   "email":"Kalush@yopmail.com",
   "password":"Ab@12345"
+}
+
+### POST "/auth" - TEST login (right creds) -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Lovelace@yopmail.com",
+  "password":"Love@12345"
 }
 
 

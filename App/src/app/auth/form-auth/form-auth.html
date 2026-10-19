@@ -20,15 +20,18 @@
 
       @let errorsEmail = form.email().errors();
       @if (form.email().dirty() && errorsEmail) {
-        @for (error of errorsEmail; track error.kind) {
-          <!-- TODO: add more validaton kinds -->
-          <div class="text-amber-300 bg-red-700">
-            {{ error.kind }}
-          </div>
-          @if (error.kind === 'required') {
-            <div class="text-red-500">{{ error.message }}</div>
+        <ul>
+          @for (error of errorsEmail; track error.kind) {
+            <!-- FIXME: remove error debuggiong -->
+            <!-- {{ error.kind }} -->
+            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+              <!-- FIXME: max lengt bloqued  -->
+              @if (['required', 'minLength', 'maxLength', 'pattern'].includes(error.kind)) {
+                {{ error.message }}
+              }
+            </li>
           }
-        }
+        </ul>
       }
     </div>
 
@@ -46,31 +49,36 @@
           autocomplete="off"
         />
 
-        <app-btn
+        <!-- <app-btn
           ($click)="togglePasswordType(password)"
           type="button"
+          color="green"
           ariaLabel="Botón de visualizar y ocultar la contraseña"
         >
           <svg class="size-5 fill-current" viewBox="0 0 100 100">
-            <use [attr.xlink:href]="togglePasswordIcon(password)" />
+            <use [attr.xlink:href]="['svg/icon-sprite.xml#icon-eye']" />
           </svg>
-        </app-btn>
+        </app-btn> -->
       </div>
 
       @let errorsPassword = form.password().errors();
       @if (form.password().dirty() && errorsPassword) {
-        @for (error of errorsPassword; track error.kind) {
-          <!-- TODO: add more validaton kinds -->
-          <div class="text-amber-300 bg-red-700">
-            {{ error.kind }}
-          </div>
-          @if (['required', 'field-literal'].includes(error.kind)) {
-            <div class="text-red-500">{{ error.message }}</div>
+        <ul>
+          @for (error of errorsPassword; track error.kind) {
+            <!-- FIXME: remove error debuggiong -->
+            <!-- {{ error.kind }} -->
+            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+              <!-- FIXME: max lengt bloqued  -->
+              @if (['required', 'minLength', 'maxLength', 'pattern'].includes(error.kind)) {
+                {{ error.message }}
+              }
+            </li>
           }
-        }
+        </ul>
       }
     </div>
 
+    <!-- TODO: optional field -->
     <!-- name -->
     <div class="pb-2">
       <label class="inline-block mb-1" for="js-name"> Nombre </label>
@@ -84,21 +92,24 @@
         autocomplete="off"
       />
 
-      @let errorsName = form.password().errors();
+      @let errorsName = form.name().errors();
       @if (form.password().dirty() && errorsName) {
-        @for (error of errorsName; track error.kind) {
-          <!-- TODO: add more validaton kinds -->
-          <div class="text-amber-300 bg-red-700">
+        <ul>
+          @for (error of errorsName; track error.kind) {
+            <!-- FIXME: remove error debuggiong -->
             {{ error.kind }}
-          </div>
-          @if (['required', 'field-literal'].includes(error.kind)) {
-            <div class="text-red-500">{{ error.message }}</div>
+            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+              <!-- FIXME: not working on input  -->
+              @if (['minLength', 'maxLength'].includes(error.kind)) {
+                {{ error.message }}
+              }
+            </li>
           }
-        }
+        </ul>
       }
     </div>
 
     <!-- Submit -->
-    <app-btn type="submit" label="Enviar" />
+    <!-- <app-btn type="submit" label="Enviar" /> -->
   </div>
 </form>

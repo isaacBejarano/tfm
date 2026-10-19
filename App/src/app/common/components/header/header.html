@@ -17,14 +17,14 @@
         >
           <!-- TODO: admin roles are only for maintenance, they have no agenda. Tohave one: log in as 'user'  -->
           @if (role() === 'user') {
-            <app-btn type="button" label="Agenda" color="rose" />
+            <app-btn label="Agenda" [css]="btnGray" />
           }
           <!-- TODO: INE selector @profile -->
           @if (role() !== 'user') {
-            <app-btn type="button" label="Usuarios" color="blue" />
+            <app-btn label="Usuarios" [css]="btnGray" />
           }
-          <app-btn type="button" label="Perfil" color="rose" />
-          <app-btn type="button" label="Salir" color="rose" />
+          <app-btn label="Perfil" [css]="btnRose" />
+          <app-btn label="Salir" [css]="btnRose" />
         </nav>
       </header>
 
@@ -54,11 +54,11 @@
 
       <!-- TOP MENU PUBLIC -->
       <nav class="mt-1 p-3 2xl:p-2 flex justify-center gap-8">
-        <app-btn type="button" label="Acceso" color="rose" ($click)="toggleAuthForms('login')" />
+        <app-btn route="" label="Acceso" [css]="btnRose" ($click)="toggleAuthForms('login')" />
         <app-btn
-          type="button"
+          route=""
           label="¡Regístrate!"
-          color="blue"
+          [css]="btnBlue"
           ($click)="toggleAuthForms('signup')"
         />
       </nav>

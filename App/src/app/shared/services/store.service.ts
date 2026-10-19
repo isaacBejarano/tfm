@@ -1,8 +1,9 @@
 import { computed, Service, signal } from '@angular/core';
-import { FormAuth } from '../types/forms-auth.type';
+
+import { FormType } from '@app/auth/types/form.type';
 
 export type Store = {
-  formAuth: FormAuth;
+  formAuth: FormType;
   accesToken: string;
 };
 
