@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(SessionContext))]
-    [Migration("20261021182812_Init")]
+    [Migration("20261021203725_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -105,7 +105,7 @@ namespace Api.Migrations
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 33, 880, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Tribunal@yopmail.com",
                             Name = "Tribunal",
-                            Password = "AQAAAAIAAYagAAAAEGwHgGIpRMXWQEvkORiPfV6rtNf3mgCqvdfJA115SNOSj+2r2qfzc+kjluWj3OytXw=="
+                            Password = "AQAAAAIAAYagAAAAEHsuE/FMumGyWhg0+txuAkz6gTXKnbgkSOmuCc+rnr3VTdjastEqgvs1Srr+8I3Jiw=="
                         },
                         new
                         {
