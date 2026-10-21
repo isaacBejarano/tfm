@@ -15,7 +15,7 @@ public class AuthController(
   public ActionResult<DtoResponse<object>> Login([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
-    // FIXME: 1. Seed users, 1 admin X, 1 admin Tribunal, 1 superadmin me
+    // FIXME: 1. Mod Seed with roles "user", "admin" and "super"
 
     // TODO: 2. JWT auth + restrict unaouthorized routes
 

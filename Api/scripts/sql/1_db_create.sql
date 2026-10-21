@@ -1,4 +1,4 @@
--- Script: Create a DB with UTF-8 encoding, locale 'en_US' and Backend OWNER
+-- Script: Create the project's DB with UTF-8 encoding and Backend OWNER
 -- Creation: Isaac Bejarano, 2026/10/07
 
 -- create user for Backend != 'postgres'
@@ -14,9 +14,3 @@ CREATE DATABASE db_tfm WITH
     TEMPLATE = template0
     TABLESPACE = pg_default
     IS_TEMPLATE = False;
-
--- mod DB encoding details (only after DB creation)
-ALTER DATABASE db_tfm SET
-    LC_NUMERIC = 'en_US.utf8' -- e.g. 1,000.00
-    LC_TIME= 'en_US.utf8' -- e.g. 2026/10/07
-    LC_MONETARY = 'en_US.utf8' -- e.g. 1,000.00 €

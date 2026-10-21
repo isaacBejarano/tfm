@@ -19,5 +19,5 @@ public class ErrorController() : ControllerBase {
     return StatusCode(StatusCodes.Status500InternalServerError, dto);
   }
 
-  // TODO: keep client-friendly other un handled errors thay may arrise
+  // Handle other unhandled errors as client-friendly...
 }

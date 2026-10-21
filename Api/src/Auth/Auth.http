@@ -84,7 +84,8 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345"
+  "email":"Tribunal@yopmail.com",
+  "password":"Tribunal@uoc2026",
+  "name":"Tribunal"
 }
 

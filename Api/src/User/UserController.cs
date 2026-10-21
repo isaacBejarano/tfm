@@ -25,9 +25,11 @@ public class UserController(
 
     // payload dto -> model
     User entity = new() {
+      Id = Guid.CreateVersion7(),
       Email = payload.Email,
       Password = payloadPasswordHashed,
       Name = payload.Name,
+      Created = DateTimeOffset.UtcNow
     };
 
     var entityHasher = new PasswordHasher<User>();

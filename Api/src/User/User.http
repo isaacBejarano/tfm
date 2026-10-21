@@ -82,7 +82,7 @@ Content-Type: application/json
 
 {
   "email":"Kalush@yopmail.com",
-  "password":"Ab@12345"
+  "password":"Aa@12345"
 }
 
 ### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
@@ -90,9 +90,9 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345",
-  "name":"Kalush"
+  "email":"Tribunal@yopmail.com",
+  "password":"Tribunal@uoc2026",
+  "name":"Tribunal"
 }
 
 
