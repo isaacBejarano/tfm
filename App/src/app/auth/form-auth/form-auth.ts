@@ -71,8 +71,8 @@ export class FormAuth implements OnInit {
   // CTRL
   ////
 
-  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise']);
-  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise']);
+  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
+  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
   protected readonly $userPayload = output<UserPayloadLogin | UserPayloadSignup>();
   private readonly _debounceForm$$ = new BehaviorSubject<
     UserPayloadLogin | UserPayloadSignup | null

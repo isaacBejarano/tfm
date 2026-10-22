@@ -49,7 +49,7 @@ export class Btn {
     color: 'gray' | 'rose' | 'blue' | 'green' | 'red',
     look: 'outline' = 'outline',
     shape: 'normal' | 'slim' = 'normal',
-    fx: ('raise' | 'fade')[] = ['raise'],
+    effects: ('raise' | 'fade' | '3d-rose' | '3d-blue' | '3d-gray')[] = ['raise'],
   ): string {
     const colors = {
       gray: `${Btn.borderColors['gray']} hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-white text-mist-300 hover:text-mist-200`,
@@ -70,12 +70,30 @@ export class Btn {
       // slim, fat...
     };
 
-    const effects = [
+    const effectAssoc = [
       ['raise', 'transition-all duration-250 hover:-translate-y-0.5'], // hover
       ['fade', 'transition-all duration-250 animate-[fade-in_1.5s_ease-in_1s_normal_backwards]'],
+      [
+        '3d-rose',
+        'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#851631]',
+      ],
+      [
+        '3d-blue',
+        'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#1b4688]',
+      ],
+      [
+        '3d-gray',
+        'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#79697b]',
+      ],
       // none...
     ];
 
-    return `cursor-pointer ${colors[color]} ${looks[look]} ${shapes[shape]} ${fx.map((f) => effects.find((assoc) => assoc[0] === f))}`;
+    console.warn('ASSOC');
+    const fxToString: string = effects
+      .map((fx) => effectAssoc.find((assoc) => assoc[0] === fx))
+      .map((assoc) => (assoc ? assoc[1] : ''))
+      .join(' ');
+
+    return `cursor-pointer ${colors[color]} ${looks[look]} ${shapes[shape]} ${fxToString}`;
   }
 }
