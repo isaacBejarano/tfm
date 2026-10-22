@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,7 @@ public class UserController(
 
   // GET "/api/user"
   [HttpGet]
+  [Authorize(Roles = "super,admin")]
   public ActionResult<DtoResponse<DtoUser>> List() {
     // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
 
@@ -86,6 +88,7 @@ public class UserController(
 
   // GET "/api/user/:id"
   [HttpGet("{id:Guid}")]
+  [Authorize(Roles = "super,admin,user")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
 

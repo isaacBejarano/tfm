@@ -41,7 +41,7 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"",
   "name":""
 }
@@ -51,7 +51,7 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"",
   "name":"C"
 }
@@ -61,7 +61,7 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"1234567",
   "name":"C"
 }
@@ -71,7 +71,7 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"12345678",
   "name":"C"
 }
@@ -81,8 +81,8 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
-  "password":"Aa@12345"
+  "email":"Kazka@yopmail.com",
+  "password":"Ff@12345"
 }
 
 ### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
@@ -90,21 +90,28 @@ POST {{Api}}/user
 Content-Type: application/json
 
 {
-  "email":"Isk@yopmail.com",
-  "password":"Ii@12345",
-  "name":"Isk"
+  "email":"Kazka@yopmail.com",
+  "password":"Ff@12345",
+  "name":"Kazka"
 }
 
+### get ACCESS TOKEN from call to POST "/auth"
+@TokenAccess = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxYTE2NDI1LWI5OTctN2ZkMy1iYjU3LTIxMzZmMzFjYTcxYiIsInJvbGVzIjoic3VwZXIiLCJuYmYiOjE3OTI2OTMzNzIsImV4cCI6MTc5MjY5MzY3MiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.V9KUUaXdJ4Qx_3j81K3gzlDwy_uXRAO3vWvnciTImlg
 
-
-### GET "/user" - TEST list of users TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+### GET "/user" - TEST list of users - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
 GET {{Api}}/user
 Content-Type: application/json
+Authorization: {{TokenAccess}}
 
 
-@Id = 01a14087-f10f-779a-93e5-b47dbc3966f4
+// FIXME: catch 404 error unauthorized
 
-### get ID value from first cal to POST "/user"
-### GET "/user/:id" - TEST user profile TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+
+### get ID value from first call to POST "/user" (or from a SEED record)
+@Id = 0195e280-1005-7100-8000-000000000006
+
+### GET "/user/:id" - TEST user profile - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
 GET {{Api}}/user/{{Id}}
 Content-Type: application/json
+Authorization: {{TokenAccess}}
+

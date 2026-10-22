@@ -4,8 +4,13 @@ global using Api.Interfaces;
 global using Api.Models;
 global using Api.Repositories;
 global using Api.Shared;
+using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+
+
 
 // 1. BUILDER (pattern) //
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +38,27 @@ builder.Services
           .AllowAnyMethod();
       }
     })
-  );
+  )
+  .AddAuthorization()
+  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(opts => {
+    var issuerSigningKey = builder.Configuration["AccessToken:SecretKey"]!;
+    // Token Validation has multiple parts. The token is validated by checking that it is for the application, that it was issued by a trusted Identity Provider (IDP), that the token's lifetime is in range, and that it was not tampered with
+    opts.TokenValidationParameters = new TokenValidationParameters {
+      ValidIssuer = builder.Configuration["AccessToken:Issuer"],
+      ValidAudience = builder.Configuration["AccessToken:Audience"], // only Kübello client app
+      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey)),
+      // validations
+      ValidateIssuer = true,
+      ValidateAudience = true,
+      ValidateLifetime = true,
+      ValidateIssuerSigningKey = true,
+    };
+  }); // 'AuthenticationBuilder' returned
+
+// TODO: JWT -> https://learn.microsoft.com/es-es/aspnet/core/security/authentication/?view=aspnetcore-8.0
+// TODO: JWT validations --> https://devblogs.microsoft.com/dotnet/jwt-validation-and-authorization-in-asp-net-core/
+
 
 // chainable when 'IMvcBuilder ' returned <- last!
 builder.Services
@@ -81,7 +106,8 @@ if (!api.Environment.IsDevelopment()) {
 api
   .UseHttpsRedirection() // https fallback
   .UseRequestLocalization() // TODO: Locale
-  .UseAuthorization();
+  .UseAuthentication() // 1. Authn
+  .UseAuthorization(); // 2. Authz
 
 
 /* TODO: LOCALE

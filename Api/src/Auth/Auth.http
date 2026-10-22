@@ -38,7 +38,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":""
 }
 
@@ -47,7 +47,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"1234567"
 }
 
@@ -56,7 +56,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"12345678"
 }
 
@@ -76,15 +76,15 @@ Content-Type: application/json
 
 {
   "email":"Kalush@yopmail.com",
-  "password":"Ab@00000"
+  "password":"Aa@00000"
 }
 
-### POST "/auth" - TEST login (right creds) -> 200 OK
+### POST "/auth" - TEST login (right credentials) -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Isk@yopmail.com",
-  "password":"Ii@12345"
+  "email":"Kazka@yopmail.com",
+  "password":"Ff@12345"
 }
 
