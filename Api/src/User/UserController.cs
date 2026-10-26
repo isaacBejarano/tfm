@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,10 +64,21 @@ public class UserController(
   [HttpGet]
   // [Authorize]
   public ActionResult<DtoResponse<DtoUser>> List() {
-    // AuthN + AuthZ global config as middleware in Program.cs
+    // AUTH -> global config as middleware
+
+    // 'ClaimsPrincipal' inherited, to filter User List in DTO
+    ClaimsPrincipal ctxUser = User;
+    // TODO: encapsulate into SRV
+    string[] rolesManaged = User.IsInRole("Super")
+      ? ["Admin", "User"]
+      : User.IsInRole("Admin")
+      ? ["User"]
+      : [];
+
+    // TODO: enum Roles
 
     // DB REPO //
-    User[] users = [.. _userRepoSrv.ReadAll()];
+    User[] users = [.. _userRepoSrv.ReadAllByRoles(rolesManaged)];
 
     // DTO //
 

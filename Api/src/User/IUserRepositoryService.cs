@@ -3,15 +3,15 @@
 // Destructive C*UD ops require validated 'payload' DTO!
 
 public interface IUserRepositoryService {
-  // POST "users/" <- signup
+  // POST "users/" <- Signup
   public User? Create(User user);
 
 
-  // POST "auth/" <- login
+  // POST "auth/" <- Login
   public User? ReadByEmail(string email);
 
-  // GET "users/" <- admin list users TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
-  public IEnumerable<User> ReadAll();
+  // GET "users/" <- User List (filter by Token Role)
+  public IEnumerable<User> ReadAllByRoles(string[] rolesManaged);
 
   // GET "users/:id" <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
   public User? ReadById(Guid id);
