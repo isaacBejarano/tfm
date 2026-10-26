@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-[Route("api/v1/[controller]")]
 [ApiController]
+[Route("api/v1/users")]
 public class UserController(
   IUserRepositoryService _userRepoSrv // DI
   ) : ControllerBase {
 
-  // POST "/user"
+  // POST "/users"
   [HttpPost]
   public ActionResult<DtoResponse<object>> Signup([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
@@ -58,7 +58,7 @@ public class UserController(
   }
 
 
-  // GET "/user"
+  // GET "/users"
   [Authorize(Roles = "Admin, Super")]
   [HttpGet]
   // [Authorize]
@@ -87,7 +87,7 @@ public class UserController(
   }
 
 
-  // GET "/user/:id"
+  // GET "/users/:id"
   [HttpGet("{id:Guid}")]
   [Authorize(Roles = "super,admin,user")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {

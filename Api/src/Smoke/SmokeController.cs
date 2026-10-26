@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-[Route("api/v1/[controller]")]
 [ApiController]
+[Route("api/v1/[controller]")]
 public class SmokeController() : ControllerBase {
 
   [HttpGet("almost")]

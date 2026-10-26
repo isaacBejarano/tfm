@@ -2,12 +2,12 @@
 @Api = https://localhost:7247/api/v1
 
 
-### POST "/user" - TEST "no payload" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "no payload" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
-### POST "/user" - TEST "all empty fields invalid" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "all empty fields invalid" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -16,8 +16,8 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "invalid field:email too short & other fields invalid" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "invalid field:email too short & other fields invalid" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -26,8 +26,8 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "invalid field:email pattern & other fields invalid" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "invalid field:email pattern & other fields invalid" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -36,8 +36,8 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "field:email OK & invalid field:password required & invalid field:name too short" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "field:email OK & invalid field:password required & invalid field:name too short" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -46,8 +46,8 @@ Content-Type: application/json
   "name":""
 }
 
-### POST "/user" - TEST "invalid field:password too short & other fields OK" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "invalid field:password too short & other fields OK" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -56,8 +56,8 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST "/user" - TEST "invalid field:password too short & field:password required OK" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "invalid field:password too short & field:password required OK" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -66,8 +66,8 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST "/user" - TEST "invalid field:password pattern & other fields OK" --> 400 Bad Request
-POST {{Api}}/user
+### POST "/users" - Signup "invalid field:password pattern & other fields OK" --> 400 Bad Request
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -76,8 +76,8 @@ Content-Type: application/json
   "name":"C"
 }
 
-### POST "/user" - TEST creation attempt (no 'name') -> 201 Created
-POST {{Api}}/user
+### POST "/users" - Signup (no 'name') -> 201 Created
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -85,8 +85,8 @@ Content-Type: application/json
   "password":"Ff@12345"
 }
 
-### POST "/user" - TEST creation repeats (all fields) -> 409 Conflict
-POST {{Api}}/user
+### POST "/users" - Signup creation repeats (all fields) -> 409 Conflict
+POST {{Api}}/users
 Content-Type: application/json
 
 {
@@ -95,30 +95,30 @@ Content-Type: application/json
   "name":"Kazka"
 }
 
-### z- get ACCESS TOKEN from call to POST "/auth" as SEED USER (e.g. Dorofeeva@yopmail.com)
+### <- get ACCESS TOKEN from call to POST "/auth" as SEED USER (e.g. Dorofeeva@yopmail.com)
 @TokenAccessRoleUser = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJEb3JvZmVldmFAeW9wbWFpbC5jb20iLCJqdGkiOiIwMWExNzk4Ni00ZmI4LTc4ZGMtOGYzOS1jZjkyZTMxMTU2N2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzkzMDQwMjA3LCJleHAiOjE3OTMwNDAyNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.kZXcQ4U-gAm9LI2296v5z5-Rfjc6ZxiSLlduXZjKXjk
 
-### GET "/user" - TEST (no Access Token) -> 401 Unauthorized
-GET {{Api}}/user
+### GET "/users" - User List (no Access Token) -> 401 Unauthorized
+GET {{Api}}/users
 Content-Type: application/json
 
-### GET "/user" - TEST (no Access Token) -> 401 Unauthorized
-GET {{Api}}/user
+### GET "/users" - User List (no Access Token) -> 401 Unauthorized
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: ""
 
-### GET "/user" - TEST (no Access Token) -> 401 Unauthorized
-GET {{Api}}/user
+### GET "/users" - User List (no Access Token) -> 401 Unauthorized
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: "Bearer"
 
-### GET "/user" - TEST (Access Token expired) -> 401 Unauthorized
-GET {{Api}}/user
+### GET "/users" - User List (Access Token expired) -> 401 Unauthorized
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJEb3JvZmVldmFAeW9wbWFpbC5jb20iLCJqdGkiOiIwMWExNzk3MS1lYmMyLTdjYjQtYTg2ZS01OGY3M2VhMjgzN2YiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzkzMDM4ODcxLCJleHAiOjE3OTMwMzg5MzEsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.RucrZA-5jtGlM9eqSHebJwS3dlaXzVPOTWN3cGI_Chc"
 
-### GET "/user" - TEST (Access Token but NO Roles 'Admin, Super') -> 403 Forbidden
-GET {{Api}}/user
+### GET "/users" - User List (Access Token but NO Roles 'Admin, Super') -> 403 Forbidden
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: {{TokenAccessRoleUser}}
 
@@ -126,28 +126,30 @@ Authorization: {{TokenAccessRoleUser}}
 ### <- get ACCESS TOKEN from call to POST "/auth" as SEED ADMIN (e.g. Tribunal@yopmail.com)
 @TokenAccessRoleAdmin = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJUcmlidW5hbEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3OTg1LWE5MDYtN2IzYi04OThjLWY0NTRmMjgwYzNkYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwibmJmIjoxNzkzMDQwMTY1LCJleHAiOjE3OTMwNDAyMjUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.j3OUi3eTIkuOCiuRSDaKNJuZKAJME1t2OwQpqVM5U58
 
-### GET "/user" - TEST (Access Token & right Role 'Admin') -> 200 OK
-GET {{Api}}/user
+### GET "/users" - User List (Access Token & right Role 'Admin') -> 200 OK
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: {{TokenAccessRoleAdmin}}
+
+# FIXME: 'Admin' cannot list 'Super'
 
 
 ### <- get ACCESS TOKEN from call to POST "/auth" as SEED ADMIN (e.g. Super@yopmail.com)
 @TokenAccessRoleSuper = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJTdXBlckB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3OTg1LTFiNjYtNzEzZS1iZWQ2LTM3MmY5OWM2ZGNmNyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyIiwibmJmIjoxNzkzMDQwMTI4LCJleHAiOjE3OTMwNDAxODgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.hao1RgibdfXeo8TvRigq4N4bYpg3hMhOazL0FWL7noo
 
-### GET "/user" - TEST (Access Token & right Role 'Super') -> 200 OK
-GET {{Api}}/user
+### GET "/users" - User List (Access Token & right Role 'Super') -> 200 OK
+GET {{Api}}/users
 Content-Type: application/json
 Authorization: {{TokenAccessRoleSuper}}
 
 
 # TODO: rest of endpoints
 
-### z- get ID value from first call to POST "/user" (or from a SEED record)
+### z- get ID value from first call to POST "/users" (or from a SEED record)
 @Id = 0195e280-1005-7100-8000-000000000006
 
-### GET "/user/:id" - TEST user profile - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
-GET {{Api}}/user/{{Id}}
+### GET "/users/:id" - user profile - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+GET {{Api}}/users/{{Id}}
 Content-Type: application/json
 Authorization: {{TokenAccessRoleUser}}
 

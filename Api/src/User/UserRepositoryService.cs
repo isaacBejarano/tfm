@@ -5,7 +5,7 @@ public class UserRepositoryService(
   SessionContext _ctx // DI
 ) : IUserRepositoryService {
 
-  // POST user/
+  // POST users/
   public User? Create(User user) {
     ArgumentNullException.ThrowIfNull(user);
 
@@ -24,12 +24,12 @@ public class UserRepositoryService(
     return _ctx.Users.FirstOrDefault(u => u.Email == email);
   }
 
-  // GET "user/"
+  // GET "users/"
   public IEnumerable<User> ReadAll() {
     return [.. _ctx.Users]; // clone
   }
 
-  // GET user/:id
+  // GET users/:id
   public User? ReadById(Guid id) {
     return _ctx.Users.FirstOrDefault(u => u.Id == id);
   }
