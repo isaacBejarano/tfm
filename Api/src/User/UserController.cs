@@ -16,7 +16,6 @@ public class UserController(
   public ActionResult<DtoResponse<object>> Signup([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
-
     // HASHING -> password
     var payloadHasher = new PasswordHasher<DtoUser>(); //
     string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
@@ -41,6 +40,8 @@ public class UserController(
       return StatusCode(StatusCodes.Status500InternalServerError, dtoErr);
     }
 
+    // FIXME: assign ROLES
+
     // persist model
     User? user = _userRepoSrv.Create(entity);
 
@@ -56,11 +57,18 @@ public class UserController(
   }
 
 
-  // GET "/api/user"
+  // GET "/user"
   [HttpGet]
-  [Authorize(Roles = "super,admin")]
+  // [Authorize]
+  [Authorize(Roles = "super")]
   public ActionResult<DtoResponse<DtoUser>> List() {
     // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+
+    // if (HttpContext.Current.User is ClaimsPrincipal principal) {
+    //   foreach (Claim claim in principal.Claims) {
+    //     Response.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
+    //   }
+    // }
 
     // DB REPO //
 
@@ -86,7 +94,7 @@ public class UserController(
   }
 
 
-  // GET "/api/user/:id"
+  // GET "/user/:id"
   [HttpGet("{id:Guid}")]
   [Authorize(Roles = "super,admin,user")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {

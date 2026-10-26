@@ -25,7 +25,6 @@ public class AuthController(
 
     // TODO: 2. JWT auth + restrict unaouthorized routes
 
-
     // DB REPO //
 
     // payload dto -> model
@@ -35,6 +34,8 @@ public class AuthController(
       var dtoErr = new DtoResponse<object>([], "Credenciales incorrectas.");
       return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
     }
+
+    // TODO: exncapsulate hsasing fx into SRV
 
     // HASHING -> verify password
     var entityHasher = new PasswordHasher<User>();
@@ -48,11 +49,11 @@ public class AuthController(
     // model -> res dto
     DtoId itemId = new(entity.Id);
 
-    // TODO: return JWT in <headers> if authenticated user. No body
+    // TODO: CLAIMS / ROLES
     Claim[] claimsSuper =
     [
-      new Claim("id", itemId.Id.ToString()),
-      new Claim("roles", "super")
+      new Claim("Id", itemId.Id.ToString()),
+      new Claim("Roles", "super")
     ];
 
     // common tokens props

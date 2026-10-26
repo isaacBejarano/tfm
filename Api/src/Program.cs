@@ -4,8 +4,10 @@ global using Api.Interfaces;
 global using Api.Models;
 global using Api.Repositories;
 global using Api.Shared;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -40,21 +42,66 @@ builder.Services
     })
   )
   .AddAuthorization()
-  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  .AddJwtBearer(opts => {
-    var issuerSigningKey = builder.Configuration["AccessToken:SecretKey"]!;
-    // Token Validation has multiple parts. The token is validated by checking that it is for the application, that it was issued by a trusted Identity Provider (IDP), that the token's lifetime is in range, and that it was not tampered with
-    opts.TokenValidationParameters = new TokenValidationParameters {
-      ValidIssuer = builder.Configuration["AccessToken:Issuer"],
-      ValidAudience = builder.Configuration["AccessToken:Audience"], // only Kübello client app
-      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey)),
-      // validations
-      ValidateIssuer = true,
-      ValidateAudience = true,
-      ValidateLifetime = true,
-      ValidateIssuerSigningKey = true,
-    };
-  }); // 'AuthenticationBuilder' returned
+  .AddAuthentication(opts => {
+    // default scheme to use in authentication
+    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // User requests an endpoint that requires authentication -> ERROR 401 + header 'www-authenticate: bearer'
+    opts.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme; // User authenticated without permissions on resource -> ERROR 403
+    opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+  })
+  .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+    opts => {
+      // Identity
+      opts.Authority = builder.Configuration["AccessToken:Issuer"];
+      opts.Audience = builder.Configuration["AccessToken:Audience"];
+
+      // Token Validation -> Check it is for the app, issued by a trusted Identity Provider (IDP), whose lifetime is in range and was not tampered.
+      var issuerSigningKey = builder.Configuration["AccessToken:SecretKey"]!;
+      opts.TokenValidationParameters = new TokenValidationParameters {
+        ValidIssuer = builder.Configuration["AccessToken:Issuer"],
+        ValidAudience = builder.Configuration["AccessToken:Audience"], // only Kübello client app
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey)),
+        // validations
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+      };
+
+      // Context here is 'JwtBearerOptions' and lives before and outside the MVC controllers. Therefore, 'ActionContext' ctx cannot be used here. 'JwtBearerOptions' requires a low-level HTTP response.
+      opts.Events = new JwtBearerEvents() {
+        // Hook for AuthN CHALLENGE -> ERROR 401
+        OnChallenge = async ctx => {
+          // headers + DTO
+          ctx.HandleResponse(); // skip default .NET res
+          ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+          ctx.Response.ContentType = "application/json";
+          ctx.Response.Headers.Append("WWW-Authenticate", "Bearer");
+          var dto = new DtoResponse<object>([], "Usuario no autenticado.");
+          await ctx.Response.WriteAsJsonAsync(dto);
+        },
+        // Hook for AuthZ FORBID -> ERROR 403
+        OnForbidden = async ctx => {
+          // get AuthN user details ("sub" -> the user the token refers to)
+          string userName = ctx.HttpContext.User.FindFirst("Id")?.Value
+            ?? "Usuario inexistente.";
+
+          string[] userRoles = [.. ctx.HttpContext.User.FindAll("Roles").Select(c => c.Value ?? "")];
+
+          // var userRoles = ctx.HttpContext.User.FindAll(System.Security.Claims.ClaimTypes.Role)
+          //                     .Select(c => c.Value)
+          //                     .ToList().ToString();
+          // headers + DTO
+          ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
+          ctx.Response.ContentType = "application/json";
+          var dto = new DtoResponse<object>([], $"{userName} no tiene permisos de {userRoles}");
+          await ctx.Response.WriteAsJsonAsync(dto);
+        }
+      };
+    });
+// .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+//   opts => builder.Configuration.Bind("RefreshToken", opts)
+// ); // 'AuthenticationBuilder' returned
 
 // TODO: JWT -> https://learn.microsoft.com/es-es/aspnet/core/security/authentication/?view=aspnetcore-8.0
 // TODO: JWT validations --> https://devblogs.microsoft.com/dotnet/jwt-validation-and-authorization-in-asp-net-core/
@@ -65,7 +112,7 @@ builder.Services
   .AddControllers() // MVC
   .ConfigureApiBehaviorOptions(opts =>
     opts.InvalidModelStateResponseFactory = ctx => {
-      // traces-free secure client-friendly DTO when client's Bad Requests interdepted
+      // traces-free secure client-friendly DTO when client's Bad Requests intercepted
       var errorKinds = ctx.ModelState
         .Where(e => e.Value?.Errors.Count > 0)
         .ToDictionary(
@@ -90,11 +137,6 @@ var api = builder.Build();
 // 4. MIDDLEWARE (Use)
 ////
 
-// error handler redirects
-api
-  .UseExceptionHandler("/error/500") // -> "/error/500" (internal, db connection, etc.)
-  .UseStatusCodePagesWithReExecute("/error/{0}"); // -> "/error/404" (unexisting endpoints...)
-
 // headers policy
 if (api.Environment.IsDevelopment()) { api.UseCors("DevPolicies"); }
 else { api.UseCors(); } // Same Origin Policy (SOP)
@@ -105,11 +147,13 @@ if (!api.Environment.IsDevelopment()) {
 }
 api
   .UseHttpsRedirection() // https fallback
-  .UseRequestLocalization() // TODO: Locale
-  .UseAuthentication() // 1. Authn
-  .UseAuthorization(); // 2. Authz
+  .UseAuthentication() // 1. AuthN -> Call it before any middleware that depends on users being authenticated
+  .UseAuthorization() // 2. AuthZ <-> User Roles
+  .UseExceptionHandler("/error/500") // 3. last -> "/error/500" (internal, db connection, etc.)
+  .UseStatusCodePagesWithReExecute("/error/{0}"); // 4. last -> "/error/404" (unexisting endpoints...)
 
 
+// .UseRequestLocalization() // TODO: Locale
 /* TODO: LOCALE
   https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-10.0
 
