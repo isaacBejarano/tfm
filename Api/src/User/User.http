@@ -96,7 +96,7 @@ Content-Type: application/json
 }
 
 ### get ACCESS TOKEN from call to POST "/auth"
-@TokenAccess = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjAxYTE2NDI1LWI5OTctN2ZkMy1iYjU3LTIxMzZmMzFjYTcxYiIsIlJvbGVzIjoic3VwZXIiLCJuYmYiOjE3OTMwMjMzNzQsImV4cCI6MTc5MzAyMzY3NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.Z2OteyX0nIFoNJeZzDl9q22DmY6eDeNRDzSJG_1MV_w
+@TokenAccess = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjAxYTE2NDI1LWI5OTctN2ZkMy1iYjU3LTIxMzZmMzFjYTcxYiIsIlJvbGVzIjoidXNlciwgYWRtaW4iLCJuYmYiOjE3OTMwMjUzNjYsImV4cCI6MTc5MzAyNTY2NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.BYEN95Y8oCId_yCHTwFLmwJ87hTKFWz3U6PFpwr2xw8
 
 ### GET "/user" - TEST list of users - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
 GET {{Api}}/user

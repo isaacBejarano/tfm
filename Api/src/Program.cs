@@ -82,19 +82,17 @@ builder.Services
         },
         // Hook for AuthZ FORBID -> ERROR 403
         OnForbidden = async ctx => {
-          // get AuthN user details ("sub" -> the user the token refers to)
-          string userName = ctx.HttpContext.User.FindFirst("Id")?.Value
-            ?? "Usuario inexistente.";
+          // get AuthN user details -> "sub" (here "Id")-> the user the token refers to
+          string userId = ctx.HttpContext.User.FindFirst("Id")?.Value ?? "inexistente.";
+          string[] userRoles = [
+            ..ctx.HttpContext.User.FindAll("Roles").Select(c => c.Value)
+          ];
+          string userRolesToString = string.Join(", ", userRoles);
 
-          string[] userRoles = [.. ctx.HttpContext.User.FindAll("Roles").Select(c => c.Value ?? "")];
-
-          // var userRoles = ctx.HttpContext.User.FindAll(System.Security.Claims.ClaimTypes.Role)
-          //                     .Select(c => c.Value)
-          //                     .ToList().ToString();
           // headers + DTO
           ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
           ctx.Response.ContentType = "application/json";
-          var dto = new DtoResponse<object>([], $"{userName} no tiene permisos de {userRoles}");
+          var dto = new DtoResponse<object>([], $"Usuario '{userId}' con roles '{userRolesToString}' insuficientes.");
           await ctx.Response.WriteAsJsonAsync(dto);
         }
       };

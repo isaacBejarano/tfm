@@ -47,13 +47,13 @@ public class AuthController(
     }
 
     // model -> res dto
-    DtoId itemId = new(entity.Id);
+    DtoId item = new(entity.Id);
 
     // TODO: CLAIMS / ROLES
     Claim[] claimsSuper =
     [
-      new Claim("Id", itemId.Id.ToString()),
-      new Claim("Roles", "super")
+      new Claim("Id", item.Id.ToString()),
+      new Claim("Roles", "user, admin")
     ];
 
     // common tokens props
@@ -78,7 +78,7 @@ public class AuthController(
 
 
     // DTO -> only ID to go agenda by user ID
-    var dto = new DtoResponse<object>([itemId], "Usuario autenticado.");
+    var dto = new DtoResponse<object>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }
