@@ -10,8 +10,8 @@ public interface IUserRepositoryService {
   // POST "auth/" <- Login
   public User? ReadByEmail(string email);
 
-  // GET "users/" <- User List (filter by Token Role)
-  public IEnumerable<User> ReadAllByRoles(string[] rolesManaged);
+  // GET "users/" <- User List (filter by Token roles)
+  public IEnumerable<User> ReadAllByRoles(UserRole[] targetRoles);
 
   // GET "users/:id" <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
   public User? ReadById(Guid id);

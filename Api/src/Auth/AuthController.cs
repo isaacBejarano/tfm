@@ -21,10 +21,6 @@ public class AuthController(
   public ActionResult<DtoResponse<object>> Login([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
-    // FIXME: 1. Mod Seed with roles "user", "admin" and "super"
-
-    // TODO: 2. JWT auth + restrict unaouthorized routes
-
     // DB REPO //
 
     // payload dto -> model
@@ -56,7 +52,6 @@ public class AuthController(
       Password: entity.Password
     );
 
-
     // CLAIMS (entries with built-in 'ClaimTypes' as keys)
     List<Claim> claims = [
       new Claim(ClaimTypes.Email, item.Email), // store unique prop
@@ -87,7 +82,7 @@ public class AuthController(
     // headers -> JWT in <headers> (not in the body)
     Response.Headers.Append("Authorization", $"Bearer {jwt}");
 
-    // DTO -> only ID to go agenda by user ID
+    // DTO -> only ID to go to usres/:id/agenda
     var dto = new DtoResponse<object>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }

@@ -25,12 +25,9 @@ public class UserRepositoryService(
   }
 
   // GET "users/"
-  public IEnumerable<User> ReadAllByRoles(string[] rolesManaged) {
-    return (rolesManaged.Length > 1)
-      ? [.. _ctx.Users.Where(u => u.Roles.Any(r => rolesManaged.Contains(r)))] // clone
-      : (rolesManaged.Length == 1)
-      ? [.. _ctx.Users.Where(u => u.Roles.Contains(rolesManaged[0]))] // clone
-      : [];
+  public IEnumerable<User> ReadAllByRoles(UserRole[] targetRoles) {
+    string[] roles = [.. targetRoles.Select(r => r.ToString())];
+    return _ctx.Users.Where(u => u.Roles.Any(r => roles.Contains(r)));
   }
 
   // GET users/:id

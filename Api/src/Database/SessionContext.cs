@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Database;
@@ -21,7 +20,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Kalush",
       Id = Guid.Parse("0195e280-1000-7100-8000-000000000001"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:00.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedUser2 = new() {
       Email = "Dorofeeva@yopmail.com",
@@ -29,7 +28,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Dorofeeva",
       Id = Guid.Parse("0195e280-1001-7100-8000-000000000002"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:05.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedUser3 = new() {
       Email = "Kola@yopmail.com",
@@ -37,7 +36,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Kola",
       Id = Guid.Parse("0195e280-1002-7100-8000-000000000003"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:10.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedUser4 = new() {
       Email = "Onuka@yopmail.com",
@@ -45,7 +44,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Onuka",
       Id = Guid.Parse("0195e280-1003-7100-8000-000000000004"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:15.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedUser5 = new() {
       Email = "Parfeniuk@yopmail.com",
@@ -53,7 +52,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Parfeniuk",
       Id = Guid.Parse("0195e280-1004-7100-8000-000000000005"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:20.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedUser6 = new() {
       Email = "Anonymous@yopmail.com",
@@ -61,7 +60,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = null,
       Id = Guid.Parse("0195e280-1006-7100-8000-000000000006"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:25.150Z"),
-      Roles = ["User"]
+      Roles = [nameof(UserRole.User)]
     };
     User seedAdmin = new() {
       Email = "Tribunal@yopmail.com",
@@ -69,7 +68,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Tribunal",
       Id = Guid.Parse("0195e280-1005-7100-8000-000000000007"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:30.150Z"),
-      Roles = ["Admin"]
+      Roles = [nameof(UserRole.Admin)]
     };
     User seedSuper = new() {
       Email = "Super@yopmail.com",
@@ -77,7 +76,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Name = "Super admin",
       Id = Guid.Parse("0195e280-1005-7100-8000-000000000008"),
       Created = DateTimeOffset.Parse("2026-06-06T12:00:35.150Z"),
-      Roles = ["Super"]
+      Roles = [nameof(UserRole.Super)]
     };
 
     builder.Entity<User>().HasData(

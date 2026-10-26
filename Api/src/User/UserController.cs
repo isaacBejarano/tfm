@@ -60,25 +60,24 @@ public class UserController(
 
 
   // GET "/users"
-  [Authorize(Roles = "Admin, Super")]
   [HttpGet]
-  // [Authorize]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
   public ActionResult<DtoResponse<DtoUser>> List() {
     // AUTH -> global config as middleware
 
     // 'ClaimsPrincipal' inherited, to filter User List in DTO
     ClaimsPrincipal ctxUser = User;
     // TODO: encapsulate into SRV
-    string[] rolesManaged = User.IsInRole("Super")
-      ? ["Admin", "User"]
-      : User.IsInRole("Admin")
-      ? ["User"]
+    UserRole[] targetRoles = User.IsInRole(nameof(UserRole.Super))
+      ? [UserRole.Admin, UserRole.User]
+      : User.IsInRole(nameof(UserRole.Admin))
+      ? [UserRole.User]
       : [];
 
     // TODO: enum Roles
 
     // DB REPO //
-    User[] users = [.. _userRepoSrv.ReadAllByRoles(rolesManaged)];
+    User[] users = [.. _userRepoSrv.ReadAllByRoles(targetRoles)]; // clone
 
     // DTO //
 
@@ -101,7 +100,7 @@ public class UserController(
 
   // GET "/users/:id"
   [HttpGet("{id:Guid}")]
-  [Authorize(Roles = "super,admin,user")]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
 
