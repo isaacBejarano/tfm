@@ -1,12 +1,12 @@
-### HTTPS only
+### <- HTTPS only
 @Api = https://localhost:7247/api/v1
 
 
-### POST "/auth" - TEST "no payload" --> 400 Bad Request
+### POST "/auth" - Login "no payload" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
-### POST "/auth" - TEST "all empty fields invalid" --> 400 Bad Request
+### POST "/auth" - Login "all empty fields invalid" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -15,7 +15,7 @@ Content-Type: application/json
   "password":""
 }
 
-### POST "/auth" - TEST "invalid field:email too short & other fields invalid" --> 400 Bad Request
+### POST "/auth" - Login "invalid field:email too short & other fields invalid" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -24,7 +24,7 @@ Content-Type: application/json
   "password":""
 }
 
-### POST "/auth" - TEST "invalid field:email pattern & other fields invalid" --> 400 Bad Request
+### POST "/auth" - Login "invalid field:email pattern & other fields invalid" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -33,7 +33,7 @@ Content-Type: application/json
   "password":""
 }
 
-### POST "/auth" - TEST "field:email OK & invalid field:password required" --> 400 Bad Request
+### POST "/auth" - Login "field:email OK & invalid field:password required" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -42,7 +42,7 @@ Content-Type: application/json
   "password":""
 }
 
-### POST "/auth" - TEST "invalid field:password too short & field:password required OK" --> 400 Bad Request
+### POST "/auth" - Login "invalid field:password too short & field:password required OK" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -51,7 +51,7 @@ Content-Type: application/json
   "password":"1234567"
 }
 
-### POST "/auth" - TEST "invalid field:password pattern & other fields OK" --> 400 Bad Request
+### POST "/auth" - Login "invalid field:password pattern & other fields OK" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -61,7 +61,7 @@ Content-Type: application/json
 }
 
 
-### POST "/auth" - TEST "wrong email" -> 400 Bad Request
+### POST "/auth" - Login "wrong email" -> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -70,7 +70,7 @@ Content-Type: application/json
   "password":"Ab@12345"
 }
 
-### POST "/auth" - TEST "wrong password" -> 400 Bad Request
+### POST "/auth" - Login "wrong password" -> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
 
@@ -79,12 +79,39 @@ Content-Type: application/json
   "password":"Aa@00000"
 }
 
-### POST "/auth" - TEST login (right credentials) -> 200 OK
+### POST "/auth" - Login (right credentials of NEW USER with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
   "email":"Kazka@yopmail.com",
   "password":"Ff@12345"
+}
+
+### POST "/auth" - Login (right credentials of SEED USER with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Dorofeeva@yopmail.com",
+  "password":"Bb@12345"
+}
+
+### POST "/auth" - Login (right credentials of SEED ADMIN with Role 'Admin') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Tribunal@yopmail.com",
+  "password":"Tribunal@uoc2026"
+}
+
+### POST "/auth" - Login (right credentials of SEED SUPERADMIN with Role 'Super') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Super@yopmail.com",
+  "password":"Super@uoc2026"
 }
 

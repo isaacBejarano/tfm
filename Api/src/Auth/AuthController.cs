@@ -46,36 +46,46 @@ public class AuthController(
       return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
     }
 
-    // model -> res dto
-    DtoId item = new(entity.Id);
+    // TODO: encapsulate this logic into a TokenService
 
-    // TODO: CLAIMS / ROLES
-    Claim[] claimsSuper =
-    [
-      new Claim("Id", item.Id.ToString()),
-      new Claim("Roles", "user, admin")
+    // model -> res dto
+    DtoUser item = new(
+      Id: entity.Id,
+      Email: entity.Email,
+      Name: entity.Name,
+      Password: entity.Password
+    );
+
+
+    // CLAIMS (entries with built-in 'ClaimTypes' as keys)
+    List<Claim> claims = [
+      new Claim(ClaimTypes.Email, item.Email), // store unique prop
+      new Claim(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString()) // identify unique token
     ];
 
+    foreach (var role in entity.Roles) {
+      var claim = new Claim(ClaimTypes.Role, role); // store roles
+      if (claim == null) continue;
+      claims.Add(claim);
+    }
+
     // common tokens props
-    var _expires = uint.Parse(_config["AccessToken:Expires"]!);
+    var _expires = uint.Parse(_config["AccessToken:Expires"]!); // FIXME: set to 6 hours if no Refresh Token available
     var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AccessToken:SecretKey"]!));
 
     var tokenAccess = new JwtSecurityToken(
         issuer: _config["AccessToken:Issuer"]!,
         audience: _config["AccessToken:Audience"]!,
-        claims: claimsSuper,
+        claims,
         notBefore: DateTimeOffset.UtcNow.UtcDateTime,
-        expires: DateTimeOffset.UtcNow.AddMinutes(_expires).UtcDateTime, // TODO: 1 week
+        expires: DateTimeOffset.UtcNow.AddMinutes(_expires).UtcDateTime, // TODO: FASE 2: set to 1 week
         signingCredentials: new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256)
     );
 
-    // TODO: validate JWT?
     var jwt = new JwtSecurityTokenHandler().WriteToken(tokenAccess);
-
 
     // headers -> JWT in <headers> (not in the body)
     Response.Headers.Append("Authorization", $"Bearer {jwt}");
-
 
     // DTO -> only ID to go agenda by user ID
     var dto = new DtoResponse<object>([item], "Usuario autenticado.");

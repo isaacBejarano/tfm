@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(SessionContext))]
-    [Migration("20261021203725_Init")]
+    [Migration("20261026183746_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -48,6 +48,10 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.PrimitiveCollection<string[]>("Roles")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<DateTimeOffset?>("Updated")
                         .HasColumnType("timestamp with time zone");
 
@@ -62,10 +66,11 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("0195e280-1000-7100-8000-000000000001"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 18, 6, 36, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 0, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kalush@yopmail.com",
                             Name = "Kalush",
-                            Password = "AQAAAAIAAYagAAAAEGwHgGIpRMXWQEvkORiPfV6rtNf3mgCqvdfJA115SNOSj+2r2qfzc+kjluWj3OytXw=="
+                            Password = "AQAAAAIAAYagAAAAEGwHgGIpRMXWQEvkORiPfV6rtNf3mgCqvdfJA115SNOSj+2r2qfzc+kjluWj3OytXw==",
+                            Roles = new[] { "User" }
                         },
                         new
                         {
@@ -73,46 +78,61 @@ namespace Api.Migrations
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 5, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Dorofeeva@yopmail.com",
                             Name = "Dorofeeva",
-                            Password = "AQAAAAIAAYagAAAAEHCYfGDeayZq/9Gi0gjYFQwNpMYM6+UJJw43Z6FwrBwJTnpcYcGS4q0hD0wNc4g9uA=="
+                            Password = "AQAAAAIAAYagAAAAEHCYfGDeayZq/9Gi0gjYFQwNpMYM6+UJJw43Z6FwrBwJTnpcYcGS4q0hD0wNc4g9uA==",
+                            Roles = new[] { "User" }
                         },
                         new
                         {
                             Id = new Guid("0195e280-1002-7100-8000-000000000003"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 11, 320, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 10, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kola@yopmail.com",
                             Name = "Kola",
-                            Password = "AQAAAAIAAYagAAAAELtGwVxD76L9NvJBwWoBaHJ+6jPxX58iSqC0Yb1bJj7Kb7GiBgUz/EIaY/MtwNSN1Q=="
+                            Password = "AQAAAAIAAYagAAAAELtGwVxD76L9NvJBwWoBaHJ+6jPxX58iSqC0Yb1bJj7Kb7GiBgUz/EIaY/MtwNSN1Q==",
+                            Roles = new[] { "User" }
                         },
                         new
                         {
                             Id = new Guid("0195e280-1003-7100-8000-000000000004"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 18, 490, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 15, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Onuka@yopmail.com",
                             Name = "Onuka",
-                            Password = "AQAAAAIAAYagAAAAEJ+PnhCcxUVxFzAy8scD19KDucHiGgpHf2uSK1rw/SfXYPefcJO0yH39hhRWVDiNKw=="
+                            Password = "AQAAAAIAAYagAAAAEJ+PnhCcxUVxFzAy8scD19KDucHiGgpHf2uSK1rw/SfXYPefcJO0yH39hhRWVDiNKw==",
+                            Roles = new[] { "User" }
                         },
                         new
                         {
                             Id = new Guid("0195e280-1004-7100-8000-000000000005"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 25, 710, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 20, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Parfeniuk@yopmail.com",
                             Name = "Parfeniuk",
-                            Password = "AQAAAAIAAYagAAAAEB5nPeoMDxsQpa2lLQn/61jmKZe4XbsI9W01NeoCRHx69UERvu/Dc5B7fVDxXUqn8w=="
+                            Password = "AQAAAAIAAYagAAAAEB5nPeoMDxsQpa2lLQn/61jmKZe4XbsI9W01NeoCRHx69UERvu/Dc5B7fVDxXUqn8w==",
+                            Roles = new[] { "User" }
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1005-7100-8000-000000000006"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 33, 880, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("0195e280-1006-7100-8000-000000000006"),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 25, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "Anonymous@yopmail.com",
+                            Password = "AQAAAAIAAYagAAAAEPvNNRBeFpA9snhyBGCdYEZ3/EqHvrCUMawAIzfHxoDMDl5HA7TC+JL8wyTIxFMSEA==",
+                            Roles = new[] { "User" }
+                        },
+                        new
+                        {
+                            Id = new Guid("0195e280-1005-7100-8000-000000000007"),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 30, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Tribunal@yopmail.com",
                             Name = "Tribunal",
-                            Password = "AQAAAAIAAYagAAAAEHsuE/FMumGyWhg0+txuAkz6gTXKnbgkSOmuCc+rnr3VTdjastEqgvs1Srr+8I3Jiw=="
+                            Password = "AQAAAAIAAYagAAAAEHsuE/FMumGyWhg0+txuAkz6gTXKnbgkSOmuCc+rnr3VTdjastEqgvs1Srr+8I3Jiw==",
+                            Roles = new[] { "Admin" }
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1006-7100-8000-000000000007"),
-                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 42, 50, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "Anonymous@yopmail.com",
-                            Password = "AQAAAAIAAYagAAAAEPvNNRBeFpA9snhyBGCdYEZ3/EqHvrCUMawAIzfHxoDMDl5HA7TC+JL8wyTIxFMSEA=="
+                            Id = new Guid("0195e280-1005-7100-8000-000000000008"),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 35, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "Super@yopmail.com",
+                            Name = "Super admin",
+                            Password = "AQAAAAIAAYagAAAAEEdbb8s8Cha+UGEo6NaggLw+/jVUtJHJf/HaZDhdYAVFCecKG/qnEiJPvzmxf0RnWA==",
+                            Roles = new[] { "Super" }
                         });
                 });
 #pragma warning restore 612, 618

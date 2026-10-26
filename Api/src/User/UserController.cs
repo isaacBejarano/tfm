@@ -29,7 +29,8 @@ public class UserController(
       Email = payload.Email,
       Password = payloadPasswordHashed,
       Name = payload.Name,
-      Created = DateTimeOffset.UtcNow
+      Created = DateTimeOffset.UtcNow,
+      Roles = ["User"]
     };
 
     var entityHasher = new PasswordHasher<User>();
@@ -58,20 +59,13 @@ public class UserController(
 
 
   // GET "/user"
+  [Authorize(Roles = "Admin, Super")]
   [HttpGet]
   // [Authorize]
-  [Authorize(Roles = "super")]
   public ActionResult<DtoResponse<DtoUser>> List() {
-    // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
-
-    // if (HttpContext.Current.User is ClaimsPrincipal principal) {
-    //   foreach (Claim claim in principal.Claims) {
-    //     Response.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
-    //   }
-    // }
+    // AuthN + AuthZ global config as middleware in Program.cs
 
     // DB REPO //
-
     User[] users = [.. _userRepoSrv.ReadAll()];
 
     // DTO //
@@ -88,7 +82,6 @@ public class UserController(
         )
       )];
     }
-
     var dto = new DtoResponse<DtoUser>(items, "Lista de usuarios obtenida con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }

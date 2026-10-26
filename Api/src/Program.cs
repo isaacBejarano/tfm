@@ -4,14 +4,13 @@ global using Api.Interfaces;
 global using Api.Models;
 global using Api.Repositories;
 global using Api.Shared;
+
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-
 
 
 // 1. BUILDER (pattern) //
@@ -51,21 +50,24 @@ builder.Services
   })
   .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
     opts => {
+      opts.SaveToken = true;
+
       // Identity
       opts.Authority = builder.Configuration["AccessToken:Issuer"];
       opts.Audience = builder.Configuration["AccessToken:Audience"];
 
       // Token Validation -> Check it is for the app, issued by a trusted Identity Provider (IDP), whose lifetime is in range and was not tampered.
-      var issuerSigningKey = builder.Configuration["AccessToken:SecretKey"]!;
+      var accessTokenSecretKey = builder.Configuration["AccessToken:SecretKey"]!;
       opts.TokenValidationParameters = new TokenValidationParameters {
-        ValidIssuer = builder.Configuration["AccessToken:Issuer"],
         ValidAudience = builder.Configuration["AccessToken:Audience"], // only Kübello client app
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey)),
+        ValidIssuer = builder.Configuration["AccessToken:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(accessTokenSecretKey)),
+        ClockSkew = TimeSpan.Zero, // to set expiry to <= 5 min.
         // validations
-        ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true,
+        ValidateIssuer = true,
         ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
       };
 
       // Context here is 'JwtBearerOptions' and lives before and outside the MVC controllers. Therefore, 'ActionContext' ctx cannot be used here. 'JwtBearerOptions' requires a low-level HTTP response.
@@ -82,17 +84,21 @@ builder.Services
         },
         // Hook for AuthZ FORBID -> ERROR 403
         OnForbidden = async ctx => {
-          // get AuthN user details -> "sub" (here "Id")-> the user the token refers to
-          string userId = ctx.HttpContext.User.FindFirst("Id")?.Value ?? "inexistente.";
-          string[] userRoles = [
-            ..ctx.HttpContext.User.FindAll("Roles").Select(c => c.Value)
-          ];
-          string userRolesToString = string.Join(", ", userRoles);
+          // AuthN user details
+          ClaimsPrincipal ctxUser = ctx.HttpContext.User;
+          string userEmail = ctxUser.FindFirst(ClaimTypes.Email)?.Value ?? "";
+          string[] userRoles = [.. ctxUser.FindAll(ClaimTypes.Role).Select(role => role.Value)];
 
           // headers + DTO
           ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
           ctx.Response.ContentType = "application/json";
-          var dto = new DtoResponse<object>([], $"Usuario '{userId}' con roles '{userRolesToString}' insuficientes.");
+          string userEmailSubstr = userEmail.Length > 1 ? $"con correo electrónico '{userEmail}'" : "sin correo electrónico";
+          string userRolesSubstr = userRoles.Length == 1
+            ? $"con rol '{string.Join(", ", userRoles)}'"
+            : userRoles.Length > 1
+            ? $"con roles '{string.Join(", ", userRoles)}'"
+            : "sin roles";
+          var dto = new DtoResponse<object>([], $"Usuario {userEmailSubstr} y {userRolesSubstr} no tiene permisos suficientes para acceder a este recurso.");
           await ctx.Response.WriteAsJsonAsync(dto);
         }
       };
