@@ -81,8 +81,8 @@ POST {{Api}}/users
 Content-Type: application/json
 
 {
-  "email":"Kazka@yopmail.com",
-  "password":"Ff@12345"
+  "email":"Kazka2@yopmail.com",
+  "password":"Ff2@12345"
 }
 
 ### POST "/users" - Signup creation repeats (all fields) -> 409 Conflict

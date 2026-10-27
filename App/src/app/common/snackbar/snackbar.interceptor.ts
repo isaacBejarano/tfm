@@ -22,6 +22,8 @@ export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => 
   );
 };
 
+// TODO: ERROR 502 - No APi (Bad GAetway)
+
 // AUX
 
 const snackbarNotify = (
@@ -37,8 +39,5 @@ const snackbarNotify = (
     .setIcon(res.ok ? 'icon-check' : 'icon-warning')
     .setMsg(dto.msg)
     .notify()
-    .during(3000); // builder TODO:
+    .during(3000);
 };
-
-// TODO: add to DOCUMENTATIONthe "Result Type Pattern"
-// https://en.wikipedia.org/wiki/Result_type

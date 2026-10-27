@@ -88,7 +88,6 @@ export class Btn {
       // none...
     ];
 
-    console.warn('ASSOC');
     const fxToString: string = effects
       .map((fx) => effectAssoc.find((assoc) => assoc[0] === fx))
       .map((assoc) => (assoc ? assoc[1] : ''))

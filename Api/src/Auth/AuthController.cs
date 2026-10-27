@@ -18,7 +18,7 @@ public class AuthController(
 
   // POST "/auth"
   [HttpPost]
-  public ActionResult<DtoResponse<object>> Login([FromBody] DtoUser payload) {
+  public ActionResult<DtoResponse<DtoId>> Login([FromBody] DtoUser payload) {
     // VALIDATION within 'DtoUser' //
 
     // DB REPO //
@@ -44,17 +44,9 @@ public class AuthController(
 
     // TODO: encapsulate this logic into a TokenService
 
-    // model -> res dto
-    DtoUser item = new(
-      Id: entity.Id,
-      Email: entity.Email,
-      Name: entity.Name,
-      Password: entity.Password
-    );
-
     // CLAIMS (entries with built-in 'ClaimTypes' as keys)
     List<Claim> claims = [
-      new Claim(ClaimTypes.Email, item.Email), // store unique prop
+      new Claim(ClaimTypes.Email, entity.Email), // store unique prop
       new Claim(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString()) // identify unique token
     ];
 
@@ -83,6 +75,7 @@ public class AuthController(
     Response.Headers.Append("Authorization", $"Bearer {jwt}");
 
     // DTO -> only ID to go to usres/:id/agenda
+    DtoId item = new(entity.Id);
     var dto = new DtoResponse<object>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }

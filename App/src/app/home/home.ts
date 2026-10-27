@@ -1,12 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, OnDestroy } from '@angular/core';
 import { filter, map, of, switchMap } from 'rxjs';
 
 import { FormAuth } from '@app/auth/form-auth/form-auth';
+import { AuthService } from '@auth/auth.service';
 import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
-import { WebService } from '@shared/services/web.service';
-import { DtoId, DtoResponse } from '../shared/types/dto-response.type';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +13,8 @@ import { DtoId, DtoResponse } from '../shared/types/dto-response.type';
 })
 export class Home implements OnDestroy {
   // DI
-  private readonly _http = inject(HttpClient);
-  private readonly _webSrv = inject(WebService);
   private readonly _storeSrv = inject(StoreService);
+  private readonly _authSrv = inject(AuthService);
 
   // CTRL
   ////
@@ -25,31 +22,29 @@ export class Home implements OnDestroy {
   readonly store = computed(() => this._storeSrv.state());
 
   protected signup(payload: UserPayloadSignup | UserPayloadLogin): void {
-    // TODO: encapsulate into AuthSrv
-    this._http
-      .post(this._webSrv.domain.api.get() + '/users', payload)
-      .pipe(
-        switchMap(() => {
-          return of(this._storeSrv.setState('formAuth', 'login'));
-        }),
-      )
-      .subscribe(console.log); // 1-time subscription
+    this._authSrv
+      .signup(payload)
+      .pipe(switchMap(() => of(this._storeSrv.setState('formAuth', 'login'))))
+      .subscribe(); // 1-time subscription
   }
 
   protected login(payload: UserPayloadLogin): void {
-    // TODO: encapsulate into AuthSrv
-    this._http
-      .post<DtoResponse<DtoId>>(this._webSrv.domain.api.get() + '/auth', payload)
+    this._authSrv
+      .login(payload)
       .pipe(
-        filter((res) => res.count === 1),
-        map((res) => res.items[0].id),
-        switchMap((id) => {
+        filter((dto) => dto.count === 1),
+        map((dto) => dto.items[0].id),
+        switchMap((userId) => {
           this._storeSrv.setState('formAuth', 'none');
-          this._storeSrv.setState('accesToken', 'FIXME:');
-          return of(this._webSrv.navigateToDynamicRoute(`user/${id}/agenda`));
+          // TODO: TOKEN interceptor -->  this._storeSrv.setState('accesToken', 'FIXME:');
+          // TODO: switchMap call to endpoint "user/:id/agendas"
+          // if DTO agenda [] -> SPA route to "agendas/new"
+          // else if DTO agenda [Id:] -> SPA route to "agendas/:id"
+          return of(userId);
+          // return of(this._webSrv.navigateToDynamicRoute(`user/${id}/agenda`));
         }),
       )
-      .subscribe(console.log); // 1-time subscription
+      .subscribe(); // 1-time subscription
   }
 
   ngOnDestroy(): void {

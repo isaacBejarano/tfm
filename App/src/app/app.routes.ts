@@ -51,12 +51,6 @@ const routes: SpaRoutes = [
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
     // TODO: AUTH guard
   },
-  {
-    title: `${title}`,
-    path: 'agendas/:id',
-    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
-    // TODO: AUTH guard
-  },
   //...
   // LAST!
   {

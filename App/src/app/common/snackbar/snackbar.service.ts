@@ -44,10 +44,11 @@ export class SnackbarService {
   }
 
   notify(state: boolean = true) {
-    this._open$$.next(state); // last piped
+    this._open$$.next(state);
     return this;
   }
 
+  // last pipe
   during(duration: number) {
     return setTimeout(() => this.notify(false), duration);
   }
