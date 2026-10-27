@@ -7,12 +7,12 @@ import { filter, map, tap } from 'rxjs';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
-import { LoaderService } from '@app/common/components/loader/loader.service';
-import { Footer } from '@common/components/footer/footer';
-import { Header } from '@common/components/header/header';
-import { Loader } from '@common/components/loader/loader';
-import { Snackbar } from '@common/components/snackbar/snackbar';
-import { SnackbarService } from '@common/components/snackbar/snackbar.service';
+import { Footer } from '@app/common/footer/footer';
+import { Header } from '@app/common/header/header';
+import { LoaderService } from '@app/common/loader/loader.service';
+import { Snackbar } from '@app/common/snackbar/snackbar';
+import { SnackbarService } from '@app/common/snackbar/snackbar.service';
+import { Loader } from '@common/loader/loader';
 import { WebService } from '@shared/services/web.service';
 
 @Component({

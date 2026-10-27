@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
+import { SnackbarService } from '@app/common/snackbar/snackbar.service';
 import { IconSnackbar } from '@app/shared/types/icons.type';
-import { SnackbarService } from '@common/components/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-snack',

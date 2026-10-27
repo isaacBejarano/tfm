@@ -5,8 +5,8 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { SnackbarService } from '@app/common/snackbar/snackbar.service';
 import { DtoResponse } from '@app/shared/types/dto-response.type';
-import { SnackbarService } from '@common/components/snackbar/snackbar.service';
 import { catchError, filter, tap, throwError } from 'rxjs';
 
 export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => {

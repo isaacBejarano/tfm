@@ -27,7 +27,7 @@ export class Home implements OnDestroy {
   protected signup(payload: UserPayloadSignup | UserPayloadLogin): void {
     // TODO: encapsulate into AuthSrv
     this._http
-      .post(this._webSrv.domain.api.get() + '/user', payload)
+      .post(this._webSrv.domain.api.get() + '/users', payload)
       .pipe(
         switchMap(() => {
           return of(this._storeSrv.setState('formAuth', 'login'));
