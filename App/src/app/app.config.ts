@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from '@app/app.routes';
-import { httpResponseMessageInterceptor } from '@app/common/snackbar/snackbar.interceptor';
+import { httpResponseMessageInterceptor } from '@app/common/snackbar/http-response-message.interceptor';
 import { loaderInterceptor } from '@common/loader/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {

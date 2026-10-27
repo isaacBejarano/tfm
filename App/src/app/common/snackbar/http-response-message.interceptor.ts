@@ -3,6 +3,7 @@ import {
   HttpEventType,
   HttpInterceptorFn,
   HttpResponse,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { SnackbarService } from '@app/common/snackbar/snackbar.service';
@@ -14,15 +15,13 @@ export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => 
 
   return next(req).pipe(
     filter((e) => e.type === HttpEventType.Response),
-    tap((res) => snackbarNotify(res, _snackbarSrv)),
-    catchError((res: HttpErrorResponse) => {
-      snackbarNotify(res, _snackbarSrv); // body dto
-      return throwError(() => res.status); // header status code
+    tap((response) => snackbarNotify(response, _snackbarSrv)),
+    catchError((error: HttpErrorResponse) => {
+      snackbarNotify(error, _snackbarSrv); // body dto
+      return throwError(() => error.status); // header status code
     }),
   );
 };
-
-// TODO: ERROR 502 - No APi (Bad GAetway)
 
 // AUX
 
@@ -30,14 +29,26 @@ const snackbarNotify = (
   res: HttpResponse<unknown> | HttpErrorResponse,
   snackbarSrv: SnackbarService,
 ) => {
-  let dto = res.ok
-    ? (res.body as DtoResponse<unknown>)
-    : ((res as HttpErrorResponse).error as DtoResponse<unknown>);
+  let msg: string = 'Error no gestionado.';
+
+  if (res.ok) msg = (res.body as DtoResponse<unknown>).msg;
+  else {
+    const resError = res as HttpErrorResponse;
+    msg = resError.error.msg ?? clientErrorMsg(resError.status);
+  }
 
   // update snackbar state
   snackbarSrv
     .setIcon(res.ok ? 'icon-check' : 'icon-warning')
-    .setMsg(dto.msg)
+    .setMsg(msg)
     .notify()
-    .during(3000);
+    .during(4000);
+};
+
+// AUX
+
+const clientErrorMsg = (status: unknown): string => {
+  return status === HttpStatusCode.BadGateway
+    ? `Error ${status}: Puerta de enlace no válida. La API podría estar desconectada.`
+    : 'Error no gestionado.';
 };
