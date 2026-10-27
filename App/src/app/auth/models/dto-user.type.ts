@@ -3,12 +3,14 @@ type User = {
   email: string;
   password: string;
   name: string; // nullable when sent as paylaod
+  roles: UserRole[];
 };
 
-type UserPayloadSignup = Omit<User, 'id'> & { name: string | null };
-type UserPayloadLogin = Omit<User, 'id' | 'name'>;
+type UserPayloadSignup = Omit<User, 'id' | 'roles'> & { name: string | null };
+type UserPayloadLogin = Omit<User, 'id' | 'name' | 'roles'>;
+type UserRole = 'User' | 'Admin' | 'Super';
 
-export type { User, UserPayloadLogin, UserPayloadSignup };
+export type { User, UserPayloadLogin, UserPayloadSignup, UserRole };
 
 /*
  * VALIDATIONS [id]

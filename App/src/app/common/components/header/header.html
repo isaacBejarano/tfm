@@ -15,12 +15,12 @@
         <nav
           class="ml-4 p-2 flex justify-center gap-8 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
         >
-          <!-- TODO: admin roles are only for maintenance, they have no agenda. Tohave one: log in as 'user'  -->
-          @if (role() === 'user') {
+          <!-- TODO: 'Admin' and 'Super' roles are only for maintenance, they have no agenda. To have one: log in as 'User'  -->
+          @if (role() === 'User') {
             <app-btn label="Agenda" [css]="btnGray" />
           }
           <!-- TODO: INE selector @profile -->
-          @if (role() !== 'user') {
+          @if (role() !== 'User') {
             <app-btn label="Usuarios" [css]="btnGray" />
           }
           <app-btn label="Perfil" [css]="btnRose" />

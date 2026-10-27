@@ -8,8 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Controllers;
 
-[Route("api/v1/[controller]")]
 [ApiController]
+[Route("api/v1/[controller]")]
 public class AuthController(
   // DI
   IConfiguration _config,

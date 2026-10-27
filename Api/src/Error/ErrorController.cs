@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Errors;
 
-[ApiExplorerSettings(IgnoreApi = true)]
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class ErrorController() : ControllerBase {
   // ERROR 404 - e.g. Endpoint not found
   [Route("error/404")]

@@ -33,14 +33,15 @@ export class FormAuth implements OnInit {
 
   // MODEL + FORM
 
-  protected readonly user = signal<User>({
+  private readonly _defaultUser = signal<User>({
     id: '',
     email: '',
     password: '',
     name: '',
+    roles: ['User'],
   });
 
-  protected readonly form = form(this.user, (field) => {
+  protected readonly form = form(this._defaultUser, (field) => {
     // email
     required(field.email, { message: "El campo 'Correo electrónico' es obligatorio." });
     minLength(field.email, 6, {

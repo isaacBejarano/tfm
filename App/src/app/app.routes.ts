@@ -9,10 +9,12 @@ type SpaPaths =
   | 'cookies'
   | '**'
   // PRIVATE
-  | 'user/:id/edit' // self profile edit -> edit profile & select zone & veggies to plan
-  | 'user/:id/agenda' // self veggie agenda - weekly (and monthly?) -> link to edit if agenda empty
-  | 'admin/:id/edit/user/:id' // admins cannot modify agendas, only users profile
-  | 'admin/:id/list/user'; // admins cannot modify agendas, only users profile
+  | 'users' // list all users <- of [roles: User] when 'Admin'; of [roles: User, Admin] when 'Super'
+  | 'users/:id' // user profile details (show profile, selected zone, veggies to plant) <- [ID: Self] when 'User'; [ID: User, Self] when 'Admin'; [ID: User, Admin, Self] when 'Super'
+  | 'users/:id/edit' // user profile edit (only profile, no zones, no veggies) <- [ID: Self] when 'User'; [ID: User, Self] when 'Admin'; [ID: User, Admin, Self] when 'Super'
+  | 'agendas/new' // create user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
+  | 'agendas/:id' // read user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
+  | 'agendas/:id/edit'; // edit user weekly agenda <- only to add or remove veggies, not zones <- [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
 type SpaRote = Omit<Route, 'path'> & {
   path: SpaPaths;
   redirectTo?: SpaPaths | RedirectFunction;
@@ -45,7 +47,13 @@ const routes: SpaRoutes = [
   // PRIVATE -> TODO: add route first fragment to 'robots.txt' to prevent SEO crowling .e.g. /user/, /admin/ (no child routes)
   {
     title: `${title}`,
-    path: 'user/:id/agenda',
+    path: 'agendas/:id',
+    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title}`,
+    path: 'agendas/:id',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
     // TODO: AUTH guard
   },

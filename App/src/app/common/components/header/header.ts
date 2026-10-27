@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 
 import { FormType } from '@app/auth/types/form.type';
+import { UserRole } from '@auth/models/dto-user.type';
 import { Btn } from '@shared/components/btn/btn';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
@@ -26,7 +27,7 @@ export class Header {
   readonly btnBlue: string = Btn.style('blue', 'outline', 'normal', ['raise', 'fade', '3d-blue']);
 
   // TODO: rouer + user claims
-  readonly role = signal<'user' | 'admin' | 'super'>('user');
+  readonly role = signal<UserRole>('User');
 
   // TODO: accessToken
   readonly isLogged = computed(() => this._storeSrv.state().accesToken?.length > 0);

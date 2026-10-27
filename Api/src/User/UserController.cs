@@ -104,7 +104,7 @@ public class UserController(
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
 
-    // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+    // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query pa ram)
 
 
     // DB REPO //
