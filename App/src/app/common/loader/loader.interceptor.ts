@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpEventType, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { LoaderService } from '@common/loader/loader.service';
 import { catchError, filter, finalize, throwError } from 'rxjs';
+
+import { LoaderService } from '@common/loader/loader.service';
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const _loaderSrv = inject(LoaderService); // DI

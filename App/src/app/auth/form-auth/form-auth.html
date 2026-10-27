@@ -72,7 +72,6 @@
       }
     </div>
 
-    <!-- TODO: optional field -->
     <!-- Name -->
     @if (!(excludeFields() ?? []).includes('name')) {
       <div class="pb-2">
@@ -88,6 +87,13 @@
         />
       </div>
     }
+
+    <app-btn
+      type="button"
+      label="FIXME:"
+      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+      ($click)="autoLogin('User')"
+    />
 
     <!-- Submit -->
     <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />

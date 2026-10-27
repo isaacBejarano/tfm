@@ -16,14 +16,15 @@
           class="ml-4 p-2 flex justify-center gap-8 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
         >
           <!-- TODO: 'Admin' and 'Super' roles are only for maintenance, they have no agenda. To have one: log in as 'User'  -->
+          <!-- TODO: INE selector @ agenda -->
           @if (role() === 'User') {
-            <app-btn label="Agenda" [css]="btnGray" />
+            <app-btn [route]="navTo('agendas/:id')" label="Agenda" [css]="btnGreen" />
           }
-          <!-- TODO: INE selector @profile -->
           @if (role() !== 'User') {
-            <app-btn label="Usuarios" [css]="btnGray" />
+            <app-btn [route]="navTo('users')" label="Usuarios" [css]="btnBlue" />
           }
-          <app-btn label="Perfil" [css]="btnRose" />
+
+          <app-btn label="Perfil" [css]="btnBlue" />
           <app-btn label="Salir" [css]="btnRose" ($click)="logout()" />
         </nav>
       </header>
@@ -54,9 +55,14 @@
 
       <!-- TOP MENU PUBLIC -->
       <nav class="mt-1 p-3 2xl:p-2 flex justify-center gap-8">
-        <app-btn route="" label="Acceso" [css]="btnRose" ($click)="toggleAuthForms('login')" />
         <app-btn
-          route=""
+          [route]="navTo('')"
+          label="Acceso"
+          [css]="btnRose"
+          ($click)="toggleAuthForms('login')"
+        />
+        <app-btn
+          [route]="navTo('')"
           label="¡Regístrate!"
           [css]="btnBlue"
           ($click)="toggleAuthForms('signup')"

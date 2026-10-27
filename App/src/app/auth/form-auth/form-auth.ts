@@ -11,7 +11,12 @@ import {
 } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { User, UserPayloadLogin, UserPayloadSignup } from '@app/auth/models/dto-user.type';
+import {
+  User,
+  UserPayloadLogin,
+  UserPayloadSignup,
+  UserRole,
+} from '@app/auth/models/dto-user.type';
 import { Btn } from '@shared/components/btn/btn';
 
 @Component({
@@ -71,6 +76,9 @@ export class FormAuth implements OnInit {
 
   // CTRL
   ////
+
+  // FIXME: remove 'btnRoseSlim' if unused
+  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
 
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
@@ -136,5 +144,26 @@ export class FormAuth implements OnInit {
     }
 
     this._debounceForm$$.next(payload);
+  }
+
+  // FIXME: DEBUG
+  autoLogin(role: UserRole): void {
+    const payloadLogin: UserPayloadLogin =
+      role === 'User'
+        ? {
+            email: 'Dorofeeva@yopmail.com',
+            password: 'Bb@12345',
+          }
+        : role === 'Admin'
+          ? {
+              email: 'Tribunal@yopmail.com',
+              password: 'Tribunal@uoc2026',
+            }
+          : {
+              email: 'Super@yopmail.com',
+              password: 'Super@uoc2026',
+            };
+
+    this._debounceForm$$.next(payloadLogin);
   }
 }

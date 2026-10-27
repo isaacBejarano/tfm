@@ -60,3 +60,4 @@ const routes: SpaRoutes = [
   },
 ];
 export { routes };
+export type { SpaPaths };

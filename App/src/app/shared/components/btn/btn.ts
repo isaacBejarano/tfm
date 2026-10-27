@@ -49,7 +49,9 @@ export class Btn {
     color: 'gray' | 'rose' | 'blue' | 'green' | 'red',
     look: 'outline' = 'outline',
     shape: 'normal' | 'slim' = 'normal',
-    effects: ('raise' | 'fade' | '3d-rose' | '3d-blue' | '3d-gray')[] = ['raise'],
+    effects: ('raise' | 'fade' | '3d-rose' | '3d-blue' | '3d-gray' | '3d-green' | '3d-red')[] = [
+      'raise',
+    ],
   ): string {
     const colors = {
       gray: `${Btn.borderColors['gray']} hover:border-mauve-500 hover:shadow-mauve-500 hover:shadow-sm active:text-white text-mist-300 hover:text-mist-200`,
@@ -84,6 +86,14 @@ export class Btn {
       [
         '3d-gray',
         'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#79697b]',
+      ],
+      [
+        '3d-green',
+        'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#00c951]',
+      ],
+      [
+        '3d-red',
+        'shadow-sm inset-shadow-[0_1px_0_#ffffff46,0_-2px_0_rgb(0_0_0_/_50%),0_8px_20px_-6px_#fb2c36]',
       ],
       // none...
     ];

@@ -1,10 +1,10 @@
 import { Component, computed, inject, OnDestroy } from '@angular/core';
-import { filter, map, of, switchMap } from 'rxjs';
 
 import { FormAuth } from '@app/auth/form-auth/form-auth';
 import { AuthService } from '@auth/auth.service';
 import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
+import { map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -22,21 +22,15 @@ export class Home implements OnDestroy {
   readonly store = computed(() => this._storeSrv.state());
 
   protected signup(payload: UserPayloadSignup | UserPayloadLogin): void {
-    this._authSrv
-      .signup(payload)
-      .pipe(switchMap(() => of(this._storeSrv.setState('formAuth', 'login'))))
-      .subscribe(); // 1-time subscription
+    this._authSrv.signup(payload).subscribe(); // 1-time subscription
   }
 
   protected login(payload: UserPayloadLogin): void {
     this._authSrv
       .login(payload)
       .pipe(
-        filter((dto) => dto.count === 1),
         map((dto) => dto.items[0].id),
         switchMap((userId) => {
-          this._storeSrv.setState('formAuth', 'none');
-          // TODO: TOKEN interceptor -->  this._storeSrv.setState('accesToken', 'FIXME:');
           // TODO: switchMap call to endpoint "user/:id/agendas"
           // if DTO agenda [] -> SPA route to "agendas/new"
           // else if DTO agenda [Id:] -> SPA route to "agendas/:id"

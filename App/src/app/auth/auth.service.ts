@@ -1,11 +1,11 @@
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
+import { filter, map, Observable, tap } from 'rxjs';
 
 import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
 import { DtoId, DtoResponse } from '@shared/types/dto-response.type';
-import { filter, map, Observable } from 'rxjs';
 
 @Service()
 export class AuthService {
@@ -27,6 +27,7 @@ export class AuthService {
         filter((res) => res.status === HttpStatusCode.Created),
         map((res) => res.body),
         filter((body) => body !== null),
+        tap(() => this._storeSrv.setState('formAuth', 'login')),
       );
   }
 
@@ -38,8 +39,15 @@ export class AuthService {
       })
       .pipe(
         filter((res) => res.status === HttpStatusCode.Ok),
+        filter((res) => res.headers.get('Authorization') !== null),
+        tap((res) => {
+          const jwt = res.headers.get('Authorization')!;
+          this._storeSrv.setState('accesToken', jwt);
+          this._storeSrv.setState('formAuth', 'none');
+        }),
         map((res) => res.body),
         filter((body) => body !== null),
+        filter((dto) => dto.count === 1),
       );
   }
 }

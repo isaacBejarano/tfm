@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 
+import { SpaPaths } from '@app/app.routes';
 import { FormType } from '@app/auth/types/form.type';
 import { UserRole } from '@auth/models/dto-user.type';
 import { Btn } from '@shared/components/btn/btn';
@@ -25,6 +26,11 @@ export class Header {
   readonly btnRose: string = Btn.style('rose', 'outline', 'normal', ['raise', 'fade', '3d-rose']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', 'fade', '3d-gray']);
   readonly btnBlue: string = Btn.style('blue', 'outline', 'normal', ['raise', 'fade', '3d-blue']);
+  readonly btnGreen: string = Btn.style('green', 'outline', 'normal', [
+    'raise',
+    'fade',
+    '3d-green',
+  ]);
 
   // TODO: rouer + user claims
   readonly role = signal<UserRole>('User');
@@ -37,8 +43,12 @@ export class Header {
   }
 
   logout() {
-    this._storeSrv.setState('formAuth', 'none');
     this._storeSrv.setState('accesToken', '');
+    this._storeSrv.setState('formAuth', 'none');
     this._webSrv.navigateToDynamicRoute('/');
+  }
+
+  navTo(route: SpaPaths): SpaPaths {
+    return '';
   }
 }
