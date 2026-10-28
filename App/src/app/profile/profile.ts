@@ -48,7 +48,7 @@ export class Profile {
         map((route) => route.snapshot.params['id']),
         switchMap((id) => this._getProfile(id)),
       )
-      .subscribe(console.table);
+      .subscribe();
   }
 
   private _getProfile(id: string): Observable<DtoUser> {

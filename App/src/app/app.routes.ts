@@ -1,4 +1,8 @@
 import { RedirectFunction, Route } from '@angular/router';
+
+import { authorizedAdminOrSuperGuard } from '@app/auth/authorized-admin-or-super.guard';
+import { authorizedUserGuard } from '@app/auth/authorized-user.guard';
+import { authenticatedGuard } from '@auth/authenticated.guard';
 import { Home } from '@home/home';
 
 // TODO: review after Arquitecture of Information
@@ -49,37 +53,37 @@ const routes: AppRotes = [
     title: `${title} | Lista de Usuarios`,
     path: 'users',
     loadComponent: () => import('@user/user-list').then((m) => m.UserList), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard, authorizedAdminOrSuperGuard],
   },
   {
     title: `${title} | Perfil de Usuario`,
     path: 'users/:id',
     loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard],
   },
   {
     title: `${title} | Edición de Perfil de Usuario`,
     path: 'users/:id/edit',
     loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard],
   },
   {
     title: `${title} | Nueva Agenda de Usuario`,
     path: 'agendas/new',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard, authorizedUserGuard],
   },
   {
     title: `${title} | Agenda de Usuario`,
     path: 'agendas/:id',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard, authorizedUserGuard],
   },
   {
     title: `${title} | Edición de Agenda de Usuario`,
     path: 'agendas/:id/edit',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
-    // TODO: AUTH guard
+    canActivate: [authenticatedGuard, authorizedUserGuard],
   },
   //...
   // LAST!

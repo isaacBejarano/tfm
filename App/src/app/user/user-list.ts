@@ -67,7 +67,7 @@ export class UserList {
         filter((route) => route !== null),
         switchMap(() => this._getUserList()),
       )
-      .subscribe(console.log);
+      .subscribe();
   }
 
   private _getUserList(): Observable<DtoUser[]> {

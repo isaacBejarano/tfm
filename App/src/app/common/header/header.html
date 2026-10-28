@@ -18,14 +18,12 @@
         <nav
           class="ml-4 p-2 flex justify-center gap-8 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
         >
-          <!-- TODO: 'Admin' and 'Super' roles are only for maintenance, they have no agenda. To have one: log in as 'User'  -->
           <!-- TODO: INE selector @ agenda -->
           @if (_user.roles.includes('User')) {
             <app-btn [route]="routeTo('agendas', 'new')" label="Agenda" [css]="btnGreen" />
           } @else {
             <app-btn [route]="routeTo('users')" label="Usuarios" [css]="btnBlue" />
           }
-
           <app-btn [route]="routeTo('users', _user.id)" label="Perfil" [css]="btnBlue" />
           <app-btn label="Salir" [css]="btnRose" ($click)="logout()" />
         </nav>
