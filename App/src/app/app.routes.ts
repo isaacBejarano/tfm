@@ -2,7 +2,8 @@ import { RedirectFunction, Route } from '@angular/router';
 import { Home } from '@home/home';
 
 // TODO: review after Arquitecture of Information
-type SpaPaths =
+type AppPathFragments = '' | 'rgpd' | 'cookies' | 'users' | 'agendas';
+type AppPaths =
   // PUBLIC
   | '' // home
   | 'rgpd'
@@ -15,13 +16,13 @@ type SpaPaths =
   | 'agendas/new' // create user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
   | 'agendas/:id' // read user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
   | 'agendas/:id/edit'; // edit user weekly agenda <- only to add or remove veggies, not zones <- [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
-type SpaRote = Omit<Route, 'path'> & {
-  path: SpaPaths;
-  redirectTo?: SpaPaths | RedirectFunction;
+type AppRote = Omit<Route, 'path'> & {
+  path: AppPaths;
+  redirectTo?: AppPaths | RedirectFunction;
 };
-type SpaRoutes = SpaRote[];
+type AppRotes = AppRote[];
 const title = 'Kübello';
-const routes: SpaRoutes = [
+const routes: AppRotes = [
   // PUBLIC -> TODO: allow SEO crowling by adding ActivatedRoute data custom flag "isCanonical" (app.ts)
   {
     title,
@@ -29,7 +30,6 @@ const routes: SpaRoutes = [
     pathMatch: 'full',
     component: Home, // eager --> it has the <login> and <signup> compo [+ logout() + pass recovery?]
     data: { isCanonical: true }, // only public routes!
-    // canActivate: [isNotLoggedGuard]
   },
   {
     title: `${title} | RGPD`,
@@ -38,7 +38,7 @@ const routes: SpaRoutes = [
     data: { isCanonical: true }, // only public routes!
   },
   {
-    title: `${title} | Cokies`,
+    title: `${title} | Cookies`,
     path: 'cookies',
     loadComponent: () => import('@cookies/cookies').then((m) => m.Cookies), // lazy
     data: { isCanonical: true }, // only public routes!
@@ -46,8 +46,38 @@ const routes: SpaRoutes = [
   //...
   // PRIVATE -> TODO: add route first fragment to 'robots.txt' to prevent SEO crowling .e.g. /user/, /admin/ (no child routes)
   {
-    title: `${title}`,
+    title: `${title} | Lista de Usuarios`,
+    path: 'users',
+    loadComponent: () => import('@user/user-list').then((m) => m.UserList), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title} | Perfil de Usuario`,
+    path: 'users/:id',
+    loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title} | Edición de Perfil de Usuario`,
+    path: 'users/:id/edit',
+    loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title} | Nueva Agenda de Usuario`,
+    path: 'agendas/new',
+    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title} | Agenda de Usuario`,
     path: 'agendas/:id',
+    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
+    // TODO: AUTH guard
+  },
+  {
+    title: `${title} | Edición de Agenda de Usuario`,
+    path: 'agendas/:id/edit',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
     // TODO: AUTH guard
   },
@@ -60,4 +90,4 @@ const routes: SpaRoutes = [
   },
 ];
 export { routes };
-export type { SpaPaths };
+export type { AppPathFragments };

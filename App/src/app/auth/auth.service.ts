@@ -2,10 +2,10 @@ import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { filter, map, Observable, tap } from 'rxjs';
 
-import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
+import { DtoResponse, DtoUser } from '@app/shared/types/dto.type';
+import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
-import { DtoId, DtoResponse } from '@shared/types/dto-response.type';
 
 @Service()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
   // SRV
   ////
 
-  signup(payload: UserPayloadSignup | UserPayloadLogin): Observable<DtoResponse<Object>> {
+  signup(payload: UserPayloadSignup | UserPayloadLogin): Observable<Object> {
     return this._http
       .post<DtoResponse<Object>>(this._webSrv.domain.api.get() + '/users', payload, {
         responseType: 'json',
@@ -27,13 +27,14 @@ export class AuthService {
         filter((res) => res.status === HttpStatusCode.Created),
         map((res) => res.body),
         filter((body) => body !== null),
+        map((body) => body.items),
         tap(() => this._storeSrv.setState('formAuth', 'login')),
       );
   }
 
-  login(payload: UserPayloadLogin): Observable<DtoResponse<DtoId>> {
+  login(payload: UserPayloadLogin): Observable<DtoUser> {
     return this._http
-      .post<DtoResponse<DtoId>>(this._webSrv.domain.api.get() + '/auth', payload, {
+      .post<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + '/auth', payload, {
         responseType: 'json',
         observe: 'response',
       })
@@ -43,11 +44,15 @@ export class AuthService {
         tap((res) => {
           const jwt = res.headers.get('Authorization')!;
           this._storeSrv.setState('accesToken', jwt);
-          this._storeSrv.setState('formAuth', 'none');
         }),
         map((res) => res.body),
         filter((body) => body !== null),
         filter((dto) => dto.count === 1),
+        map((res) => res.items[0]),
+        tap((user) => {
+          this._storeSrv.setState('loggedUser', user);
+          this._storeSrv.setState('formAuth', '');
+        }),
       );
   }
 }

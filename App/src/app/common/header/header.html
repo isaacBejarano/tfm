@@ -1,14 +1,17 @@
+@let _user = loggedUser();
+
 <div
   class="w-full sticky top-0 bg-linear-to-b from-mist-950 from-90% to-mist-950/50 border border-mist-900/75"
 >
   <!-- PRIVATE -->
-  @if (isLogged()) {
+  @if (_user !== null) {
     <div class="max-w-(--w-desktop) mx-auto p-2">
       <!-- BRAND -->
       <header class="flex md:gap-8">
         <!-- icon -->
         <div
-          class="size-[35px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain animate-fade-in"
+          class="size-[35px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain animate-fade-in cursor-pointer"
+          (click)="clearHome()"
         ></div>
 
         <!-- TOP MENU PRIVATE -->
@@ -17,14 +20,13 @@
         >
           <!-- TODO: 'Admin' and 'Super' roles are only for maintenance, they have no agenda. To have one: log in as 'User'  -->
           <!-- TODO: INE selector @ agenda -->
-          @if (role() === 'User') {
-            <app-btn [route]="navTo('agendas/:id')" label="Agenda" [css]="btnGreen" />
-          }
-          @if (role() !== 'User') {
-            <app-btn [route]="navTo('users')" label="Usuarios" [css]="btnBlue" />
+          @if (_user.roles.includes('User')) {
+            <app-btn [route]="routeTo('agendas', 'new')" label="Agenda" [css]="btnGreen" />
+          } @else {
+            <app-btn [route]="routeTo('users')" label="Usuarios" [css]="btnBlue" />
           }
 
-          <app-btn label="Perfil" [css]="btnBlue" />
+          <app-btn [route]="routeTo('users', _user.id)" label="Perfil" [css]="btnBlue" />
           <app-btn label="Salir" [css]="btnRose" ($click)="logout()" />
         </nav>
       </header>
@@ -39,7 +41,8 @@
       <header class="flex md:gap-8 justify-between">
         <!-- icon -->
         <div
-          class="size-[45px] md:size-[50px] 2xl:size-[70px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain inset-shadow-sm inset-shadow-black animate-fade-in"
+          class="size-[45px] md:size-[50px] 2xl:size-[70px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain animate-fade-in cursor-pointer hover:rotate-5"
+          (click)="clearHome()"
         ></div>
 
         <!-- logo -->
@@ -56,13 +59,13 @@
       <!-- TOP MENU PUBLIC -->
       <nav class="mt-1 p-3 2xl:p-2 flex justify-center gap-8">
         <app-btn
-          [route]="navTo('')"
+          [route]="routeTo('')"
           label="Acceso"
           [css]="btnRose"
           ($click)="toggleAuthForms('login')"
         />
         <app-btn
-          [route]="navTo('')"
+          [route]="routeTo('')"
           label="¡Regístrate!"
           [css]="btnBlue"
           ($click)="toggleAuthForms('signup')"

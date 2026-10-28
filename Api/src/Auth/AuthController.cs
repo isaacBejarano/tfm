@@ -18,8 +18,8 @@ public class AuthController(
 
   // POST "/auth"
   [HttpPost]
-  public ActionResult<DtoResponse<DtoId>> Login([FromBody] DtoUser payload) {
-    // VALIDATION within 'DtoUser' //
+  public ActionResult<DtoResponse<DtoUser>> Login([FromBody] UserPayload payload) {
+    // VALIDATION within 'UserPayload' //
 
     // DB REPO //
 
@@ -31,7 +31,7 @@ public class AuthController(
       return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
     }
 
-    // TODO: exncapsulate hsasing fx into SRV
+    // TODO: exncapsulate hsasing fx into SRV?
 
     // HASHING -> verify password
     var entityHasher = new PasswordHasher<User>();
@@ -42,7 +42,7 @@ public class AuthController(
       return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
     }
 
-    // TODO: encapsulate this logic into a TokenService
+    // TODO: encapsulate this logic into a TokenService?
 
     // CLAIMS (entries with built-in 'ClaimTypes' as keys)
     List<Claim> claims = [
@@ -74,11 +74,14 @@ public class AuthController(
     // headers -> JWT in <headers> (not in the body)
     Response.Headers.Append("Authorization", $"Bearer {jwt}");
 
-    // DTO -> only ID to go to usres/:id/agenda
-    DtoId item = new(entity.Id);
-    var dto = new DtoResponse<object>([item], "Usuario autenticado.");
+    // DTO
+    DtoUser item = new(
+      Id: entity.Id,
+      Email: entity.Email,
+      Name: entity.Name,
+      Roles: entity.Roles
+    );
+    var dto = new DtoResponse<DtoUser>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }
-
-

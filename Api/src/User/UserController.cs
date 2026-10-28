@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Api.Controllers;
 
 [ApiController]
@@ -14,11 +13,11 @@ public class UserController(
 
   // POST "/users"
   [HttpPost]
-  public ActionResult<DtoResponse<object>> Signup([FromBody] DtoUser payload) {
-    // VALIDATION within 'DtoUser' //
+  public ActionResult<DtoResponse<object>> Signup([FromBody] UserPayload payload) {
+    // VALIDATION within 'UserPayload' //
 
     // HASHING -> password
-    var payloadHasher = new PasswordHasher<DtoUser>(); //
+    var payloadHasher = new PasswordHasher<UserPayload>(); //
     string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
 
 
@@ -41,8 +40,6 @@ public class UserController(
       var dtoErr = new DtoResponse<object>([], "Error en el registro de Usuario.");
       return StatusCode(StatusCodes.Status500InternalServerError, dtoErr);
     }
-
-    // FIXME: assign ROLES
 
     // persist model
     User? user = _userRepoSrv.Create(entity);
@@ -74,8 +71,6 @@ public class UserController(
       ? [UserRole.User]
       : [];
 
-    // TODO: enum Roles
-
     // DB REPO //
     User[] users = [.. _userRepoSrv.ReadAllByRoles(targetRoles)]; // clone
 
@@ -89,7 +84,7 @@ public class UserController(
           Id: user.Id,
           Email: user.Email,
           Name: user.Name,
-          Password: user.Password
+          Roles: user.Roles
         )
       )];
     }
@@ -100,12 +95,9 @@ public class UserController(
 
   // GET "/users/:id"
   [HttpGet("{id:Guid}")]
-  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
+  [Authorize(Roles = $"{nameof(UserRole.User)}, {nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
-
-    // TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query pa ram)
-
 
     // DB REPO //
 
@@ -115,24 +107,25 @@ public class UserController(
       return StatusCode(StatusCodes.Status404NotFound, dtoErr);
     }
 
+    // TODO:
+    // if payload User Email === JWT Email && both Emails exist --> self editing
+    // else && both Emails exist --> Admin editing a User, XOR Super editing an Admin
+
     // DTO //
 
     // model -> res dto
-    var item = new DtoUser(
-        Id: user.Id,
-        Email: user.Email,
-        Name: user.Name,
-        Password: user.Password
-      );
+    DtoUser item = new(
+      Id: user.Id,
+      Email: user.Email,
+      Name: user.Name,
+      Roles: user.Roles
+    );
 
-
+    // FIXME: create entity AGENDA (many Agendas to 1 User) + migrate DB + return a DtoUserWithAgenda
     var dto = new DtoResponse<DtoUser>([item], "Datos de usuario obtenidos con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
-  // TODO: check path variable checkin
-  // [HttpGet("int/{id:int}")] // GET /api/test2/int/3
-  // https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-10.0
 
 }
 

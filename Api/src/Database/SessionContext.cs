@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Database;
 
+
 public class SessionContext(IConfiguration config) : DbContext {
   // DB CONFIG (provider)
   protected override void OnConfiguring(DbContextOptionsBuilder ctxOpts)

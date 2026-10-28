@@ -9,7 +9,7 @@ import { inject } from '@angular/core';
 import { catchError, filter, tap, throwError } from 'rxjs';
 
 import { SnackbarService } from '@app/common/snackbar/snackbar.service';
-import { DtoResponse } from '@app/shared/types/dto-response.type';
+import { DtoResponse } from '@app/shared/types/dto.type';
 
 export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => {
   const _snackbarSrv = inject(SnackbarService); // DI
@@ -19,7 +19,7 @@ export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => 
     tap((response) => snackbarNotify(response, _snackbarSrv)),
     catchError((error: HttpErrorResponse) => {
       snackbarNotify(error, _snackbarSrv); // body dto
-      return throwError(() => error.status); // header status code
+      return throwError(() => error);
     }),
   );
 };

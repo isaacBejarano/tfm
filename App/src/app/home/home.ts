@@ -1,10 +1,10 @@
 import { Component, computed, inject, OnDestroy } from '@angular/core';
 
 import { FormAuth } from '@app/auth/form-auth/form-auth';
+import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { AuthService } from '@auth/auth.service';
-import { UserPayloadLogin, UserPayloadSignup } from '@auth/models/dto-user.type';
 import { StoreService } from '@shared/services/store.service';
-import { map, of, switchMap } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -29,12 +29,11 @@ export class Home implements OnDestroy {
     this._authSrv
       .login(payload)
       .pipe(
-        map((dto) => dto.items[0].id),
-        switchMap((userId) => {
-          // TODO: switchMap call to endpoint "user/:id/agendas"
+        switchMap((dtoUser) => {
+          // TODO: switchMap call to endpoint API "users/:id" <- dto has agendas []
           // if DTO agenda [] -> SPA route to "agendas/new"
           // else if DTO agenda [Id:] -> SPA route to "agendas/:id"
-          return of(userId);
+          return of(dtoUser.id);
           // return of(this._webSrv.navigateToDynamicRoute(`user/${id}/agenda`));
         }),
       )
@@ -42,7 +41,7 @@ export class Home implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._storeSrv.setState('formAuth', 'none');
+    this._storeSrv.setState('formAuth', '');
   }
 }
 

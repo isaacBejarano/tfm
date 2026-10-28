@@ -11,12 +11,7 @@ import {
 } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import {
-  User,
-  UserPayloadLogin,
-  UserPayloadSignup,
-  UserRole,
-} from '@app/auth/models/dto-user.type';
+import { User, UserPayloadLogin, UserPayloadSignup, UserRole } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
 
 @Component({

@@ -1,12 +1,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Dtos;
+namespace Api.Payloads;
 
-// DTO & VALIDATION
+// PAYLOAD & VALIDATION
 ////
 
-public record DtoUser(
+public record UserPayload(
   [Required(ErrorMessage = "El campo 'Id' es obligatorio.")]
   Guid Id,
 

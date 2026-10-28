@@ -1,8 +1,8 @@
 global using Api.Database;
-global using Api.Dtos;
 global using Api.Enums;
 global using Api.Interfaces;
 global using Api.Models;
+global using Api.Payloads;
 global using Api.Repositories;
 global using Api.Shared;
 

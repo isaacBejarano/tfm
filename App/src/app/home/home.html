@@ -1,6 +1,12 @@
 @let formAuth = store().formAuth;
 
-@if (formAuth === 'none') {
+@if (formAuth === 'signup') {
+  <h1 class="text-2xl text-blue-500 text-center">Registro</h1>
+  <app-form-auth class="mt-8" ($userPayload)="signup($event)" />
+} @else if (formAuth === 'login') {
+  <h1 class="text-2xl text-rose-500 text-center">Acceso</h1>
+  <app-form-auth class="mt-8" ($userPayload)="login($event)" [excludeFields]="['name']" />
+} @else {
   <div class="relative">
     <h1
       class="2xl:max-w-[740px] mb-2 bg-linear-to-r from-lime-500 to-rose-500 bg-clip-text text-left text-3xl md:text-5xl 2md:text-9xl text-transparent font-black animate-[fade-in_1s_ease-in_1.5s_normal_backwards]"
@@ -12,10 +18,4 @@
   <div
     class="w-full h-100 bg-[url(/img/TODO_img.jpg)] bg-cover bg-no-repeat bg-top rounded-xl inset-shadow-sm inset-shadow-mist-950 animate-[fade-in_1s_ease-in_2.5s_normal_backwards]"
   ></div>
-} @else if (formAuth === 'signup') {
-  <h1 class="text-2xl text-blue-500 text-center">Registro</h1>
-  <app-form-auth class="mt-8" ($userPayload)="signup($event)" />
-} @else {
-  <h1 class="text-2xl text-rose-500 text-center">Acceso</h1>
-  <app-form-auth class="mt-8" ($userPayload)="login($event)" [excludeFields]="['name']" />
 }

@@ -10,7 +10,7 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     filter((e) => e.type === HttpEventType.Response),
-    catchError((errorRes: HttpErrorResponse) => throwError(() => errorRes)),
+    catchError((error: HttpErrorResponse) => throwError(() => error)),
     finalize(() => _loaderSrv.load(false)), // updat laoder state
   );
 };

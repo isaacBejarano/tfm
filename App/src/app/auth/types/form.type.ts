@@ -1,3 +1,3 @@
-type FormType = 'login' | 'signup' | 'none';
+type FormType = 'login' | 'signup' | '';
 
 export type { FormType };

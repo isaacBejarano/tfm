@@ -115,8 +115,8 @@ GET {{Api}}/users
 Content-Type: application/json
 Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJLYXprYUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3YTEyLTA3ODktN2QyMy1hN2IwLWNkOWUyODlmYzk0NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJVc2VyIiwiQWRtaW4iXSwibmJmIjoxNzkzMDQ5MzY0LCJleHAiOjE3OTMwNDk0MjQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.Tglgg4lsn-rfbelfUAYG8pQy4pQMWTvkvGvYxsA69dc
 
-### <- get ACCESS TOKEN from call to POST "/auth" as SEED USER (e.g. Dorofeeva@yopmail.com)
-@TokenAccessRoleUser = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJLYXprYUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3YTNlLWI3YzgtNzY4Ny04YjQyLTg4NTY4MTc0NjE5YiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJVc2VyIiwiQWRtaW4iXSwibmJmIjoxNzkzMDUyMjkzLCJleHAiOjE3OTMwNTIzNTMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.gplHH3r2LI5YZTs-uiV7QYUmlBwtqCvKNcjSzEjhtRo
+### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER (e.g. Dorofeeva@yopmail.com)
+@TokenAccessRoleUser = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJEb3JvZmVldmFAeW9wbWFpbC5jb20iLCJqdGkiOiIwMWExN2YxOS0wNmU0LTc0MjItOGE2MC0yNTZhOGIzMzBiOTEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzkzMTMzNzA5LCJleHAiOjE3OTMxMzM3NjksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.3pTP66FcgnY772fsMLT_JVGO5w2V8ntMnz7BNijW-uw
 
 ### GET "/users" - User List (Access Token but NO Roles 'Admin, Super') -> 403 Forbidden
 GET {{Api}}/users
@@ -124,19 +124,17 @@ Content-Type: application/json
 Authorization: {{TokenAccessRoleUser}}
 
 
-### <- get ACCESS TOKEN from call to POST "/auth" as SEED ADMIN (e.g. Tribunal@yopmail.com)
-@TokenAccessRoleAdmin = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJUcmlidW5hbEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3YTQ0LTcxMTctN2E1Yy1iMzUzLWNkNjhhNWE4NmNjMiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwibmJmIjoxNzkzMDUyNjY4LCJleHAiOjE3OTMwNTI3MjgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.PbAY6UKp5dCJg4lmg2Y2qGooQuYfa7QqyiAvi0JV508
+### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED ADMIN (e.g. Tribunal@yopmail.com)
+@TokenAccessRoleAdmin = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJUcmlidW5hbEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3ZWYxLTgxNDItNzQxNS05MWFmLWVhNGM2YzM2MTllZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwibmJmIjoxNzkzMTMxMTE4LCJleHAiOjE3OTMxMzExNzgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.fQW4P5HuShn3TbS70T1CrxwhKLfA6IeV3W_ks552S78
 
 ### GET "/users" - User List (Access Token & right Role 'Admin') -> 200 OK
 GET {{Api}}/users
 Content-Type: application/json
 Authorization: {{TokenAccessRoleAdmin}}
 
-# FIXME: 'Admin' cannot list 'Super'
 
-
-### <- get ACCESS TOKEN from call to POST "/auth" as SEED SUPERADMIN (e.g. Super@yopmail.com)
-@TokenAccessRoleSuper = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJTdXBlckB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3YTU0LTcwNDAtNzJjYy04OTlkLTA2Nzk2N2Q4YTIxYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyIiwibmJmIjoxNzkzMDUzNzE2LCJleHAiOjE3OTMwNTM3NzYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.Fp3hrwdJIdW1cEmnY_53nDLMgxT4bI2ulMaq7menNhQ
+### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED SUPERADMIN (e.g. Super@yopmail.com)
+@TokenAccessRoleSuper = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJTdXBlckB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3ZWYyLTJiNWItNzllNi04M2Y4LTk4ZDVmM2VkZTliMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyIiwibmJmIjoxNzkzMTMxMTYyLCJleHAiOjE3OTMxMzEyMjIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.QpGQfQElrgPVGoAOdCN1n9tsb1VVGGN0KzEUEWz20Z8
 
 ### GET "/users" - User List (Access Token & right Role 'Super') -> 200 OK
 GET {{Api}}/users
@@ -144,14 +142,10 @@ Content-Type: application/json
 Authorization: {{TokenAccessRoleSuper}}
 
 
-# TODO: rest of endpoints
+### <- get ID from call to Login (POST "/auth") as SEED USER (e.g. Dorofeeva@yopmail.com)
+@IdOfRoleUser = 0195e280-1001-7100-8000-000000000002
 
-### z- get ID value from first call to POST "/users" (or from a SEED record)
-@Id = 0195e280-1005-7100-8000-000000000006
-
-### GET "/users/:id" - user profile - FIXME: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
-GET {{Api}}/users/{{Id}}
+### GET "/users/:id" - User profile with role 'User'
+GET {{Api}}/users/{{IdOfRoleUser}}
 Content-Type: application/json
 Authorization: {{TokenAccessRoleUser}}
-
-# FIXME: refactor src naming in plural? ([Route("api/users")]) for REST?

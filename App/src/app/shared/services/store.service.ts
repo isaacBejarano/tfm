@@ -1,10 +1,12 @@
 import { computed, Service, signal } from '@angular/core';
 
 import { FormType } from '@app/auth/types/form.type';
+import { DtoUser } from '@shared/types/dto.type';
 
 export type Store = {
   formAuth: FormType;
   accesToken: string;
+  loggedUser: DtoUser | null;
 };
 
 @Service()
@@ -13,8 +15,9 @@ export class StoreService {
   ////
 
   private readonly _store = signal<Store>({
-    formAuth: 'none',
+    formAuth: '',
     accesToken: '',
+    loggedUser: null,
   });
 
   readonly state = computed(() => this._store());

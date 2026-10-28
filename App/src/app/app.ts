@@ -6,7 +6,6 @@ import { filter, map, tap } from 'rxjs';
 
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { HttpClient } from '@angular/common/http';
 import { Footer } from '@app/common/footer/footer';
 import { Header } from '@app/common/header/header';
 import { LoaderService } from '@app/common/loader/loader.service';
@@ -24,7 +23,6 @@ export class App implements OnDestroy {
   // DI
   private readonly _docu = inject(DOCUMENT);
   private readonly _meta = inject(Meta);
-  private readonly _http = inject(HttpClient);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);

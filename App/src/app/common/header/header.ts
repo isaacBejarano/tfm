@@ -1,11 +1,11 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 
-import { SpaPaths } from '@app/app.routes';
+import { Router } from '@angular/router';
+import { AppPathFragments } from '@app/app.routes';
 import { FormType } from '@app/auth/types/form.type';
-import { UserRole } from '@auth/models/dto-user.type';
 import { Btn } from '@shared/components/btn/btn';
 import { StoreService } from '@shared/services/store.service';
-import { WebService } from '@shared/services/web.service';
+import { DtoUser } from '../../shared/types/dto.type';
 
 @Component({
   imports: [Btn],
@@ -15,7 +15,7 @@ import { WebService } from '@shared/services/web.service';
 export class Header {
   // DI
   private readonly _storeSrv = inject(StoreService);
-  private readonly _webSrv = inject(WebService);
+  private readonly _router = inject(Router);
 
   // CTRL
   ////
@@ -32,11 +32,7 @@ export class Header {
     '3d-green',
   ]);
 
-  // TODO: rouer + user claims
-  readonly role = signal<UserRole>('User');
-
-  // TODO: accessToken
-  readonly isLogged = computed(() => this._storeSrv.state().accesToken?.length > 0);
+  readonly loggedUser = computed<DtoUser | null>(() => this._storeSrv.state().loggedUser);
 
   toggleAuthForms(state: FormType) {
     this._storeSrv.setState('formAuth', state);
@@ -44,11 +40,17 @@ export class Header {
 
   logout() {
     this._storeSrv.setState('accesToken', '');
-    this._storeSrv.setState('formAuth', 'none');
-    this._webSrv.navigateToDynamicRoute('/');
+    this._storeSrv.setState('loggedUser', null);
+    this._storeSrv.setState('formAuth', '');
+    this._router.navigate(['']);
   }
 
-  navTo(route: SpaPaths): SpaPaths {
-    return '';
+  routeTo(path: AppPathFragments, id?: string): string {
+    return id ? `${path}/${id}` : path;
+  }
+
+  clearHome() {
+    this._storeSrv.setState('formAuth', '');
+    this._router.navigate(['']);
   }
 }
