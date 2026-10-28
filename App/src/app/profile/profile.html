@@ -1,0 +1,60 @@
+@let user = _user();
+
+<h1 class="mb-4 text-2xl text-blue-500 text-center">Perfil de Usuario</h1>
+
+@if (user) {
+  <div class="pl-4 p-2 mb-4 list-decimal border border-blue-500/50 rounded-xl">
+    <!-- Actions -->
+    <div class="my-2 flex gap-4">
+      <app-btn
+        ($click)="action('patch', user.id)"
+        [ariaLabel]="`Botón para editar al usuario '${user.name}'`"
+        [css]="btnGraySlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-edit" />
+        </svg>
+      </app-btn>
+      <app-btn
+        ($click)="action('delete', user.id)"
+        [ariaLabel]="`Botón para eliminar la cuenta del usuario '${user.name}'`"
+        [css]="btnRedSlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-trash" />
+        </svg>
+      </app-btn>
+    </div>
+
+    <h2 class="mb-2 text-xl text-blue-500">Detalles</h2>
+
+    <ul class="list-disc ml-4">
+      <li>
+        {{ user.email }}
+      </li>
+      <li>
+        {{ user.name }}
+      </li>
+    </ul>
+  </div>
+
+  @if (patch()) {
+    <div class="pl-5 p-2 list-decimal border border-rose-500/50 rounded-xl">
+      <h2 class="mb-2 text-xl text-rose-500">Editar Perfil</h2>
+
+      <form method="post" (submit)="onSubmit($event)" novalidate>
+        <app-btn
+          type="submit"
+          [ariaLabel]="`Botón para guardar los cambios en el perfil del usuario: ${user.name}`"
+          [css]="btnRoseSlim"
+        >
+          <svg class="size-5 fill-current" viewBox="0 0 100 100">
+            <use xlink:href="svg/icon-sprite.xml#icon-edit" />
+          </svg>
+        </app-btn>
+      </form>
+    </div>
+  }
+} @else {
+  <p class="text-red-500">No hay usuario visible.</p>
+}

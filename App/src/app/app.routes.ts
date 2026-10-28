@@ -61,12 +61,13 @@ const routes: AppRotes = [
     loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
     canActivate: [authenticatedGuard],
   },
-  {
-    title: `${title} | Edición de Perfil de Usuario`,
-    path: 'users/:id/edit',
-    loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
-    canActivate: [authenticatedGuard],
-  },
+  // TODO: Reuse Profile compo. just GET by ID or PATCH by ID
+  // {
+  //   title: `${title} | Edición de Perfil de Usuario`,
+  //   path: 'users/:id/edit',
+  //   loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
+  //   canActivate: [authenticatedGuard],
+  // },
   {
     title: `${title} | Nueva Agenda de Usuario`,
     path: 'agendas/new',

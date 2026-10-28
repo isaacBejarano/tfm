@@ -4,26 +4,14 @@ import { filter, map, Observable, switchMap, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Btn } from '@shared/components/btn/btn';
 import { WebService } from '@shared/services/web.service';
 import { DtoResponse, DtoUser } from '@shared/types/dto.type';
 
 @Component({
   selector: 'app-profile',
-  template: `
-    <h1 class="text-2xl text-blue-500 text-center">Perfil de Usuario</h1>
-
-    @let user = _user();
-    @if (user) {
-      <ul class="list-disc ml-4">
-        <li>
-          {{ user.email }}
-        </li>
-        <li>
-          {{ user.name }}
-        </li>
-      </ul>
-    }
-  `,
+  templateUrl: './profile.html',
+  imports: [Btn],
 })
 export class Profile {
   // DI
@@ -35,6 +23,10 @@ export class Profile {
 
   // CTRL
   ////
+
+  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
+  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
+  readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
 
   protected readonly _user = signal<DtoUser | null>(null);
 
@@ -66,5 +58,18 @@ export class Profile {
         map((dto) => dto.items[0]),
         tap((user) => this._user.set(user)),
       );
+  }
+
+  protected readonly patch = signal<boolean>(false);
+
+  protected action(action: 'patch' | 'delete', id: string) {
+    action === 'patch' ? this.patch.set(true) : alert('DELETE' + id);
+  }
+
+  protected onSubmit(e: Event) {
+    e.preventDefault();
+    alert('PATCH');
+
+    setTimeout(() => this.patch.set(false), 250);
   }
 }

@@ -23,5 +23,3 @@ export const authorizedAdminOrSuperGuard: CanActivateFn = (route, state) => {
 
   return isRoleAdmin;
 };
-
-// FIXME: extract Roles from JWT (decrypted JS) instead than in DTO?

@@ -95,7 +95,7 @@ public class UserController(
 
   // GET "/users/:id"
   [HttpGet("{id:Guid}")]
-  [Authorize(Roles = $"{nameof(UserRole.User)}, {nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
   public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
     // VALIDATION within 'DtoId' //
 
@@ -125,6 +125,9 @@ public class UserController(
     var dto = new DtoResponse<DtoUser>([item], "Datos de usuario obtenidos con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
+
+  // TODO: PATCH "/users/:id"
+  // TODO: DELETE "/users/:id"
 
 
 }

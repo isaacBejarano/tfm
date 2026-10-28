@@ -51,15 +51,16 @@ export class App implements OnDestroy {
   // CDK Overlay config
 
   private readonly _overlayOutletForLoader: OverlayRef = this._overlay.create({
-    hasBackdrop: true,
     positionStrategy: this._overlay.position().global().centerHorizontally().centerVertically(),
     scrollStrategy: this._overlay.scrollStrategies.block(),
+    hasBackdrop: false,
   });
 
   private readonly _overlayOutletForSnackbar: OverlayRef = this._overlay.create({
-    hasBackdrop: false,
     positionStrategy: this._overlay.position().global().centerHorizontally().top(),
     scrollStrategy: this._overlay.scrollStrategies.reposition(),
+    hasBackdrop: true,
+    backdropClass: 'bg-transparent',
   });
 
   constructor() {
@@ -94,11 +95,22 @@ export class App implements OnDestroy {
     );
 
     // CDK Overlay the Snackbar
-    effect(() =>
+    effect(() => {
       this._showSnackbar()
         ? this._overlayOutletForSnackbar.attach(new ComponentPortal(Snackbar))
-        : this._overlayOutletForSnackbar.detach(),
-    );
+        : this._overlayOutletForSnackbar.detach();
+    });
+
+    this._overlayOutletForSnackbar
+      .backdropClick()
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(() => {
+          this._overlayOutletForSnackbar.detach();
+          this._snackbarService.notify(false); // close pending Observable emissions
+        }),
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
