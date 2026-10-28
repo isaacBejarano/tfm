@@ -18,11 +18,11 @@ public interface IUserRepositoryService {
 
 
   // PATCH users/:id
-  // public User? Update(DtoUserCreds creds, DtoUserCreds edit);
+  public User? Update(Guid id, User patch);
 
 
-  // // DELETE users/:id
-  // public bool DeleteHard(DtoId payload);
+  // DELETE users/:id
+  public bool DeleteHard(Guid id);
 }
 
 

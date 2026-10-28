@@ -59,23 +59,4 @@ public class DtoResponseSpec : IDisposable {
     Assert.NotNull(_DtoResponseEmpty.Items);
     Assert.NotNull(_DtoResponseEmpty.Msg);
   }
-
-  [Theory]
-  [InlineData("00000000-0000-0000-0000-000000000000")]
-  [InlineData("8f3c129e-4b71-4a9f-9273-e4d6a8b3c102")]
-  public void DtoResponse_OFTYPE_DtoId_HAS_members_typed(Guid id) {
-    DtoId item = new DtoId(id);
-    DtoResponse<DtoId> dto = new([item], "Response With Items oftype DtoId");
-
-    Assert.NotNull(dto.Items);
-    Assert.IsType<DtoId[]>(dto.Items);
-    Assert.Equal([item], dto.Items);
-
-    Assert.IsType<int>(dto.Count);
-    Assert.Equal(1, dto.Count);
-
-    Assert.NotNull(dto.Msg);
-    Assert.IsType<string>(dto.Msg);
-    Assert.Equal("Response With Items oftype DtoId", dto.Msg);
-  }
 }

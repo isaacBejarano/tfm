@@ -1,10 +1,6 @@
 ### HTTPS only
 @Api = https://localhost:7247/api/v1
 
-### SMOKE TEST 1 -> 200 OK
-GET {{Api}}/smoke/almost
-Content-Type: application/json
-
-### SMOKE TEST 2 -> 200 OK
-GET {{Api}}/smoke/full
+### SMOKE TEST -> 200 OK
+GET {{Api}}/smoke
 Content-Type: application/json

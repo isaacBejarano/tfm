@@ -7,11 +7,8 @@ public class UserRepositoryService(
 
   // POST users/
   public User? Create(User user) {
-    ArgumentNullException.ThrowIfNull(user);
-
-    // prevent duplicate unique field "Email" collision
-    bool alreadyCreated = _ctx.Users.Any(u => u.Email == user.Email);
-    if (alreadyCreated) return null;
+    // prevent duplicates by unique field "Email" collision
+    if (_ctx.Users.Any(u => u.Email == user.Email)) return null;
 
     var tracked = _ctx.Users.Add(user);
     _ctx.SaveChanges();
@@ -35,7 +32,13 @@ public class UserRepositoryService(
     return _ctx.Users.FirstOrDefault(u => u.Id == id);
   }
 
+  // PATCH "/users/:id"
+  public User? Update(Guid id, User patch) {
+    throw new NotImplementedException();
+  }
 
-  // TODO: PATCH "/users/:id"
-
+  // DELETE users/:id
+  public bool DeleteHard(Guid id) {
+    throw new NotImplementedException();
+  }
 }

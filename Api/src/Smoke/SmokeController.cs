@@ -5,18 +5,9 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 public class SmokeController() : ControllerBase {
-
-  [HttpGet("almost")]
-  public ActionResult<DtoResponse<DtoId>> GetSmokeAlmost() {
-    var dto = new DtoResponse<DtoId>([], "");
-    return StatusCode(StatusCodes.Status200OK, dto);
-  }
-
-  [HttpGet("full")]
-  public ActionResult<DtoResponse<DtoId>> GetSmokeFull() {
-    var itemEmpty = new DtoId(Guid.Empty);
-    var itemFull = new DtoId(Guid.CreateVersion7());
-    var dto = new DtoResponse<DtoId>([itemEmpty, itemFull], "¡Toma humo!");
+  [HttpGet]
+  public ActionResult<DtoResponse<object>> GetSmoke() {
+    var dto = new DtoResponse<object>([], "");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }

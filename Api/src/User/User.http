@@ -174,70 +174,76 @@ Authorization: {{TokenAccessOfSeedSuperA}}
 @IdOfSeedSuper = 019532a1-8008-7a1b-8000-000000000009
 
 ### <- get ACCESS TOKEN from Login (POST "/auth") as SEED USER 2 (Dorofeeva@yopmail.com)
-@TokenAccessOfSeedUser2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDEtN2ExYi04MDAwLTAwMDAwMDAwMDAwMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkRvcm9mZWV2YUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4NDY0LWVmMDctNzg4OC1iOTE0LTQ2N2FlNTg4NjFmOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMjI1NjksImV4cCI6MTc5MzIyMjg2OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.DcRwHoLMZYRPuhKhDkro8mfqTZKwwulApbfPmwX2OXA
+@TokenAccessOfSeedUser2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDEtN2ExYi04MDAwLTAwMDAwMDAwMDAwMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkRvcm9mZWV2YUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4NDZlLTVlN2UtNzEwMS1hMjlkLWM5NzBiYjViOTkyNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMjMxODgsImV4cCI6MTc5MzIyMzQ4OCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.621hr_hIUIheQE8LC-xHc2EvFNACU4YqqQzUobXxa5M
 
-### GET "/users/:id" - Authenticated role 'User' can only READ itself
+### GET "/users/:id" - Authenticated role 'User' can only READ itself -> 200 OK
 GET {{Api}}/users/{{IdOfSeedUser2}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser2}}
 
-### GET "/users/:id" - Authenticated role 'User' can NOT READ ohter 'User'
+### GET "/users/:id" - Authenticated role 'User' can NOT READ ohter 'User' -> 403 Forbidden
 GET {{Api}}/users/{{IdOfSeedUser1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser2}}
 
-### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Admin'
+### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Admin' -> 403 Forbidden
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser2}}
 
-### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Super'
+### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Super' -> 403 Forbidden
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser2}}
 
 ### <- get ACCESS TOKEN from Login (POST "/auth") as SEED ADMIN 1 (Tribunal@yopmail.com)
-@TokenAccessOfSeedAdmin1B = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjYtNGZjYS03MGI3LTkxY2ItZWVmODczYjQ3MjVmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMjI2NjAsImV4cCI6MTc5MzIyMjk2MCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.0W10ldYPyLgo7cWJ-IKjDgig_RlgQIv6eopaxUj3iNc
+@TokenAccessOfSeedAdmin1B = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NmYtOGM4MC03NTI4LWFkNzAtOTlhOTA0NzY3OWU3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMjMyNjUsImV4cCI6MTc5MzIyMzU2NSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.1JdhDnofX5PsLWKqmGCAJ6v-1jAOv13y2quQ4XOfJp0
 
-### GET "/users/:id" - Authenticated role 'Admin' can READ itself
+### GET "/users/:id" - Authenticated role 'Admin' can READ itself -> 200 OK
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedAdmin1B}}
 
-### GET "/users/:id" - Authenticated role 'Admin' can READ role 'User'
+### GET "/users/:id" - Authenticated role 'Admin' can READ role 'User' -> 200 OK
 GET {{Api}}/users/{{IdOfSeedUser1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedAdmin1B}}
 
-### GET "/users/:id" - Authenticated role 'Admin' can NOT READ ohter 'Admin'
+### GET "/users/:id" - Authenticated role 'Admin' can NOT READ ohter 'Admin' -> 403 Forbidden
 GET {{Api}}/users/{{IdOfSeedAdmin2}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedAdmin1B}}
 
-### GET "/users/:id" - Authenticated role 'Admin' can NOT READ role 'Super'
+### GET "/users/:id" - Authenticated role 'Admin' can NOT READ role 'Super' -> 403 Forbidden
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedAdmin1B}}
 
 ### <- get ACCESS TOKEN from Login (POST "/auth") as SEED SUPER (Super@yopmail.com)
-@TokenAccessOfSeedSuperB = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjctMzJlZi03NzAxLWEyZWQtYmZhOTZmMDE1ZGIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyMjI3MTgsImV4cCI6MTc5MzIyMzAxOCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.-CXYNj2ZdVhE_8U3MmxwCC3Ff30IP8tt_irxuCCBqxo
+@TokenAccessOfSeedSuperB = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NzAtY2M5Ni03YTEwLWIyNjctOGE0MGZiZjBhNzQ4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyMjMzNDcsImV4cCI6MTc5MzIyMzY0NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.qe9tdBuG2o5sPUeAMqhPa2_B_0sXIVQdOz4An7w_P4c
 
-### GET "/users/:id" - Authenticated role 'Super' can READ itself
+### GET "/users/:id" - Authenticated role 'Super' can READ itself -> 200 OK
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedSuperB}}
 
-### GET "/users/:id" - Authenticated role 'Super' can READ role 'User'
+### GET "/users/:id" - Authenticated role 'Super' can READ role 'User' -> 200 OK
 GET {{Api}}/users/{{IdOfSeedUser1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedSuperB}}
 
-### GET "/users/:id" - Authenticated role 'Super' can NOT READ role 'Admin'
+### GET "/users/:id" - Authenticated role 'Super' can READ role 'Admin' -> 200 OK
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedSuperB}}
 
 ### There is only 1 'Super'
+
+
+
+### PATCH "/users/:id"
+####################
+
 
 
 # FIXME:
