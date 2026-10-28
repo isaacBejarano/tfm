@@ -81,7 +81,7 @@ POST {{Api}}/users
 Content-Type: application/json
 
 {
-  "email":"Kazka2@yopmail.com",
+  "email":"Kazka@yopmail.com",
   "password":"Ff2@12345"
 }
 

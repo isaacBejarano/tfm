@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(SessionContext))]
-    [Migration("20261026223201_Init")]
+    [Migration("20261028182008_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0195e280-1000-7100-8000-000000000001"),
+                            Id = new Guid("019532a1-8000-7a1b-8000-000000000001"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 0, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kalush@yopmail.com",
                             Name = "Kalush",
@@ -74,7 +74,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1001-7100-8000-000000000002"),
+                            Id = new Guid("019532a1-8001-7a1b-8000-000000000002"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 5, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Dorofeeva@yopmail.com",
                             Name = "Dorofeeva",
@@ -83,7 +83,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1002-7100-8000-000000000003"),
+                            Id = new Guid("019532a1-8002-7a1b-8000-000000000003"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 10, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kola@yopmail.com",
                             Name = "Kola",
@@ -92,7 +92,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1003-7100-8000-000000000004"),
+                            Id = new Guid("019532a1-8003-7a1b-8000-000000000004"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 15, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Onuka@yopmail.com",
                             Name = "Onuka",
@@ -101,7 +101,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1004-7100-8000-000000000005"),
+                            Id = new Guid("019532a1-8004-7a1b-8000-000000000005"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 20, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Parfeniuk@yopmail.com",
                             Name = "Parfeniuk",
@@ -110,7 +110,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1006-7100-8000-000000000006"),
+                            Id = new Guid("019532a1-8005-7a1b-8000-000000000006"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 25, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Anonymous@yopmail.com",
                             Password = "AQAAAAIAAYagAAAAEPvNNRBeFpA9snhyBGCdYEZ3/EqHvrCUMawAIzfHxoDMDl5HA7TC+JL8wyTIxFMSEA==",
@@ -118,7 +118,7 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1005-7100-8000-000000000007"),
+                            Id = new Guid("019532a1-8006-7a1b-8000-000000000007"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 30, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Tribunal@yopmail.com",
                             Name = "Tribunal",
@@ -127,8 +127,17 @@ namespace Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0195e280-1005-7100-8000-000000000008"),
+                            Id = new Guid("019532a1-8007-7a1b-8000-000000000008"),
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 35, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "Admin@yopmail.com",
+                            Name = "Admin",
+                            Password = "AQAAAAIAAYagAAAAEPTOGgbcep5UVwww5yQ6T/T7iomwexMFMxU32TATSpWmM5c69+kNEbuAk2sdpDqtYg==",
+                            Roles = new[] { "Admin" }
+                        },
+                        new
+                        {
+                            Id = new Guid("019532a1-8008-7a1b-8000-000000000009"),
+                            Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 40, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Super@yopmail.com",
                             Name = "Super admin",
                             Password = "AQAAAAIAAYagAAAAEEdbb8s8Cha+UGEo6NaggLw+/jVUtJHJf/HaZDhdYAVFCecKG/qnEiJPvzmxf0RnWA==",

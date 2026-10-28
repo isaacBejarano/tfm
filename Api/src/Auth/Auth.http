@@ -106,13 +106,22 @@ Content-Type: application/json
   "password":"Bb@12345"
 }
 
-### POST "/auth" - Login (right credentials of SEED ADMIN with Role 'Admin') -> 200 OK
+### POST "/auth" - Login (right credentials of SEED ADMIN 1 with Role 'Admin') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
   "email":"Tribunal@yopmail.com",
   "password":"Tribunal@uoc2026"
+}
+
+### POST "/auth" - Login (right credentials of SEED ADMIN 2 with Role 'Admin') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Admin@yopmail.com",
+  "password":"Admin@uoc2026"
 }
 
 ### POST "/auth" - Login (right credentials of SEED SUPERADMIN with Role 'Super') -> 200 OK
