@@ -38,15 +38,27 @@ export class Profile {
         map(() => this._activatedRoute),
         filter((route) => route !== null),
         map((route) => route.snapshot.params['id']),
-        switchMap((id) => this._getProfile(id)),
+        switchMap((loggedUserId) => this._getProfile(loggedUserId)),
       )
       .subscribe();
   }
 
-  private _getProfile(id: string): Observable<DtoUser> {
+  private _getProfile(targetUserId: string): Observable<DtoUser> {
+    // FIXME: La API ya valida la visibilidad y cRUD por role.
+    // No hace falta duplicar logica AQUI?
+
+    // TODO: Edit Cases
+    // Role 'User'  can CRUD itself       -> loggedUserId === targetUserId (User)
+    // Role 'Admin' can CRUD itself       -> loggedUserId === targetUserId (Admin)
+    // Role 'Admin' can CRUD role 'User'  -> loggedUserId !== targetUserId (User)
+    // Role 'Super' can CRUD itself       -> loggedUserId === targetUserId (Super)
+    // Role 'Super' can CRUD role 'User'  -> loggedUserId !== targetUserId (User)
+    // Role 'Super' can CRUD role 'Admin' -> loggedUserId !== targetUserId (Admin)
+    // There is only 1 'Super'
+
     // TODO: extract into User SRV
     return this._http
-      .get<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + `/users/${id}`, {
+      .get<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + `/users/${targetUserId}`, {
         responseType: 'json',
         observe: 'response',
       })

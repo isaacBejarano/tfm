@@ -84,6 +84,15 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
+  "email":"Kalush@yopmail.com",
+  "password":"Aa@12345"
+}
+
+### POST "/auth" - Login (right credentials of NEW USER with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
   "email":"Kazka@yopmail.com",
   "password":"Ff@12345"
 }

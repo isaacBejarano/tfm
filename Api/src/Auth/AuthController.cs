@@ -18,8 +18,8 @@ public class AuthController(
 
   // POST "/auth"
   [HttpPost]
-  public ActionResult<DtoResponse<DtoUser>> Login([FromBody] UserPayload payload) {
-    // VALIDATION within 'UserPayload' //
+  public ActionResult<DtoResponse<DtoUser>> Login([FromBody] UserPayloadLogin payload) {
+    // VALIDATION within 'UserPayloadLogin' //
 
     // DB REPO //
 
@@ -46,12 +46,14 @@ public class AuthController(
 
     // CLAIMS (entries with built-in 'ClaimTypes' as keys)
     List<Claim> claims = [
-      new Claim(ClaimTypes.Email, entity.Email), // store unique prop
-      new Claim(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString()) // identify unique token
+      new Claim(ClaimTypes.NameIdentifier, entity.Id.ToString()), // entity unique PK
+      new Claim(ClaimTypes.Email, entity.Email), // entity unique prop
+      new Claim(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString()) // JWT own id
     ];
 
+    // entity roles
     foreach (var role in entity.Roles) {
-      var claim = new Claim(ClaimTypes.Role, role); // store roles
+      var claim = new Claim(ClaimTypes.Role, role);
       if (claim == null) continue;
       claims.Add(claim);
     }

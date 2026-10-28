@@ -34,4 +34,8 @@ public class UserRepositoryService(
   public User? ReadById(Guid id) {
     return _ctx.Users.FirstOrDefault(u => u.Id == id);
   }
+
+
+  // TODO: PATCH "/users/:id"
+
 }

@@ -13,11 +13,11 @@ public class UserController(
 
   // POST "/users"
   [HttpPost]
-  public ActionResult<DtoResponse<object>> Signup([FromBody] UserPayload payload) {
-    // VALIDATION within 'UserPayload' //
+  public ActionResult<DtoResponse<object>> Signup([FromBody] UserPayloadSignup payload) {
+    // VALIDATION within 'UserPayloadSignup' //
 
     // HASHING -> password
-    var payloadHasher = new PasswordHasher<UserPayload>(); //
+    var payloadHasher = new PasswordHasher<UserPayloadSignup>(); //
     string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
 
 
@@ -60,21 +60,22 @@ public class UserController(
   [HttpGet]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
   public ActionResult<DtoResponse<DtoUser>> List() {
-    // AUTH -> global config as middleware
+    // Authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
+    ////
 
-    // 'ClaimsPrincipal' inherited, to filter User List in DTO
-    ClaimsPrincipal ctxUser = User;
-    // TODO: encapsulate into SRV
-    UserRole[] targetRoles = User.IsInRole(nameof(UserRole.Super))
-      ? [UserRole.Admin, UserRole.User]
+    UserRole[] lowerRoles = User.IsInRole(nameof(UserRole.Super))
+      ? [UserRole.Admin, UserRole.User] // Super's lower
       : User.IsInRole(nameof(UserRole.Admin))
-      ? [UserRole.User]
+      ? [UserRole.User] // Admin's lower
       : [];
 
-    // DB REPO //
-    User[] users = [.. _userRepoSrv.ReadAllByRoles(targetRoles)]; // clone
+    // DB Repo
+    ////
 
-    // DTO //
+    User[] users = [.. _userRepoSrv.ReadAllByRoles(lowerRoles)]; // clone
+
+    // DTO
+    ////
 
     // model -> res dto
     DtoUser[] items = [];
@@ -96,8 +97,77 @@ public class UserController(
   // GET "/users/:id"
   [HttpGet("{id:Guid}")]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
-  public ActionResult<DtoResponse<DtoUser>> Profile(Guid id) {
-    // VALIDATION within 'DtoId' //
+  public ActionResult<DtoResponse<DtoUser>> ProfileRead(Guid id) {
+    // VALIDATION within 'id:Guid'
+    ////
+
+    // Authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
+    ////
+
+    string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+    DtoUser[] items = []; // model -> res dto
+
+    if (User.IsInRole(nameof(UserRole.User))) {
+      // Role 'User' can NOT READ 'User' others, 'Admin', 'Super' (all have diff ID)
+      ////////
+
+      if (loggedUserId != id.ToString()) {
+        var dtoErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
+        return StatusCode(StatusCodes.Status403Forbidden, dtoErr);
+      }
+
+      // Role 'User' can ONLY READ itself
+      ////////
+
+      User? user = _userRepoSrv.ReadById(id); // DB Repo
+
+      if (user == null) {
+        var dtoErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+        return StatusCode(StatusCodes.Status404NotFound, dtoErr);
+      }
+
+      items = [new DtoUser(Id: user.Id, Email: user.Email, Name: user.Name, Roles: user.Roles)];
+    }
+    else if (User.IsInRole(nameof(UserRole.Admin))) {
+      // Role 'Admin' can READ itself
+      ////////
+
+      // Role 'Admin' can READ 'User'
+      ////////
+
+      // Role 'Admin' can NOT READ 'Admin' others
+      ////////
+
+      // Role 'Admin' can NOT READ 'Super'
+      ////////
+    }
+    else if (User.IsInRole(nameof(UserRole.Super))) {
+      // Role 'Super' can READ itself
+      ////////
+
+      // Role 'Super' can READ 'User'
+      ////////
+
+      // Role 'Super' can READ 'Admin'
+      ////////
+
+      // There is only 1 'Super'
+      ////////
+    }
+
+    // DTO
+    ////
+
+    // TODO: Create entity AGENDA (many Agendas to 1 User) + migrate DB + return a DtoUserWithAgenda
+    var dto = new DtoResponse<DtoUser>(items, "Datos de usuario indagados con éxito.");
+    return StatusCode(StatusCodes.Status200OK, dto);
+  }
+
+  // TODO: PATCH "/users/:id"
+  [HttpPatch("{id:Guid}")]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
+  public ActionResult<DtoResponse<DtoUser>> ProfileEdit(Guid id, [FromBody] UserPayloadEdit payload) {
+    // VALIDATION within 'id:Guid' //
 
     // DB REPO //
 
@@ -126,9 +196,7 @@ public class UserController(
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
-  // TODO: PATCH "/users/:id"
+
   // TODO: DELETE "/users/:id"
-
-
 }
 

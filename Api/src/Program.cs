@@ -89,16 +89,16 @@ builder.Services
           ClaimsPrincipal ctxUser = ctx.HttpContext.User;
           string userEmail = ctxUser.FindFirst(ClaimTypes.Email)?.Value ?? "";
           string[] userRoles = [.. ctxUser.FindAll(ClaimTypes.Role).Select(role => role.Value)];
-
-          // headers + DTO
-          ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
-          ctx.Response.ContentType = "application/json";
           string userEmailSubstr = userEmail.Length > 1 ? $"con correo electrónico '{userEmail}'" : "sin correo electrónico";
           string userRolesSubstr = userRoles.Length == 1
             ? $"con rol '{string.Join(", ", userRoles)}'"
             : userRoles.Length > 1
             ? $"con roles '{string.Join(", ", userRoles)}'"
             : "sin roles";
+
+          // headers + DTO
+          ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
+          ctx.Response.ContentType = "application/json";
           var dto = new DtoResponse<object>([], $"Usuario {userEmailSubstr} y {userRolesSubstr} no tiene permisos suficientes para acceder a este recurso.");
           await ctx.Response.WriteAsJsonAsync(dto);
         }

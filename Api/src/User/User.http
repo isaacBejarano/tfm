@@ -142,10 +142,104 @@ Content-Type: application/json
 Authorization: {{TokenAccessRoleSuper}}
 
 
-### <- get ID from call to Login (POST "/auth") as SEED USER (e.g. Dorofeeva@yopmail.com)
-@IdOfRoleUser = 0195e280-1001-7100-8000-000000000002
+### ID of SEED USER 1 (Kalush@yopmail.com)
+@IdOfSeedUser1 = 0195e280-1000-7100-8000-000000000001
 
-### GET "/users/:id" - User profile with role 'User'
-GET {{Api}}/users/{{IdOfRoleUser}}
+### ID of SEED USER 2 (Dorofeeva@yopmail.com)
+@IdOfSeedUser2 = 0195e280-1001-7100-8000-000000000002
+
+### ID of SEED ADMIN 1 (Tribunal@yopmail.com)
+@IdOfSeedAdmin1 = 0195e280-1005-7100-8000-000000000007
+
+### ID of SEED ADMIN 2 (Admin@yopmail.com)
+@IdOfSeedAdmin2 = 0195e280-1005-7100-8000-000000000008
+
+### ID of SEED SUPER (Super@yopmail.com)
+@IdOfSeedSuper = 0195e280-1005-7100-8000-000000000009
+
+
+### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER 1 (Kalush@yopmail.com)
+@TokenAccessOfSeedUser1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTVlMjgwLTEwMDAtNzEwMC04MDAwLTAwMDAwMDAwMDAwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkthbHVzaEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4MzlmLTJmMjQtN2JkYy1hNzA4LThlMWQ2YmVmNWQzOSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMDk2MTAsImV4cCI6MTc5MzIwOTkxMCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ._HfVGQv_gbQja1csoLeKynkMJN-tePPJEEXIF852_Zs
+
+### GET "/users/:id" - Authenticated role 'User' can only READ itself
+GET {{Api}}/users/{{IdOfSeedUser1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser1}}
+
+### GET "/users/:id" - Authenticated role 'User' can NOT READ ohter 'User'
+GET {{Api}}/users/{{IdOfSeedUser2}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser1}}
+
+### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Admin'
+GET {{Api}}/users/{{IdOfSeedAdmin1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser1}}
+
+### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Super'
+GET {{Api}}/users/{{IdOfSeedSuper}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser1}}
+
+
+# FIXME:
+
+### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER 1 (Tribunal@yopmail.com)
+@TokenAccessOfSeedAdmin1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTVlMjgwLTEwMDUtNzEwMC04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTgzYWEtMDQxMS03ZjNlLWFiN2ItZjc3YjFjZGVhNDhlIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMTAzMTksImV4cCI6MTc5MzIxMDYxOSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.xWhtsT9wpb1a75nEI0lnGP2D7ke2HKPCneW3WT3Rqwk
+
+### GET "/users/:id" - Authenticated role 'Admin' can READ itself
+GET {{Api}}/users/{{IdOfSeedAdmin1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1}}
+
+### GET "/users/:id" - Authenticated role 'Admin' can READ role 'User'
+GET {{Api}}/users/{{IdOfSeedUser1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1}}
+
+### GET "/users/:id" - Authenticated role 'Admin' can NOT READ ohter 'Admin'
+GET {{Api}}/users/{{IdOfSeedAdmin2}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1}}
+
+### GET "/users/:id" - Authenticated role 'Admin' can NOT READ role 'Super'
+GET {{Api}}/users/{{IdOfSeedSuper}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1}}
+
+
+
+# TODO:
+
+### <- get ID from call to Login (POST "/auth") as USER -NOT SEED- (e.g. Kazka@yopmail.com)
+@IdOfNewUser = 01a18321-e349-74c8-918d-ed69e2de0545
+
+### PATCH "/users/:id" - Edit user profile with role 'User' - change Name
+PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
 Authorization: {{TokenAccessRoleUser}}
+
+{
+  "password":null,
+  "name":"казка"
+}
+
+### PATCH "/users/:id" - Edit user profile with role 'User' - change Password
+PATCH {{Api}}/users/{{IdOfNewUser}}
+Content-Type: application/json
+Authorization: {{TokenAccessRoleUser}}
+
+{
+  "password":"Gg@12345",
+  "name":null
+}
+
+### PATCH "/users/:id" - Edit user profile with role 'User' - no changes
+PATCH {{Api}}/users/{{IdOfNewUser}}
+Content-Type: application/json
+Authorization: {{TokenAccessRoleUser}}
+
+{
+  "password":null,
+  "name":null
+}

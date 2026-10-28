@@ -6,10 +6,7 @@ namespace Api.Payloads;
 // PAYLOAD & VALIDATION
 ////
 
-public record UserPayload(
-  [Required(ErrorMessage = "El campo 'Id' es obligatorio.")]
-  Guid Id,
-
+public record UserPayloadSignup(
   [Required(ErrorMessage = "El campo 'Correo electrónico' es obligatorio.")]
   [MinLength(6, ErrorMessage = "El campo 'Correo electrónico' debe tener al menos 6 carácteres.")]
   [MaxLength(150, ErrorMessage = "El campo 'Correo electrónico' debe tener máximo 150 carácteres.")]
@@ -38,8 +35,8 @@ public record UserPayload(
 );
 
 
-// REGEXP PASS -> ^(?=.*[0 - 9])(?=.*[a - z])(?=.*[A - Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$
 // REGEXP EMAIL -> ^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
+// REGEXP PASS -> ^(?=.*[0 - 9])(?=.*[a - z])(?=.*[A - Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$
 
 /* NOTE
  * Expand email pattern with a Regular Expression, for the following cases where .NET data anotation [EmailAdress] is not enough:
