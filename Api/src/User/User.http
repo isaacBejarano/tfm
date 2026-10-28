@@ -2,6 +2,12 @@
 @Api = https://localhost:7247/api/v1
 
 
+
+### POST "/users"
+#################
+
+
+
 ### POST "/users" - Signup "no payload" --> 400 Bad Request
 POST {{Api}}/users
 Content-Type: application/json
@@ -82,7 +88,7 @@ Content-Type: application/json
 
 {
   "email":"Kazka@yopmail.com",
-  "password":"Ff2@12345"
+  "password":"Ff@12345"
 }
 
 ### POST "/users" - Signup creation repeats (all fields) -> 409 Conflict
@@ -94,6 +100,12 @@ Content-Type: application/json
   "password":"Ff@12345",
   "name":"Kazka"
 }
+
+
+
+### GET "/users"
+################
+
 
 
 ### GET "/users" - User List (no Access Token) -> 401 Unauthorized
@@ -115,31 +127,35 @@ GET {{Api}}/users
 Content-Type: application/json
 Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJLYXprYUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3YTEyLTA3ODktN2QyMy1hN2IwLWNkOWUyODlmYzk0NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJVc2VyIiwiQWRtaW4iXSwibmJmIjoxNzkzMDQ5MzY0LCJleHAiOjE3OTMwNDk0MjQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.Tglgg4lsn-rfbelfUAYG8pQy4pQMWTvkvGvYxsA69dc
 
-### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER (e.g. Dorofeeva@yopmail.com)
-@TokenAccessRoleUser = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJEb3JvZmVldmFAeW9wbWFpbC5jb20iLCJqdGkiOiIwMWExN2YxOS0wNmU0LTc0MjItOGE2MC0yNTZhOGIzMzBiOTEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzkzMTMzNzA5LCJleHAiOjE3OTMxMzM3NjksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.3pTP66FcgnY772fsMLT_JVGO5w2V8ntMnz7BNijW-uw
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED USER 2 (e.g. Kalush@yopmail.com)
+@TokenAccessOfSeedUser1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDAtN2ExYi04MDAwLTAwMDAwMDAwMDAwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkthbHVzaEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4NDYyLTlkOWQtN2Q0ZS05Nzk0LTJhODhmMzg5N2FjZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMjI0MTcsImV4cCI6MTc5MzIyMjcxNywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.4_oOtIUEUX8K3pDwua0PuajNN96XYLnP_FYRaWc-T-Q
 
 ### GET "/users" - User List (Access Token but NO Roles 'Admin, Super') -> 403 Forbidden
 GET {{Api}}/users
 Content-Type: application/json
-Authorization: {{TokenAccessRoleUser}}
+Authorization: {{TokenAccessOfSeedUser1}}
 
-
-### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED ADMIN (e.g. Tribunal@yopmail.com)
-@TokenAccessRoleAdmin = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJUcmlidW5hbEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE3ZWYxLTgxNDItNzQxNS05MWFmLWVhNGM2YzM2MTllZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwibmJmIjoxNzkzMTMxMTE4LCJleHAiOjE3OTMxMzExNzgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0MjAwIn0.fQW4P5HuShn3TbS70T1CrxwhKLfA6IeV3W_ks552S78
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED ADMIN 1 (e.g. Tribunal@yopmail.com)
+@TokenAccessOfSeedAdmin1A = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjMtZGUyYi03Y2M4LTg0OTYtNmMxODk1YTk1ODE1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMjI0OTksImV4cCI6MTc5MzIyMjc5OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.-puLQpz6oM3NTsgSfr_JJlb7uzVvR_nPUfo6Biph4nc
 
 ### GET "/users" - User List (Access Token & right Role 'Admin') -> 200 OK
 GET {{Api}}/users
 Content-Type: application/json
-Authorization: {{TokenAccessRoleAdmin}}
+Authorization: {{TokenAccessOfSeedAdmin1A}}
 
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED SUPER (e.g. Super@yopmail.com)
+@TokenAccessOfSeedSuperA = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjQtNDQwNy03YjA4LWIzNDQtYmRjNWE5ZmNjMDZlIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyMjI1MjUsImV4cCI6MTc5MzIyMjgyNSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.xPHX8D1PQlPhLzl-u9fZt_q4yTJ3SRpSowTeIA1Jz8k
 
-### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED SUPERADMIN (e.g. Super@yopmail.com)
-@TokenAccessRoleSuper = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTgzZWYtNzQ5ZC03YWU4LTg3MzMtNjg0YTI1Y2I2MzBkIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyMTQ4NzAsImV4cCI6MTc5MzIxNTE3MCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.nxYig3QvtYN7GJPoe1imw7YqTMtTHHnyo31AOasqz4w
-
-### GET "/users" - User List (Access Token & right Role 'Super') -> 200 OK
+### GET "/users" - User List (Access Token & right Role 'Admin') -> 200 OK
 GET {{Api}}/users
 Content-Type: application/json
-Authorization: {{TokenAccessRoleSuper}}
+Authorization: {{TokenAccessOfSeedSuperA}}
+
+
+
+### GET "/users/:id"
+####################
+
 
 
 ### ID of SEED USER 1 (Kalush@yopmail.com)
@@ -157,82 +173,85 @@ Authorization: {{TokenAccessRoleSuper}}
 ### ID of SEED SUPER (Super@yopmail.com)
 @IdOfSeedSuper = 019532a1-8008-7a1b-8000-000000000009
 
-
-### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER 1 (Kalush@yopmail.com)
-@TokenAccessOfSeedUser1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDAtN2ExYi04MDAwLTAwMDAwMDAwMDAwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkthbHVzaEB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4M2U5LWVkMzQtN2NiNy04MDUzLWY0MTdiNTBhY2QzOSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMTQ1MDgsImV4cCI6MTc5MzIxNDgwOCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.ir68BLThq2RiHtxSmTylyiMrMEohaC6KNibO73-M0zw
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED USER 2 (Dorofeeva@yopmail.com)
+@TokenAccessOfSeedUser2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDEtN2ExYi04MDAwLTAwMDAwMDAwMDAwMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkRvcm9mZWV2YUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4NDY0LWVmMDctNzg4OC1iOTE0LTQ2N2FlNTg4NjFmOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTMyMjI1NjksImV4cCI6MTc5MzIyMjg2OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.DcRwHoLMZYRPuhKhDkro8mfqTZKwwulApbfPmwX2OXA
 
 ### GET "/users/:id" - Authenticated role 'User' can only READ itself
-GET {{Api}}/users/{{IdOfSeedUser1}}
-Content-Type: application/json
-Authorization: {{TokenAccessOfSeedUser1}}
-
-### GET "/users/:id" - Authenticated role 'User' can NOT READ ohter 'User'
 GET {{Api}}/users/{{IdOfSeedUser2}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedUser1}}
+Authorization: {{TokenAccessOfSeedUser2}}
+
+### GET "/users/:id" - Authenticated role 'User' can NOT READ ohter 'User'
+GET {{Api}}/users/{{IdOfSeedUser1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser2}}
 
 ### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Admin'
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedUser1}}
+Authorization: {{TokenAccessOfSeedUser2}}
 
 ### GET "/users/:id" - Authenticated role 'User' can NOT READ role 'Super'
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedUser1}}
+Authorization: {{TokenAccessOfSeedUser2}}
 
-
-### <- get ACCESS TOKEN from call to Login (POST "/auth") as SEED USER 1 (Tribunal@yopmail.com)
-@TokenAccessOfSeedAdmin1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTgzZTgtZjRjMS03MTQ3LWI0MGYtZDZjN2RiODViMWJhIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMTQ0NDQsImV4cCI6MTc5MzIxNDc0NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.8cL2nY_2eZPRRX5pGmKjt_V9Dwe6VuSxVyC6bzDLCPc
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED ADMIN 1 (Tribunal@yopmail.com)
+@TokenAccessOfSeedAdmin1B = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjYtNGZjYS03MGI3LTkxY2ItZWVmODczYjQ3MjVmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyMjI2NjAsImV4cCI6MTc5MzIyMjk2MCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.0W10ldYPyLgo7cWJ-IKjDgig_RlgQIv6eopaxUj3iNc
 
 ### GET "/users/:id" - Authenticated role 'Admin' can READ itself
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedAdmin1}}
+Authorization: {{TokenAccessOfSeedAdmin1B}}
 
 ### GET "/users/:id" - Authenticated role 'Admin' can READ role 'User'
 GET {{Api}}/users/{{IdOfSeedUser1}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedAdmin1}}
+Authorization: {{TokenAccessOfSeedAdmin1B}}
 
 ### GET "/users/:id" - Authenticated role 'Admin' can NOT READ ohter 'Admin'
 GET {{Api}}/users/{{IdOfSeedAdmin2}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedAdmin1}}
+Authorization: {{TokenAccessOfSeedAdmin1B}}
 
 ### GET "/users/:id" - Authenticated role 'Admin' can NOT READ role 'Super'
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
-Authorization: {{TokenAccessOfSeedAdmin1}}
+Authorization: {{TokenAccessOfSeedAdmin1B}}
 
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED SUPER (Super@yopmail.com)
+@TokenAccessOfSeedSuperB = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NjctMzJlZi03NzAxLWEyZWQtYmZhOTZmMDE1ZGIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyMjI3MTgsImV4cCI6MTc5MzIyMzAxOCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.-CXYNj2ZdVhE_8U3MmxwCC3Ff30IP8tt_irxuCCBqxo
 
 ### GET "/users/:id" - Authenticated role 'Super' can READ itself
 GET {{Api}}/users/{{IdOfSeedSuper}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleSuper}}
+Authorization: {{TokenAccessOfSeedSuperB}}
 
 ### GET "/users/:id" - Authenticated role 'Super' can READ role 'User'
 GET {{Api}}/users/{{IdOfSeedUser1}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleSuper}}
+Authorization: {{TokenAccessOfSeedSuperB}}
 
 ### GET "/users/:id" - Authenticated role 'Super' can NOT READ role 'Admin'
 GET {{Api}}/users/{{IdOfSeedAdmin1}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleSuper}}
+Authorization: {{TokenAccessOfSeedSuperB}}
 
 ### There is only 1 'Super'
 
 
-# TODO:
+# FIXME:
 
-### <- get ID from call to Login (POST "/auth") as USER -NOT SEED- (e.g. Kazka@yopmail.com)
-@IdOfNewUser = 01a18321-e349-74c8-918d-ed69e2de0545
+### <- get ID from Login (POST "/auth") as NEW USER -NOT SEED- (Kazka@yopmail.com)
+@IdOfNewUser = 01a18443-5498-7f9d-b96b-41d98bbc8544
+
+### <- get ACCESS TOKEN from Login (POST "/auth") as NEW USER 10 (Kazka@yopmail.com)
+@TokenAccessOfSeedUser10 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxYTE4NDQzLTU0OTgtN2Y5ZC1iOTZiLTQxZDk4YmJjODU0NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkthemthQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg0NmEtOTIwZC03YmE0LWEzMjctNTk3YmVhYWU3MDM0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc5MzIyMjkzOSwiZXhwIjoxNzkzMjIzMjM5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDEyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDIwMCJ9.37YtLJWAKKij48RryG1f4EREOhgm9ziljeefCguPf2Q
 
 ### PATCH "/users/:id" - Edit user profile with role 'User' - change Name
 PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleUser}}
+Authorization: {{TokenAccessOfSeedUser10}}
 
 {
   "password":null,
@@ -242,7 +261,7 @@ Authorization: {{TokenAccessRoleUser}}
 ### PATCH "/users/:id" - Edit user profile with role 'User' - change Password
 PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleUser}}
+Authorization: {{TokenAccessOfSeedUser10}}
 
 {
   "password":"Gg@12345",
@@ -252,7 +271,7 @@ Authorization: {{TokenAccessRoleUser}}
 ### PATCH "/users/:id" - Edit user profile with role 'User' - no changes
 PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
-Authorization: {{TokenAccessRoleUser}}
+Authorization: {{TokenAccessOfSeedUser10}}
 
 {
   "password":null,

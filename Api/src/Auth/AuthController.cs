@@ -19,49 +19,50 @@ public class AuthController(
   // POST "/auth"
   [HttpPost]
   public ActionResult<DtoResponse<DtoUser>> Login([FromBody] UserPayloadLogin payload) {
-    // VALIDATION within 'UserPayloadLogin' //
+    // VALIDATION within 'UserPayloadLogin'
+    ////
 
-    // DB REPO //
+    // DB Repo
+    ////
 
-    // payload dto -> model
+    // payload -> model
     User? entity = _userRepoSrv.ReadByEmail(payload.Email);
-
     if (entity == null) {
-      var dtoErr = new DtoResponse<object>([], "Credenciales incorrectas.");
-      return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
+      var modelErr = new DtoResponse<object>([], "Credenciales incorrectas.");
+      return StatusCode(StatusCodes.Status400BadRequest, modelErr);
     }
 
-    // TODO: exncapsulate hsasing fx into SRV?
+    // VALIDATE Password Hash
+    ////
 
-    // HASHING -> verify password
     var entityHasher = new PasswordHasher<User>();
     var entityPasswordHashVerifiy = entityHasher.VerifyHashedPassword(entity, entity.Password, payload.Password);
-
     if (entityPasswordHashVerifiy != PasswordVerificationResult.Success) {
-      var dtoErr = new DtoResponse<object>([], "Credenciales incorrectas.");
-      return StatusCode(StatusCodes.Status400BadRequest, dtoErr);
+      var securityErr = new DtoResponse<object>([], "Credenciales incorrectas.");
+      return StatusCode(StatusCodes.Status400BadRequest, securityErr);
     }
 
-    // TODO: encapsulate this logic into a TokenService?
+    // JWT ACCES TOKEN
+    ////
 
-    // CLAIMS (entries with built-in 'ClaimTypes' as keys)
+    // jwt claims
+
     List<Claim> claims = [
       new Claim(ClaimTypes.NameIdentifier, entity.Id.ToString()), // entity unique PK
       new Claim(ClaimTypes.Email, entity.Email), // entity unique prop
       new Claim(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString()) // JWT own id
     ];
 
-    // entity roles
     foreach (var role in entity.Roles) {
       var claim = new Claim(ClaimTypes.Role, role);
       if (claim == null) continue;
-      claims.Add(claim);
+      claims.Add(claim); // entity roles
     }
 
-    // common tokens props
+    // jwt config
+
     var _expires = uint.Parse(_config["AccessToken:Expires"]!); // FIXME: set to 6 hours if no Refresh Token available
     var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AccessToken:SecretKey"]!));
-
     var tokenAccess = new JwtSecurityToken(
         issuer: _config["AccessToken:Issuer"]!,
         audience: _config["AccessToken:Audience"]!,
@@ -71,18 +72,22 @@ public class AuthController(
         signingCredentials: new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256)
     );
 
-    var jwt = new JwtSecurityTokenHandler().WriteToken(tokenAccess);
+    // RES
+    ////
 
-    // headers -> JWT in <headers> (not in the body)
-    Response.Headers.Append("Authorization", $"Bearer {jwt}");
-
-    // DTO
+    // entity -> dto
     DtoUser item = new(
       Id: entity.Id,
       Email: entity.Email,
       Name: entity.Name,
       Roles: entity.Roles
     );
+
+    // headers add jwt
+    var jwt = new JwtSecurityTokenHandler().WriteToken(tokenAccess);
+    Response.Headers.Append("Authorization", $"Bearer {jwt}");
+
+    // dto
     var dto = new DtoResponse<DtoUser>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }

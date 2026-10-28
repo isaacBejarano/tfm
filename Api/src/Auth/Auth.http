@@ -2,6 +2,12 @@
 @Api = https://localhost:7247/api/v1
 
 
+
+### POST "/auth"
+################
+
+
+
 ### POST "/auth" - Login "no payload" --> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
@@ -60,7 +66,6 @@ Content-Type: application/json
   "password":"12345678"
 }
 
-
 ### POST "/auth" - Login "wrong email" -> 400 Bad Request
 POST {{Api}}/auth
 Content-Type: application/json
@@ -79,15 +84,7 @@ Content-Type: application/json
   "password":"Aa@00000"
 }
 
-### POST "/auth" - Login (right credentials of NEW USER with Role 'User') -> 200 OK
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Aa@12345"
-}
-
+### <- Signup this new user at POST "/users" (Kazka@yopmail.com)
 ### POST "/auth" - Login (right credentials of NEW USER with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
@@ -97,7 +94,16 @@ Content-Type: application/json
   "password":"Ff@12345"
 }
 
-### POST "/auth" - Login (right credentials of SEED USER with Role 'User') -> 200 OK
+### POST "/auth" - Login (right credentials of SEED USER 1 with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"Kalush@yopmail.com",
+  "password":"Aa@12345"
+}
+
+### POST "/auth" - Login (right credentials of SEED USER 2 with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
