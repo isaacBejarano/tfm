@@ -12,21 +12,23 @@ import { catchError, filter, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const _token: string = inject(StoreService).state().accesToken;
 
-  return next(req).pipe(
+  let clonedReq = req;
+  if (_token !== '') clonedReq = req.clone({ headers: req.headers.set('Authorization', _token) });
+
+  return next(clonedReq).pipe(
     filter((e) => e.type === HttpEventType.Response),
     catchError((error: HttpErrorResponse) => {
-      // Resend JWT only when API asks for it via header 'WWW-Authenticate'
       const isUnauthorized = error.status === HttpStatusCode.Unauthorized;
       const isChallenged =
         error.headers.has('WWW-Authenticate') && error.headers.get('WWW-Authenticate') === 'Bearer';
 
-      // retry
+      // Resend JWT when API asks for it via header 'WWW-Authenticate' when "session" expired
       if (isUnauthorized && isChallenged && _token !== '') {
-        req = req.clone({ headers: req.headers.set('Authorization', _token) });
-        return next(req);
+        // TODO: get a new JWT calling to "Refresh Token" endpoint
+        const _clonedReq = req.clone({ headers: req.headers.set('Authorization', _token) });
+        return next(_clonedReq);
       }
 
-      // TODO: Refresh Token management here too
       return throwError(() => error);
     }),
   );
