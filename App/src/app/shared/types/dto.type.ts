@@ -1,13 +1,13 @@
 import { User } from '@user/user-model.type';
 
 // DTO Response
-type DtoResponse<T> = {
+type ResponseDto<T> = {
   items: T[];
   msg: string;
   count: number;
 };
 
 // DTO item T
-type DtoUser = Omit<User, 'password'>;
+type UserDto = Omit<User, 'password'>;
 
-export type { DtoResponse, DtoUser };
+export type { ResponseDto, UserDto };

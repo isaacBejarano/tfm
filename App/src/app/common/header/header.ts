@@ -5,7 +5,7 @@ import { AppPathFragments } from '@app/app.routes';
 import { FormType } from '@app/auth/types/form.type';
 import { Btn } from '@shared/components/btn/btn';
 import { StoreService } from '@shared/services/store.service';
-import { DtoUser } from '../../shared/types/dto.type';
+import { UserDto } from '../../shared/types/dto.type';
 
 @Component({
   imports: [Btn],
@@ -32,7 +32,7 @@ export class Header {
     '3d-green',
   ]);
 
-  readonly loggedUser = computed<DtoUser | null>(() => this._storeSrv.state().loggedUser);
+  readonly loggedUser = computed<UserDto | null>(() => this._storeSrv.state().loggedUser);
 
   toggleAuthForms(state: FormType) {
     this._storeSrv.setState('formAuth', state);

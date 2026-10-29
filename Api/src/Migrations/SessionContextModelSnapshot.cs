@@ -28,6 +28,10 @@ namespace Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.PrimitiveCollection<Guid[]>("AgendaIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
+
                     b.Property<DateTimeOffset?>("Archived")
                         .HasColumnType("timestamp with time zone");
 
@@ -63,6 +67,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8000-7a1b-8000-000000000001"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 0, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kalush@yopmail.com",
                             Name = "Kalush",
@@ -72,6 +77,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8001-7a1b-8000-000000000002"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 5, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Dorofeeva@yopmail.com",
                             Name = "Dorofeeva",
@@ -81,6 +87,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8002-7a1b-8000-000000000003"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 10, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Kola@yopmail.com",
                             Name = "Kola",
@@ -90,6 +97,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8003-7a1b-8000-000000000004"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 15, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Onuka@yopmail.com",
                             Name = "Onuka",
@@ -99,6 +107,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8004-7a1b-8000-000000000005"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 20, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Parfeniuk@yopmail.com",
                             Name = "Parfeniuk",
@@ -108,6 +117,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8005-7a1b-8000-000000000006"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 25, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Anonymous@yopmail.com",
                             Password = "AQAAAAIAAYagAAAAEPvNNRBeFpA9snhyBGCdYEZ3/EqHvrCUMawAIzfHxoDMDl5HA7TC+JL8wyTIxFMSEA==",
@@ -116,6 +126,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8006-7a1b-8000-000000000007"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 30, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Tribunal@yopmail.com",
                             Name = "Tribunal",
@@ -125,6 +136,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8007-7a1b-8000-000000000008"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 35, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Admin@yopmail.com",
                             Name = "Admin",
@@ -134,6 +146,7 @@ namespace Api.Migrations
                         new
                         {
                             Id = new Guid("019532a1-8008-7a1b-8000-000000000009"),
+                            AgendaIds = new Guid[0],
                             Created = new DateTimeOffset(new DateTime(2026, 6, 6, 12, 0, 40, 150, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "Super@yopmail.com",
                             Name = "Super admin",

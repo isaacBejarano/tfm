@@ -5,12 +5,11 @@ import { SnackbarService } from '@common/snackbar/snackbar.service';
 import { StoreService } from '@shared/services/store.service';
 import { UserRole } from '@user/user-model.type';
 
-export const authorizedUserGuard: CanActivateFn = (route, state) => {
+export const authUser: CanActivateFn = (route, state) => {
   const _router = inject(Router);
   const _snackbarSrv = inject(SnackbarService);
-  const roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
-
-  const isRoleUser: boolean = roles.every((role) => !['Admin', 'Super'].includes(role));
+  const _roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
+  const isRoleUser: boolean = _roles.every((role) => !['Admin', 'Super'].includes(role));
 
   if (!isRoleUser) {
     _router.navigate(['']);

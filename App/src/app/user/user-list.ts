@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable, switchMap, tap } from 'rxjs';
 import { WebService } from '../shared/services/web.service';
-import { DtoResponse, DtoUser } from '../shared/types/dto.type';
+import { ResponseDto, UserDto } from '../shared/types/dto.type';
 
 @Component({
   selector: 'app-user',
@@ -56,7 +56,7 @@ export class UserList {
   // CTRL
   ////
 
-  protected readonly _users = signal<DtoUser[]>([]);
+  protected readonly _users = signal<UserDto[]>([]);
 
   constructor() {
     this._router.events
@@ -70,10 +70,10 @@ export class UserList {
       .subscribe();
   }
 
-  private _getUserList(): Observable<DtoUser[]> {
+  private _getUserList(): Observable<UserDto[]> {
     // TODO: extract into User SRV
     return this._http
-      .get<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + '/users', {
+      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + '/users', {
         responseType: 'json',
         observe: 'response',
       })

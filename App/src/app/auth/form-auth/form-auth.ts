@@ -35,6 +35,7 @@ export class FormAuth implements OnInit {
 
   private readonly _defaultUser = signal<User>({
     id: '',
+    agendaIds: [],
     email: '',
     password: '',
     name: '',

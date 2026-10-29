@@ -5,7 +5,7 @@ import { FormAuth } from '@app/auth/form-auth/form-auth';
 import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { AuthService } from '@auth/auth.service';
 import { StoreService } from '@shared/services/store.service';
-import { of, switchMap } from 'rxjs';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -31,14 +31,12 @@ export class Home implements OnDestroy {
     this._authSrv
       .login(payload)
       .pipe(
-        switchMap((user) => {
-          // TODO: switchMap call to endpoint API "users/:id" <- dto has agendas []
-          // if DTO agenda [] -> SPA route to "agendas/new"
-          // else if DTO agenda [Id:] -> SPA route to "agendas/:id"
-
-          const agendaID: string = Math.random() + user.id; // TODO:
-          return of(this._router.navigate(['agendas', agendaID]));
-        }),
+        tap((user) =>
+          user.agendaIds.length === 0 ||
+          user.agendaIds.includes('00000000-0000-0000-0000-000000000000')
+            ? this._router.navigate(['agendas', 'new'])
+            : this._router.navigate(['agendas', user.agendaIds[0]]),
+        ),
       )
       .subscribe(); // 1-time subscription
   }

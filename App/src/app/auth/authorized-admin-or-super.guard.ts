@@ -5,14 +5,13 @@ import { SnackbarService } from '@common/snackbar/snackbar.service';
 import { StoreService } from '@shared/services/store.service';
 import { UserRole } from '@user/user-model.type';
 
-export const authorizedAdminOrSuperGuard: CanActivateFn = (route, state) => {
+export const authAdminAndSuper: CanActivateFn = (route, state) => {
   const _router = inject(Router);
   const _snackbarSrv = inject(SnackbarService);
-  const roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
+  const _roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
+  const isRoleAdminOrSuper: boolean = _roles.every((role) => !['User'].includes(role));
 
-  const isRoleAdmin: boolean = roles.every((role) => !['User'].includes(role));
-
-  if (!isRoleAdmin) {
+  if (!isRoleAdminOrSuper) {
     _router.navigate(['']);
     _snackbarSrv
       .setIcon('icon-warning')
@@ -21,5 +20,5 @@ export const authorizedAdminOrSuperGuard: CanActivateFn = (route, state) => {
       .during(4000);
   }
 
-  return isRoleAdmin;
+  return isRoleAdminOrSuper;
 };

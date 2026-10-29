@@ -6,7 +6,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
 import { WebService } from '@shared/services/web.service';
-import { DtoResponse, DtoUser } from '@shared/types/dto.type';
+import { ResponseDto, UserDto } from '@shared/types/dto.type';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +28,7 @@ export class Profile {
   readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
   readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
 
-  protected readonly _user = signal<DtoUser | null>(null);
+  protected readonly _user = signal<UserDto | null>(null);
 
   constructor() {
     this._router.events
@@ -43,7 +43,7 @@ export class Profile {
       .subscribe();
   }
 
-  private _getProfile(targetUserId: string): Observable<DtoUser> {
+  private _getProfile(targetUserId: string): Observable<UserDto> {
     // FIXME: La API ya valida la visibilidad y cRUD por role.
     // No hace falta duplicar logica AQUI?
 
@@ -59,7 +59,7 @@ export class Profile {
 
     // TODO: extract into User SRV
     return this._http
-      .get<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + `/users/${targetUserId}`, {
+      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + `/users/${targetUserId}`, {
         responseType: 'json',
         observe: 'response',
       })

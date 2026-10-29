@@ -16,6 +16,7 @@ public class SessionContext(IConfiguration config) : DbContext {
 
     // Seeding requires static values for dynamic types like 'Guid', 'DateTimeOffset', or the hassing of 'Password'
     User seedUser1 = new() {
+      AgendaIds = [],
       Email = "Kalush@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEGwHgGIpRMXWQEvkORiPfV6rtNf3mgCqvdfJA115SNOSj+2r2qfzc+kjluWj3OytXw==", // hash for Aa@12345
       Name = "Kalush",
@@ -24,6 +25,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedUser2 = new() {
+      AgendaIds = [],
       Email = "Dorofeeva@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEHCYfGDeayZq/9Gi0gjYFQwNpMYM6+UJJw43Z6FwrBwJTnpcYcGS4q0hD0wNc4g9uA==", // hash for Bb@12345
       Name = "Dorofeeva",
@@ -32,6 +34,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedUser3 = new() {
+      AgendaIds = [],
       Email = "Kola@yopmail.com",
       Password = "AQAAAAIAAYagAAAAELtGwVxD76L9NvJBwWoBaHJ+6jPxX58iSqC0Yb1bJj7Kb7GiBgUz/EIaY/MtwNSN1Q==", // hash for Cc@12345
       Name = "Kola",
@@ -40,6 +43,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedUser4 = new() {
+      AgendaIds = [],
       Email = "Onuka@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEJ+PnhCcxUVxFzAy8scD19KDucHiGgpHf2uSK1rw/SfXYPefcJO0yH39hhRWVDiNKw==", // hash for Dd@12345
       Name = "Onuka",
@@ -48,6 +52,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedUser5 = new() {
+      AgendaIds = [],
       Email = "Parfeniuk@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEB5nPeoMDxsQpa2lLQn/61jmKZe4XbsI9W01NeoCRHx69UERvu/Dc5B7fVDxXUqn8w==", // hash for Ee@12345
       Name = "Parfeniuk",
@@ -56,6 +61,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedUser6 = new() {
+      AgendaIds = [],
       Email = "Anonymous@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEPvNNRBeFpA9snhyBGCdYEZ3/EqHvrCUMawAIzfHxoDMDl5HA7TC+JL8wyTIxFMSEA==", // hash for Xx@12345
       Name = null,
@@ -64,6 +70,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.User)]
     };
     User seedAdmin1 = new() {
+      AgendaIds = [],
       Email = "Tribunal@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEHsuE/FMumGyWhg0+txuAkz6gTXKnbgkSOmuCc+rnr3VTdjastEqgvs1Srr+8I3Jiw==", // hash for Tribunal@uoc2026
       Name = "Tribunal",
@@ -72,6 +79,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.Admin)]
     };
     User seedAdmin2 = new() {
+      AgendaIds = [],
       Email = "Admin@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEPTOGgbcep5UVwww5yQ6T/T7iomwexMFMxU32TATSpWmM5c69+kNEbuAk2sdpDqtYg==", // hash for Admin@uoc2026
       Name = "Admin",
@@ -80,6 +88,7 @@ public class SessionContext(IConfiguration config) : DbContext {
       Roles = [nameof(UserRole.Admin)]
     };
     User seedSuper = new() {
+      AgendaIds = [],
       Email = "Super@yopmail.com",
       Password = "AQAAAAIAAYagAAAAEEdbb8s8Cha+UGEo6NaggLw+/jVUtJHJf/HaZDhdYAVFCecKG/qnEiJPvzmxf0RnWA==", // hash for Super@uoc2026
       Name = "Super admin",

@@ -1,6 +1,6 @@
 namespace Api.Shared;
 
-public record DtoResponse<T>(
+public record ResponseDto<T>(
   T[] Items,
   string Msg
 ) {

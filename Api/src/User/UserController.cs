@@ -13,7 +13,7 @@ public class UserController(
 
   // POST "/users"
   [HttpPost]
-  public ActionResult<DtoResponse<object>> Signup([FromBody] UserPayloadSignup payload) {
+  public ActionResult<ResponseDto<object>> Signup([FromBody] UserPayloadSignup payload) {
     // VALIDATION within 'UserPayloadSignup'
     ////
 
@@ -30,6 +30,7 @@ public class UserController(
 
     // payload -> model
     User model = new() {
+      AgendaIds = [],
       Id = Guid.CreateVersion7(),
       Email = payload.Email,
       Password = payloadPasswordHashed,
@@ -44,7 +45,7 @@ public class UserController(
     var entityHasher = new PasswordHasher<User>();
     var entityPasswordHashVerifiy = entityHasher.VerifyHashedPassword(model, model.Password, payload.Password);
     if (entityPasswordHashVerifiy != PasswordVerificationResult.Success) {
-      var securityErr = new DtoResponse<object>([], "Error en el registro de Usuario.");
+      var securityErr = new ResponseDto<object>([], "Error en el registro de Usuario.");
       return StatusCode(StatusCodes.Status500InternalServerError, securityErr);
     }
 
@@ -53,14 +54,14 @@ public class UserController(
 
     User? entity = _userRepoSrv.Create(model);
     if (entity == null) {
-      var modelErr = new DtoResponse<object>([], "Usuario ya registrado.");
+      var modelErr = new ResponseDto<object>([], "Usuario ya registrado.");
       return StatusCode(StatusCodes.Status409Conflict, modelErr);
     }
 
     // RES
     ////
 
-    var dto = new DtoResponse<object>([], "Usuario registrado con éxito.");
+    var dto = new ResponseDto<object>([], "Usuario registrado con éxito.");
     return StatusCode(StatusCodes.Status201Created, dto);
   }
 
@@ -68,7 +69,7 @@ public class UserController(
   // GET "/users"
   [HttpGet]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
-  public ActionResult<DtoResponse<DtoUser>> List() {
+  public ActionResult<ResponseDto<UserDto>> List() {
     // Authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
     ////
 
@@ -87,11 +88,12 @@ public class UserController(
     ////
 
     // entity -> dto
-    DtoUser[] items = [];
+    UserDto[] items = [];
     if (entities.Length > 0) {
       items = [.. entities.Select(user =>
-        new DtoUser(
+        new UserDto(
           Id: user.Id,
+          AgendaIds: [Guid.Empty],
           Email: user.Email,
           Name: user.Name,
           Roles: user.Roles
@@ -108,7 +110,7 @@ public class UserController(
         : userRoles.Length > 1
         ? $"con roles '{string.Join("'|'", userRoles)}'"
         : "sin roles";
-    var dto = new DtoResponse<DtoUser>(items, $"Aceso exitoso a la lista de usuarios {userRolesSubstr}.");
+    var dto = new ResponseDto<UserDto>(items, $"Aceso exitoso a la lista de usuarios {userRolesSubstr}.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
@@ -116,7 +118,7 @@ public class UserController(
   // GET "/users/:id"
   [HttpGet("{id:Guid}")]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
-  public ActionResult<DtoResponse<DtoUser>> ProfileRead(Guid id) {
+  public ActionResult<ResponseDto<UserDto>> ProfileRead(Guid id) {
     // VALIDATION within 'id:Guid'
     ////
 
@@ -128,7 +130,7 @@ public class UserController(
     // path var -> entity
     User? targetUser = _userRepoSrv.ReadById(id);
     if (targetUser == null) {
-      var entityErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+      var entityErr = new ResponseDto<UserDto>([], "Usuario no encontrado.");
       return StatusCode(StatusCodes.Status404NotFound, entityErr);
     }
 
@@ -136,15 +138,15 @@ public class UserController(
     ////
 
     string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-    DtoResponse<DtoUser>? resErr = null;
+    ResponseDto<UserDto>? resErr = null;
 
     // Role 'User'  can READ ONLY itself
     // Role 'Admin' can READ itself + rol 'User'
     // Role 'Super' can READ ALL roles (there's only 1 'Super')
     if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
     else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != targetUser.Id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede acceder a su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede acceder a su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
@@ -152,13 +154,21 @@ public class UserController(
     ////
 
     // entity -> dto
-    DtoUser[] items = [new DtoUser(Id: targetUser.Id, Email: targetUser.Email, Name: targetUser.Name, Roles: targetUser.Roles)];
+    UserDto[] items = [
+      new (
+        Id: targetUser.Id,
+        AgendaIds: [Guid.Empty],
+        Email: targetUser.Email,
+        Roles: targetUser.Roles,
+        Name: targetUser.Name
+      )
+    ];
 
     // RES
     ////
 
     // dto
-    var dto = new DtoResponse<DtoUser>(items, $"Aceso exitoso al perfil de usuario '{targetUser.Name}'.");
+    var dto = new ResponseDto<UserDto>(items, $"Aceso exitoso al perfil de usuario '{targetUser.Name}'.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
@@ -166,7 +176,7 @@ public class UserController(
   // PATCH "/users/:id"
   [HttpPatch("{id:Guid}")]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
-  public ActionResult<DtoResponse<DtoUser>> ProfileUpdate(Guid id, [FromBody] UserPayloadEdit payload) {
+  public ActionResult<ResponseDto<UserDto>> ProfileUpdate(Guid id, [FromBody] UserPayloadEdit payload) {
     // VALIDATION within 'id:Guid' & 'UserPayloadEdit'
     ////
 
@@ -178,7 +188,7 @@ public class UserController(
     // path var -> entity
     User? targetUser = _userRepoSrv.ReadById(id);
     if (targetUser == null) {
-      var entityErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+      var entityErr = new ResponseDto<UserDto>([], "Usuario no encontrado.");
       return StatusCode(StatusCodes.Status404NotFound, entityErr);
     }
 
@@ -186,15 +196,15 @@ public class UserController(
     ////
 
     string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-    DtoResponse<DtoUser>? resErr = null;
+    ResponseDto<UserDto>? resErr = null;
 
     // Role 'User'  can UPDATE ONLY itself
     // Role 'Admin' can UPDATE itself + rol 'User'
     // Role 'Super' can UPDATE ALL roles (there's only 1 'Super')
     if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede editar su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede editar su propio perfil.");
     else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede editar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede editar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
@@ -224,7 +234,7 @@ public class UserController(
       var patchHasher = new PasswordHasher<UserPatch>();
       var patchPasswordHashVerifiy = patchHasher.VerifyHashedPassword(patch, patch.Password, payload.Password);
       if (patchPasswordHashVerifiy != PasswordVerificationResult.Success) {
-        var securityErr = new DtoResponse<object>([], "Credenciales de usuario inválidas.");
+        var securityErr = new ResponseDto<object>([], "Credenciales de usuario inválidas.");
         return StatusCode(StatusCodes.Status500InternalServerError, securityErr);
       }
     }
@@ -237,18 +247,26 @@ public class UserController(
     // patched class -> entity
     User? patchedUser = _userRepoSrv.Patch(id, patch);
     if (patchedUser == null) {
-      var patchErr = new DtoResponse<DtoUser>([], "No se pudo modificar ningún dato del usuario.");
+      var patchErr = new ResponseDto<UserDto>([], "No se pudo modificar ningún dato del usuario.");
       return StatusCode(StatusCodes.Status409Conflict, patchErr);
     }
 
     // entity -> dto
-    DtoUser[] items = [new DtoUser(Id: patchedUser.Id, Email: patchedUser.Email, Name: patchedUser.Name, Roles: patchedUser.Roles)];
+    UserDto[] items = [
+      new (
+        Id: patchedUser.Id,
+        AgendaIds: [Guid.Empty],
+        Email: patchedUser.Email,
+        Roles: patchedUser.Roles,
+        Name: patchedUser.Name
+      )
+    ];
 
     // RES
     ////
 
     // dto
-    var dto = new DtoResponse<DtoUser>(items, $"El usuario '{patchedUser.Name}' fue modificado con éxito.");
+    var dto = new ResponseDto<UserDto>(items, $"El usuario '{patchedUser.Name}' fue modificado con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
@@ -256,7 +274,7 @@ public class UserController(
   // DELETE "/users/:id"
   [HttpDelete("{id:Guid}")]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
-  public ActionResult<DtoResponse<DtoUser>> ProfileDelete(Guid id) {
+  public ActionResult<ResponseDto<UserDto>> ProfileDelete(Guid id) {
     // VALIDATION within 'id:Guid'
     ////
 
@@ -268,7 +286,7 @@ public class UserController(
     // path var -> entity
     User? targetUser = _userRepoSrv.ReadById(id);
     if (targetUser == null) {
-      var entityErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+      var entityErr = new ResponseDto<UserDto>([], "Usuario no encontrado.");
       return StatusCode(StatusCodes.Status404NotFound, entityErr);
     }
 
@@ -276,18 +294,18 @@ public class UserController(
     ////
 
     string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-    DtoResponse<DtoUser>? resErr = null;
+    ResponseDto<UserDto>? resErr = null;
 
     // Role 'User'  can DELETE ONLY itself
     // Role 'Admin' can DELETE ONLY role 'User'
     // Role 'Super' can DELETE ONLY role 'User'
     if (User.IsInRole(nameof(UserRole.User))
       && loggedUserId != targetUser.Id.ToString()) {
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
     }
     else if ((User.IsInRole(nameof(UserRole.Admin)) || User.IsInRole(nameof(UserRole.Super)))
       && !targetUser.Roles.Contains(nameof(UserRole.User))) {
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' o '{nameof(UserRole.Super)}' sólo puede eliminar perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' o '{nameof(UserRole.Super)}' sólo puede eliminar perfiles de rol '{nameof(UserRole.User)}'.");
     }
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
@@ -297,7 +315,7 @@ public class UserController(
 
     // entity -> bool
     if (!_userRepoSrv.DeleteHard(targetUser.Id)) {
-      var patchErr = new DtoResponse<DtoUser>([], "No se pudo eliminar el usuario.");
+      var patchErr = new ResponseDto<UserDto>([], "No se pudo eliminar el usuario.");
       return StatusCode(StatusCodes.Status409Conflict, patchErr);
     }
 
@@ -305,7 +323,7 @@ public class UserController(
     ////
 
     // dto
-    var dto = new DtoResponse<DtoUser>([], $"El usuario '{targetUser.Name}' fue eliminado con éxito.");
+    var dto = new ResponseDto<UserDto>([], $"El usuario '{targetUser.Name}' fue eliminado con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }

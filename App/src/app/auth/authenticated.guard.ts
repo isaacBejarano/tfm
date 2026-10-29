@@ -4,11 +4,10 @@ import { CanActivateFn, Router } from '@angular/router';
 import { SnackbarService } from '@common/snackbar/snackbar.service';
 import { StoreService } from '@shared/services/store.service';
 
-export const authenticatedGuard: CanActivateFn = (route, state) => {
+export const authenticated: CanActivateFn = (route, state) => {
   const _token: string = inject(StoreService).state().accesToken;
   const _router = inject(Router);
   const _snackbarSrv = inject(SnackbarService);
-
   const isAuthenticated: boolean = _token !== '';
 
   if (!isAuthenticated) {

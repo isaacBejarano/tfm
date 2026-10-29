@@ -9,14 +9,14 @@ import { inject } from '@angular/core';
 import { catchError, EMPTY, filter, tap } from 'rxjs';
 
 import { SnackbarService } from '@app/common/snackbar/snackbar.service';
-import { DtoResponse } from '../../shared/types/dto.type';
+import { ResponseDto } from '@shared/types/dto.type';
 
 export const httpResponseMessageInterceptor: HttpInterceptorFn = (req, next) => {
   const _snackbarSrv = inject(SnackbarService); // DI
 
   return next(req).pipe(
     filter(
-      (res): res is HttpResponse<DtoResponse<unknown>> =>
+      (res): res is HttpResponse<ResponseDto<unknown>> =>
         res.type === HttpEventType.Response && res.ok && res.body !== null,
     ),
     tap((res) => snackbarNotify(res.body?.msg ?? 'Error.', res.ok, _snackbarSrv)), // never map middleware http res flow. Use tap for side fx!

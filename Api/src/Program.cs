@@ -80,7 +80,7 @@ builder.Services
           ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
           ctx.Response.ContentType = "application/json";
           ctx.Response.Headers.Append("WWW-Authenticate", "Bearer");
-          var dto = new DtoResponse<object>([], "Usuario no autenticado.");
+          var dto = new ResponseDto<object>([], "Usuario no autenticado.");
           await ctx.Response.WriteAsJsonAsync(dto);
         },
         // Hook for AuthZ FORBID -> ERROR 403
@@ -99,7 +99,7 @@ builder.Services
           // headers + DTO
           ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
           ctx.Response.ContentType = "application/json";
-          var dto = new DtoResponse<object>([], $"Usuario {userEmailSubstr} y {userRolesSubstr} no tiene permisos suficientes para acceder a este recurso.");
+          var dto = new ResponseDto<object>([], $"Usuario {userEmailSubstr} y {userRolesSubstr} no tiene permisos suficientes para acceder a este recurso.");
           await ctx.Response.WriteAsJsonAsync(dto);
         }
       };
@@ -129,7 +129,7 @@ builder.Services
             })
         );
       string Msg = JsonSerializer.Serialize(errorKinds);
-      var dto = new DtoResponse<object>([], Msg);
+      var dto = new ResponseDto<object>([], Msg);
       return new BadRequestObjectResult(dto); // <- IActionResult 400
     }
   );

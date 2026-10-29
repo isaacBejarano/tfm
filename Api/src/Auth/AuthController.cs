@@ -18,7 +18,7 @@ public class AuthController(
 
   // POST "/auth"
   [HttpPost]
-  public ActionResult<DtoResponse<DtoUser>> Login([FromBody] UserPayloadLogin payload) {
+  public ActionResult<ResponseDto<UserDto>> Login([FromBody] UserPayloadLogin payload) {
     // VALIDATION within 'UserPayloadLogin'
     ////
 
@@ -28,7 +28,7 @@ public class AuthController(
     // payload -> model
     User? entity = _userRepoSrv.ReadByEmail(payload.Email);
     if (entity == null) {
-      var modelErr = new DtoResponse<object>([], "Credenciales incorrectas.");
+      var modelErr = new ResponseDto<object>([], "Credenciales incorrectas.");
       return StatusCode(StatusCodes.Status400BadRequest, modelErr);
     }
 
@@ -38,7 +38,7 @@ public class AuthController(
     var entityHasher = new PasswordHasher<User>();
     var entityPasswordHashVerifiy = entityHasher.VerifyHashedPassword(entity, entity.Password, payload.Password);
     if (entityPasswordHashVerifiy != PasswordVerificationResult.Success) {
-      var securityErr = new DtoResponse<object>([], "Credenciales incorrectas.");
+      var securityErr = new ResponseDto<object>([], "Credenciales incorrectas.");
       return StatusCode(StatusCodes.Status400BadRequest, securityErr);
     }
 
@@ -76,8 +76,9 @@ public class AuthController(
     ////
 
     // entity -> dto
-    DtoUser item = new(
+    UserDto item = new(
       Id: entity.Id,
+      AgendaIds: [Guid.Empty],
       Email: entity.Email,
       Name: entity.Name,
       Roles: entity.Roles
@@ -88,7 +89,7 @@ public class AuthController(
     Response.Headers.Append("Authorization", $"Bearer {jwt}");
 
     // dto
-    var dto = new DtoResponse<DtoUser>([item], "Usuario autenticado.");
+    var dto = new ResponseDto<UserDto>([item], "Usuario autenticado.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }

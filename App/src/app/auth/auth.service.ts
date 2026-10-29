@@ -2,7 +2,7 @@ import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { filter, map, Observable, tap } from 'rxjs';
 
-import { DtoResponse, DtoUser } from '@app/shared/types/dto.type';
+import { ResponseDto, UserDto } from '@app/shared/types/dto.type';
 import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
@@ -19,7 +19,7 @@ export class AuthService {
 
   signup(payload: UserPayloadSignup | UserPayloadLogin): Observable<Object> {
     return this._http
-      .post<DtoResponse<Object>>(this._webSrv.domain.api.get() + '/users', payload, {
+      .post<ResponseDto<Object>>(this._webSrv.domain.api.get() + '/users', payload, {
         responseType: 'json',
         observe: 'response',
       })
@@ -32,9 +32,9 @@ export class AuthService {
       );
   }
 
-  login(payload: UserPayloadLogin): Observable<DtoUser> {
+  login(payload: UserPayloadLogin): Observable<UserDto> {
     return this._http
-      .post<DtoResponse<DtoUser>>(this._webSrv.domain.api.get() + '/auth', payload, {
+      .post<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + '/auth', payload, {
         responseType: 'json',
         observe: 'response',
       })
