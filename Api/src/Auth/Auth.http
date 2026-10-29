@@ -139,3 +139,31 @@ Content-Type: application/json
   "password":"Super@uoc2026"
 }
 
+
+### POST "/auth" - Login (right credentials of ADHOC USER 2 with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"User2@yopmail.com",
+  "password":"User2@00000"
+}
+
+### POST "/auth" - Login (right credentials of ADHOC USER 3 with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "email":"User3@yopmail.com",
+  "password":"User3@00000"
+}
+
+### POST "/auth" - Login (right credentials of ADHOC USER 4 with Role 'User') -> 200 OK
+POST {{Api}}/auth
+Content-Type: application/json
+
+{
+  "password":"User4@00000",
+  "name":"Adhoc User 4"
+}
+

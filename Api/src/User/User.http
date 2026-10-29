@@ -101,6 +101,36 @@ Content-Type: application/json
   "name":"Kazka"
 }
 
+### POST "/users" - Ad hoc NEW USER 2 -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"User2@yopmail.com",
+  "password":"User2@00000",
+  "name":"Adhoc User 2"
+}
+
+### POST "/users" - Ad hoc NEW USER 3 -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"User3@yopmail.com",
+  "password":"User3@00000",
+  "name":"Adhoc User 3"
+}
+
+### POST "/users" - Ad hoc NEW USER 4 -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"User4@yopmail.com",
+  "password":"User4@00000",
+  "name":"Adhoc User 4"
+}
+
 
 
 ### GET "/users"
@@ -427,7 +457,86 @@ Authorization: {{TokenAccessOfSeedSuperC}}
 ### There is only 1 'Super'
 
 
-# FIXME:
+### DELETE "/users/:id"
+######################
 
 
 
+### ID of SEED USER 6 (Anonymous@yopmail.com)
+@IdOfSeedUser6 = 019532a1-8005-7a1b-8000-000000000006
+
+### <- get ID from an ad hoc User created from Signup (POST "/users") as ADHOC USER 2 (User3@yopmail.com)
+@IdOfAdhocUser2 = 01a185ef-fd3b-77a5-a70c-a9de1ad49562
+
+### <- get ACCESS TOKEN from ADHOC USER 2 from Login (POST "/auth") (User3@yopmail.com)
+@TokenAccessOfAdhocUser2= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxYTE4NWVmLWZkM2ItNzdhNS1hNzBjLWE5ZGUxYWQ0OTU2MiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlVzZXIyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg2NDItY2UxMS03YmZkLTlmMTMtZGE4NDNjY2ViYTIzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc5MzI1Mzg4NywiZXhwIjoxNzkzMjU0MTg3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDEyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDIwMCJ9.ZOJnxS9vsboMmR9eYzLtr2QG4V0wrFc6-4cYttSybAc
+
+
+### DELETE "/users/:id" - Authenticated role 'User' can NOT DELETE role 'Admin' -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedAdmin2}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfAdhocUser2}}
+
+### DELETE "/users/:id" - Authenticated role 'User' can NOT DELETE role 'Super' -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedSuper}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfAdhocUser2}}
+
+### DELETE "/users/:id" - Authenticated role 'User' can NOT DELETE other role 'User' -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedUser6}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfAdhocUser2}}
+
+### DELETE "/users/:id" - Authenticated role 'User' can only DELETE itself -> 200 OK
+DELETE {{Api}}/users/{{IdOfAdhocUser2}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfAdhocUser2}}
+
+
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED ADMIN 1 (Tribunal@yopmail.com)
+@TokenAccessOfSeedAdmin1D = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDYtN2ExYi04MDAwLTAwMDAwMDAwMDAwNyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRyaWJ1bmFsQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg2NDQtNWFiYy03NTFmLTk1NDUtYTM5YTBkOWZkMGZhIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3OTMyNTM5ODksImV4cCI6MTc5MzI1NDI4OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.qMAM_wjd2O26QoBAGnDgfoWjhgVrpEbPeq6PPSc4k4g
+
+### <- get ID from an ad hoc User created from Signup (POST "/users") as ADHOC USER 3 (User3@yopmail.com)
+@IdOfAdhocUser3 = 01a185f0-11da-7cfb-8417-4181b008a756
+
+### DELETE "/users/:id" - Authenticated role 'Admin' can NOT DELETE itself -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedAdmin1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1D}}
+
+### DELETE "/users/:id" - Authenticated role 'Admin' can NOT DELETE role 'Admin' -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedAdmin2}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1D}}
+
+### DELETE "/users/:id" - Authenticated role 'Admin' can NOT DELETE role 'Super' -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedSuper}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1D}}
+
+### DELETE "/users/:id" - Authenticated role 'Admin' can DELETE role 'User' -> 200 OK
+DELETE {{Api}}/users/{{IdOfAdhocUser3}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedAdmin1D}}
+
+
+### <- get ACCESS TOKEN from Login (POST "/auth") as SEED SUPER (Super@yopmail.com)
+@TokenAccessOfSeedSuperD = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOTUzMmExLTgwMDgtN2ExYi04MDAwLTAwMDAwMDAwMDAwOSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlN1cGVyQHlvcG1haWwuY29tIiwianRpIjoiMDFhMTg2NDUtYTVjNy03Yzc4LTkyZWUtNzM1OTg0YmFiOTNjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXIiLCJuYmYiOjE3OTMyNTQwNzMsImV4cCI6MTc5MzI1NDM3MywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.yapAyK7Qd1hh4RD0p4-_AD5RdcjiBjtxKMdZ_oix56g
+
+### <- get ID from an ad hoc User created from Signup (POST "/users") as ADHOC USER 4 (User4@yopmail.com)
+@IdOfAdhocUser4 = 01a185f0-1add-7a7e-9641-fb238879e9d2
+
+### DELETE "/users/:id" - Authenticated role 'Super' can NOT DELETE itself -> 403 Forbidden
+DELETE {{Api}}/users/{{IdOfSeedSuper}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedSuperD}}
+
+### DELETE "/users/:id" - Authenticated role 'Super' can NOT DELETE role 'Admin' -> 403 Fotbidden
+DELETE {{Api}}/users/{{IdOfSeedAdmin1}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedSuperD}}
+
+### DELETE "/users/:id" - Authenticated role 'Super' can DELETE role 'User' -> 200 OK
+DELETE {{Api}}/users/{{IdOfAdhocUser4}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedSuperD}}

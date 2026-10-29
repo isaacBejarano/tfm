@@ -54,6 +54,7 @@ export class Profile {
     // Role 'Super' can CRUD itself       -> loggedUserId === targetUserId (Super)
     // Role 'Super' can CRUD role 'User'  -> loggedUserId !== targetUserId (User)
     // Role 'Super' can CRUD role 'Admin' -> loggedUserId !== targetUserId (Admin)
+    // Role 'Super' and 'Admin' can ONLY DELETE role 'User'
     // There is only 1 'Super'
 
     // TODO: extract into User SRV

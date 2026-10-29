@@ -279,12 +279,16 @@ public class UserController(
     DtoResponse<DtoUser>? resErr = null;
 
     // Role 'User'  can DELETE ONLY itself
-    // Role 'Admin' can DELETE itself + rol 'User'
-    // Role 'Super' can DELETE ALL roles (there's only 1 'Super')
-    if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
+    // Role 'Admin' can DELETE ONLY role 'User'
+    // Role 'Super' can DELETE ONLY role 'User'
+    if (User.IsInRole(nameof(UserRole.User))
+      && loggedUserId != targetUser.Id.ToString()) {
       resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
-    else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != targetUser.Id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
-      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede eliminar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+    }
+    else if ((User.IsInRole(nameof(UserRole.Admin)) || User.IsInRole(nameof(UserRole.Super)))
+      && !targetUser.Roles.Contains(nameof(UserRole.User))) {
+      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' o '{nameof(UserRole.Super)}' sólo puede eliminar perfiles de rol '{nameof(UserRole.User)}'.");
+    }
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
