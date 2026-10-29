@@ -6,6 +6,3 @@ public record DtoUser(
   string[] Roles,
   string? Name = null
 );
-
-
-

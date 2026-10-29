@@ -13,15 +13,15 @@ public interface IUserRepositoryService {
   // GET "users/" <- User List (filter by Token roles)
   public IEnumerable<User> ReadAllByRoles(UserRole[] targetRoles);
 
-  // GET "users/:id" <- TODO: AUTH + API filters DTO by Token claim "role" (no payload, no query param)
+  // GET "users/:id" <- User Profile Read (filter by Token roles)
   public User? ReadById(Guid id);
 
 
-  // PATCH users/:id
-  public User? Update(Guid id, User patch);
+  // PATCH users/:id <- User Profile Edit (filter by Token roles)
+  public User? Patch(Guid id, UserPatch patch);
 
 
-  // DELETE users/:id
+  // DELETE users/:id <- User Profile Delete (filter by Token roles)
   public bool DeleteHard(Guid id);
 }
 

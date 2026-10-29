@@ -7,7 +7,6 @@ namespace Api.Payloads;
 ////
 
 public record UserPayloadEdit(
-  [Required(ErrorMessage = "El campo 'Contraseña' es obligatorio.")]
   [MinLength(8, ErrorMessage = "El campo 'Contraseña' debe tener al menos 8 carácteres.")]
   [MaxLength(16, ErrorMessage = "El campo 'Contraseña' debe tener máximo 16 carácteres.")]
   [RegularExpression(

@@ -20,6 +20,8 @@ public class UserController(
     // HASHING -> payload Password
     ////
 
+    // TODO: extract hashing into SRV? (for Profile CRUD)
+
     var payloadHasher = new PasswordHasher<UserPayloadSignup>(); //
     string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
 
@@ -113,6 +115,8 @@ public class UserController(
     // DB Repo
     ////
 
+    // TODO: refactor - exctract Role VALIDATIONS into a Profile SRV?
+
     // path var -> entity
     User? targetUser = _userRepoSrv.ReadById(id);
     if (targetUser == null) {
@@ -129,29 +133,119 @@ public class UserController(
     // Role 'User'  can READ ONLY itself
     // Role 'Admin' can READ itself + rol 'User'
     // Role 'Super' can READ ALL roles (there's only 1 'Super')
-    if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != id.ToString())
+    if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
       resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
-    else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
+    else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != targetUser.Id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
       resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede acceder a su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
-    // RES
+    // ITEMS - READ
     ////
 
     // entity -> dto
     DtoUser[] items = [new DtoUser(Id: targetUser.Id, Email: targetUser.Email, Name: targetUser.Name, Roles: targetUser.Roles)];
 
+    // RES
+    ////
+
     // dto
     var dto = new DtoResponse<DtoUser>(items, "Datos de usuario indagados con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
-    // TODO: Create entity AGENDA (many Agendas to 1 User) + migrate DB + return a DtoUserWithAgenda
   }
 
 
-  // TODO: PATCH "/users/:id"
+  // PATCH "/users/:id"
+  [HttpPatch("{id:Guid}")]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
+  public ActionResult<DtoResponse<DtoUser>> ProfileUpdate(Guid id, [FromBody] UserPayloadEdit payload) {
+    // VALIDATION within 'id:Guid' & 'UserPayloadEdit'
+    ////
+
+    // DB Repo
+    ////
+
+    // TODO: refactor - exctract Role VALIDATIONS into a Profile SRV?
+
+    // path var -> entity
+    User? targetUser = _userRepoSrv.ReadById(id);
+    if (targetUser == null) {
+      var entityErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+      return StatusCode(StatusCodes.Status404NotFound, entityErr);
+    }
+
+    // VALIDATE BY ROLE -> authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
+    ////
+
+    string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+    DtoResponse<DtoUser>? resErr = null;
+
+    // Role 'User'  can UPDATE ONLY itself
+    // Role 'Admin' can UPDATE itself + rol 'User'
+    // Role 'Super' can UPDATE ALL roles (there's only 1 'Super')
+    if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
+      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede editar su propio perfil.");
+    else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
+      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede editar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+
+    if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
+
+    // PATCHING
+    ////
+
+    // payload -> patched class
+    UserPatch patch = new() {
+      Password = null,
+      Name = null
+    };
+
+    // TODO: extract Hashing VALIDATION into SRV? (for Profile CRUD)?
+
+    if (payload.Password != null) {
+      // HASHING -> payload Password
+      ////////
+      var payloadHasher = new PasswordHasher<UserPayloadEdit>(); //
+      string payloadPasswordHashed = payloadHasher.HashPassword(payload, payload.Password);
+
+      // payload -> patched class
+      patch.Password = payloadPasswordHashed;
+
+      // VALIDATE model Password
+      ////////
+
+      var patchHasher = new PasswordHasher<UserPatch>();
+      var patchPasswordHashVerifiy = patchHasher.VerifyHashedPassword(patch, patch.Password, payload.Password);
+      if (patchPasswordHashVerifiy != PasswordVerificationResult.Success) {
+        var securityErr = new DtoResponse<object>([], "Credenciales de usuario inválidas.");
+        return StatusCode(StatusCodes.Status500InternalServerError, securityErr);
+      }
+    }
+
+    if (payload.Name != null) patch.Name = payload.Name;
+
+    // ITEMS - UPDATE
+    ////
+
+    // patched class -> entity
+    User? patchedUser = _userRepoSrv.Patch(id, patch);
+    if (patchedUser == null) {
+      var patchErr = new DtoResponse<DtoUser>([], "No se modificó ningun dato del usuario.");
+      return StatusCode(StatusCodes.Status400BadRequest, patchErr);
+    }
+
+    // entity -> dto
+    DtoUser[] items = [new DtoUser(Id: patchedUser.Id, Email: patchedUser.Email, Name: patchedUser.Name, Roles: patchedUser.Roles)];
+
+    // RES
+    ////
+
+    // dto
+    var dto = new DtoResponse<DtoUser>(items, "Datos de usuario modificados con éxito.");
+    return StatusCode(StatusCodes.Status200OK, dto);
+  }
 
 
   // TODO: DELETE "/users/:id"
 }
 
+// TODO: Create entity AGENDA (many Agendas to 1 User) + migrate DB + return a DtoUserWithAgenda
