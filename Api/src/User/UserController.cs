@@ -100,7 +100,15 @@ public class UserController(
     }
 
     // dto
-    var dto = new DtoResponse<DtoUser>(items, "Lista de usuarios obtenida con éxito.");
+
+    // TODO: enxtarct to SRV utility fun (also used i Progrm.cs)
+    string[] userRoles = [.. lowerRoles.Select(r => r.ToString())];
+    string userRolesSubstr = userRoles.Length == 1
+        ? $"con rol '{userRoles[0]}'"
+        : userRoles.Length > 1
+        ? $"con roles '{string.Join("'|'", userRoles)}'"
+        : "sin roles";
+    var dto = new DtoResponse<DtoUser>(items, $"Aceso exitoso a la lista de usuarios {userRolesSubstr}.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
@@ -150,7 +158,7 @@ public class UserController(
     ////
 
     // dto
-    var dto = new DtoResponse<DtoUser>(items, "Datos de usuario indagados con éxito.");
+    var dto = new DtoResponse<DtoUser>(items, $"Aceso exitoso al perfil de usuario '{targetUser.Name}'.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
@@ -229,8 +237,8 @@ public class UserController(
     // patched class -> entity
     User? patchedUser = _userRepoSrv.Patch(id, patch);
     if (patchedUser == null) {
-      var patchErr = new DtoResponse<DtoUser>([], "No se modificó ningun dato del usuario.");
-      return StatusCode(StatusCodes.Status400BadRequest, patchErr);
+      var patchErr = new DtoResponse<DtoUser>([], "No se pudo modificar ningún dato del usuario.");
+      return StatusCode(StatusCodes.Status409Conflict, patchErr);
     }
 
     // entity -> dto
@@ -240,12 +248,62 @@ public class UserController(
     ////
 
     // dto
-    var dto = new DtoResponse<DtoUser>(items, "Datos de usuario modificados con éxito.");
+    var dto = new DtoResponse<DtoUser>(items, $"El usuario '{patchedUser.Name}' fue modificado con éxito.");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 
 
-  // TODO: DELETE "/users/:id"
+  // DELETE "/users/:id"
+  [HttpDelete("{id:Guid}")]
+  [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
+  public ActionResult<DtoResponse<DtoUser>> ProfileDelete(Guid id) {
+    // VALIDATION within 'id:Guid'
+    ////
+
+    // DB Repo
+    ////
+
+    // TODO: refactor - exctract Role VALIDATIONS into a Profile SRV?
+
+    // path var -> entity
+    User? targetUser = _userRepoSrv.ReadById(id);
+    if (targetUser == null) {
+      var entityErr = new DtoResponse<DtoUser>([], "Usuario no encontrado.");
+      return StatusCode(StatusCodes.Status404NotFound, entityErr);
+    }
+
+    // VALIDATE BY ROLE -> authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
+    ////
+
+    string loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+    DtoResponse<DtoUser>? resErr = null;
+
+    // Role 'User'  can DELETE ONLY itself
+    // Role 'Admin' can DELETE itself + rol 'User'
+    // Role 'Super' can DELETE ALL roles (there's only 1 'Super')
+    if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
+      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
+    else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != targetUser.Id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
+      resErr = new DtoResponse<DtoUser>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede eliminar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+
+    if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
+
+    // ITEMS - DELETION
+    ////
+
+    // entity -> bool
+    if (!_userRepoSrv.DeleteHard(targetUser.Id)) {
+      var patchErr = new DtoResponse<DtoUser>([], "No se pudo eliminar el usuario.");
+      return StatusCode(StatusCodes.Status409Conflict, patchErr);
+    }
+
+    // RES
+    ////
+
+    // dto
+    var dto = new DtoResponse<DtoUser>([], $"El usuario '{targetUser.Name}' fue eliminado con éxito.");
+    return StatusCode(StatusCodes.Status200OK, dto);
+  }
 }
 
 // TODO: Create entity AGENDA (many Agendas to 1 User) + migrate DB + return a DtoUserWithAgenda

@@ -91,9 +91,9 @@ builder.Services
           string[] userRoles = [.. ctxUser.FindAll(ClaimTypes.Role).Select(role => role.Value)];
           string userEmailSubstr = userEmail.Length > 1 ? $"con correo electrónico '{userEmail}'" : "sin correo electrónico";
           string userRolesSubstr = userRoles.Length == 1
-            ? $"con rol '{string.Join(", ", userRoles)}'"
+            ? $"con rol '{userRoles[0]}'"
             : userRoles.Length > 1
-            ? $"con roles '{string.Join(", ", userRoles)}'"
+            ? $"con roles '{string.Join("'|'", userRoles)}'"
             : "sin roles";
 
           // headers + DTO
