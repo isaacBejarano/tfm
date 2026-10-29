@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnDestroy } from '@angular/core';
 
+import { Router } from '@angular/router';
 import { FormAuth } from '@app/auth/form-auth/form-auth';
 import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { AuthService } from '@auth/auth.service';
@@ -15,6 +16,7 @@ export class Home implements OnDestroy {
   // DI
   private readonly _storeSrv = inject(StoreService);
   private readonly _authSrv = inject(AuthService);
+  private readonly _router = inject(Router);
 
   // CTRL
   ////
@@ -29,12 +31,13 @@ export class Home implements OnDestroy {
     this._authSrv
       .login(payload)
       .pipe(
-        switchMap((dtoUser) => {
+        switchMap((user) => {
           // TODO: switchMap call to endpoint API "users/:id" <- dto has agendas []
           // if DTO agenda [] -> SPA route to "agendas/new"
           // else if DTO agenda [Id:] -> SPA route to "agendas/:id"
-          return of(dtoUser.id);
-          // return of(this._webSrv.navigateToDynamicRoute(`user/${id}/agenda`));
+
+          const agendaID: string = Math.random() + user.id; // TODO:
+          return of(this._router.navigate(['agendas', agendaID]));
         }),
       )
       .subscribe(); // 1-time subscription
@@ -44,80 +47,3 @@ export class Home implements OnDestroy {
     this._storeSrv.setState('formAuth', '');
   }
 }
-
-/*
-
-### HTTPS only
-@Api = https://localhost:7247/api/v1
-
-
-### POST "/user" - TEST signup -> 201 Created
-POST {{Api}}/user
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345",
-  "name":"Kalush"
-}
-
-### POST "/user" - TEST signup -> 201 Created
-POST {{Api}}/user
-Content-Type: application/json
-
-{
-  "email":"Lovelace@yopmail.com",
-  "password":"Love@12345"
-  "name":"Lovelace"
-}
-
-
-### POST "/user" - TEST signup repeating -> 409 Conflict
-POST {{Api}}/user
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345",
-  "name":"Kalush"
-}
-
-
-### POST "/auth" - TEST "wrong email" -> 400 Bad Request
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Lovelace@yopmail.com",
-  "password":"Ab@12345"
-}
-
-
-### POST "/auth" - TEST "wrong password" -> 400 Bad Request
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@00000"
-}
-
-
-### POST "/auth" - TEST login (right creds) -> 200 OK
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Kalush@yopmail.com",
-  "password":"Ab@12345"
-}
-
-### POST "/auth" - TEST login (right creds) -> 200 OK
-POST {{Api}}/auth
-Content-Type: application/json
-
-{
-  "email":"Lovelace@yopmail.com",
-  "password":"Love@12345"
-}
-*/

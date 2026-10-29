@@ -3,7 +3,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { routes } from '@app/app.routes';
 
-import { httpResponseMessageInterceptor } from '@app/common/snackbar/http-response-message.interceptor';
+import { httpResponseMessageInterceptor } from '@app/common/snackbar/http-message.interceptor';
 import { authInterceptor } from '@auth/auth.interceptor';
 import { loaderInterceptor } from '@common/loader/loader.interceptor';
 
