@@ -1,16 +1,11 @@
-import { HttpErrorResponse, HttpEventType, HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, filter, finalize, throwError } from 'rxjs';
+import { finalize } from 'rxjs';
 
 import { LoaderService } from '@common/loader/loader.service';
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
-  const _loaderSrv = inject(LoaderService); // DI
+  const _loaderSrv = inject(LoaderService); // ctx
   _loaderSrv.load(true);
-
-  return next(req).pipe(
-    filter((e) => e.type === HttpEventType.Response),
-    catchError((error: HttpErrorResponse) => throwError(() => error)),
-    finalize(() => _loaderSrv.load(false)), // updat laoder state
-  );
+  return next(req).pipe(finalize(() => _loaderSrv.load(false))); // update laoder state
 };
