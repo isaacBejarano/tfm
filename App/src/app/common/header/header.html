@@ -16,7 +16,7 @@
 
         <!-- TOP MENU PRIVATE -->
         <nav
-          class="ml-4 p-2 flex justify-center gap-8 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
+          class="ml-4 p-2 flex justify-center gap-4 2xl:gap-6 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
         >
           <!-- TODO: INE selector @ agenda -->
           @if (_user.roles.includes('User')) {
@@ -36,16 +36,16 @@
   @else {
     <div class="max-w-(--w-desktop) mx-auto p-2">
       <!-- BRAND -->
-      <header class="flex md:gap-8 justify-between">
+      <header class="flex md:gap-8 justify-between 2xl:justify-center">
         <!-- icon -->
         <div
-          class="size-[45px] md:size-[50px] 2xl:size-[70px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain animate-fade-in cursor-pointer hover:rotate-5"
+          class="size-[45px] 2xl:size-[50px] self-center bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain animate-fade-in cursor-pointer hover:rotate-5"
           (click)="clearHome()"
         ></div>
 
         <!-- logo -->
         <div
-          class="w-[205px] h-[50px] 2xl:w-[270px] 2xl:h-[80px] bg-[url(/img/logo-clip.webp)] bg-clip-text bg-top text-5xl 2xl:text-7xl text-transparent font-black animate-[fade-in_1s_ease-in_1.5s_normal_backwards]"
+          class="w-[205px] h-[50px] 2xl:w-[270px] 2xl:h-[80px] bg-[url(/img/logo-clip.webp)] bg-clip-text bg-top text-center text-5xl 2xl:text-7xl text-transparent font-black animate-[fade-in_1s_ease-in_1.5s_normal_backwards]"
         >
           {{ legend() }}
         </div>
@@ -55,7 +55,7 @@
       </header>
 
       <!-- TOP MENU PUBLIC -->
-      <nav class="mt-1 p-3 2xl:p-2 flex justify-center gap-8">
+      <nav class="mt-1 p-3 2xl:p-2 flex justify-center gap-4 2xl:gap-6">
         <app-btn
           [route]="routeTo('')"
           label="Acceso"

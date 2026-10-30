@@ -12,6 +12,7 @@ type AppPaths =
   | '' // home
   | 'rgpd'
   | 'cookies'
+  | 'copyright'
   | '**'
   // PRIVATE
   | 'users' // list all users <- of [roles: User] when 'Admin'; of [roles: User, Admin] when 'Super'
@@ -45,6 +46,12 @@ const routes: AppRotes = [
     title: `${title} | Cookies`,
     path: 'cookies',
     loadComponent: () => import('@cookies/cookies').then((m) => m.Cookies), // lazy
+    data: { isCanonical: true }, // only public routes!
+  },
+  {
+    title: `${title} | Copyright`,
+    path: 'copyright',
+    loadComponent: () => import('@copyright/copyright').then((m) => m.Copyright), // lazy
     data: { isCanonical: true }, // only public routes!
   },
   //...

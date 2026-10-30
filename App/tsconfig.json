@@ -21,6 +21,7 @@
       "@home/*": ["./src/app/home/*"],
       "@rgpd/*": ["./src/app/rgpd/*"],
       "@cookies/*": ["./src/app/cookies/*"],
+      "@copyright/*": ["./src/app/copyright/*"],
       "@auth/*": ["./src/app/auth/*"],
       "@agenda/*": ["./src/app/agenda/*"],
       "@profile/*": ["./src/app/profile/*"],
