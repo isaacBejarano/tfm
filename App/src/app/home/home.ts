@@ -31,12 +31,14 @@ export class Home implements OnDestroy {
     this._authSrv
       .login(payload)
       .pipe(
-        tap((user) =>
-          user.agendaIds.length === 0 ||
-          user.agendaIds.includes('00000000-0000-0000-0000-000000000000')
-            ? this._router.navigate(['agendas', 'new'])
-            : this._router.navigate(['agendas', user.agendaIds[0]]),
-        ),
+        tap((user) => {
+          user.roles.every((role) => role !== 'User')
+            ? this._router.navigate(['users']) // admin, super
+            : user.agendaIds.length === 0 ||
+                user.agendaIds.includes('00000000-0000-0000-0000-000000000000') // user
+              ? this._router.navigate(['agendas', 'new'])
+              : this._router.navigate(['agendas', user.agendaIds[0]]);
+        }),
       )
       .subscribe(); // 1-time subscription
   }

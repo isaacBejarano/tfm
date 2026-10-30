@@ -76,13 +76,12 @@ export class Profile {
   protected readonly patch = signal<boolean>(false);
 
   protected action(action: 'patch' | 'delete', id: string) {
-    action === 'patch' ? this.patch.set(true) : alert('DELETE' + id);
+    action === 'patch' ? this.patch.set(true) : alert('DELETE FIXME:' + id);
   }
 
   protected onSubmit(e: Event) {
     e.preventDefault();
-    alert('PATCH');
-
+    alert('PATCH FIXME:');
     setTimeout(() => this.patch.set(false), 250);
   }
 }

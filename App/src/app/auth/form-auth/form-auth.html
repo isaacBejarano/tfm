@@ -91,9 +91,21 @@
     <!-- FIXME: remove debug auto -->
     <app-btn
       type="button"
-      label="Debug: Auto Credentials"
+      label="Debug: Auto Credentials USER"
       [css]="`mt-4 mx-auto block ${btnRedSlim}`"
       ($click)="autoLogin('User')"
+    />
+    <app-btn
+      type="button"
+      label="Debug: Auto Credentials ADMIN"
+      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+      ($click)="autoLogin('Admin')"
+    />
+    <app-btn
+      type="button"
+      label="Debug: Auto Credentials SUPER"
+      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+      ($click)="autoLogin('Super')"
     />
 
     <!-- Submit -->
