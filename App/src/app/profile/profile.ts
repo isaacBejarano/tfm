@@ -5,12 +5,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
 import { Store, StoreService } from '../shared/services/store.service';
+import { UserPayloadEdit } from '../user/user-model.type';
 import { UserService } from '../user/user.service';
+import { ProfileForm } from './profile-form/profile-form';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  imports: [Btn],
+  imports: [Btn, ProfileForm],
   styles: `
     :host {
       display: block;
@@ -78,8 +80,8 @@ export class Profile {
           .subscribe(); // 1-time subs
   }
 
-  protected onPatch(e: Event) {
-    e.preventDefault();
+  protected onPatch(patch: UserPayloadEdit) {
+    console.table(patch);
 
     // TODO: FORM
 

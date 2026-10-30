@@ -13,7 +13,7 @@ public record UserPayloadSignup(
   [EmailAddress(ErrorMessage = "El campo 'Correo electrónico' debe tener un patrón válido.")] // pattern
   [RegularExpression(
     @"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$",
-    ErrorMessage = "El campo 'Correo electrónico' debe tener un patrón válido FIXME:."
+    ErrorMessage = "El campo 'Correo electrónico' debe tener un patrón válido."
   )] // pattern tighten
   [DataType(DataType.EmailAddress)] // UI like Swagger renders it as [type='email']
   string Email,

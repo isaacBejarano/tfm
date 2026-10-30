@@ -3,9 +3,9 @@ import { inject, Service, Signal } from '@angular/core';
 import { EMPTY, filter, map, Observable, of } from 'rxjs';
 
 import { ResponseDto, UserDto, UserPatch } from '@app/shared/types/dto.type';
+import { checkGuidv7 } from '@app/shared/utils/params.util';
 import { Store, StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
-import { checkGuidv7 } from '@shared/utils/check-params.util';
 
 @Service()
 export class UserService {

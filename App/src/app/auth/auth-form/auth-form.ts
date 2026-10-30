@@ -1,18 +1,12 @@
 import { Component, DestroyRef, inject, input, OnInit, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  FieldTree,
-  form,
-  FormField,
-  maxLength,
-  minLength,
-  pattern,
-  required,
-} from '@angular/forms/signals';
+import { form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
 import { User, UserPayloadLogin, UserPayloadSignup, UserRole } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
+import { REGEX_EMAIL, REGEX_PASSWORD } from '@shared/constants/regex';
+import { validationBorder } from '@shared/utils/form-field.util';
 
 @Component({
   selector: 'app-auth-form',
@@ -38,7 +32,7 @@ export class AuthForm implements OnInit {
     email: '',
     password: '',
     name: '',
-    roles: ['User'],
+    roles: [],
   });
 
   // FORM
@@ -48,8 +42,8 @@ export class AuthForm implements OnInit {
     minLength(field.email, 6, {
       message: "El campo 'Correo electrónico' debe tener al menos 6 carácteres.",
     });
-    maxLength(field.email, 64); // Adds MAX_LENGTH property to HTML input & maxLength of AN email's local-part is 64 octets UTF8 -> 64 ch
-    pattern(field.email, /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
+    maxLength(field.email, 64); // Adds MAX_LENGTH property to HTML input (email's local-part is 64 octets UTF8 max)
+    pattern(field.email, REGEX_EMAIL, {
       message: "El campo 'Correo electrónico' debe tener un patrón válido.",
     });
     // password
@@ -57,33 +51,31 @@ export class AuthForm implements OnInit {
     minLength(field.password, 8, {
       message: "El campo 'Contraseña' debe tener al menos 8 carácteres.",
     });
-    maxLength(field.password, 16); // Adds MAX_LENGTH property to HTML
-    pattern(
-      field.password,
-      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$/,
-      {
-        message:
-          "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.",
-      },
-    );
+    maxLength(field.password, 16); // Adds MAX_LENGTH property to HTML input
+    pattern(field.password, REGEX_PASSWORD, {
+      message:
+        "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.",
+    });
     // name
-    maxLength(field.name, 25); // Adds MAX_LENGTH property to HTML
+    maxLength(field.name, 25); // Adds MAX_LENGTH property to HTML input
   });
 
   // CTRL
   ////
 
-  // FIXME: remove 'btnRoseSlim' if unused
-  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
+  readonly validationBorder = validationBorder;
 
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
+
+  // FIXME: remove debug auto
+  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
+
   protected readonly $userPayload = output<UserPayloadLogin | UserPayloadSignup>();
   private readonly _debounceForm$$ = new BehaviorSubject<
     UserPayloadLogin | UserPayloadSignup | null
   >(null); // UX -> block rapid multiple submit
 
-  // FIXME: debaunceForm not working???
   ngOnInit(): void {
     this._debounceForm$$
       .pipe(
@@ -94,13 +86,6 @@ export class AuthForm implements OnInit {
         tap(() => this._debounceForm$$.next(null)),
       )
       .subscribe();
-  }
-
-  protected setFieldStyle(field: FieldTree<string | number, string>): string {
-    if (field().dirty() && field().errors().length > 0) return `border ${Btn.borderColors['red']}`;
-    else if (field().dirty() && field().errors().length === 0)
-      return `border ${Btn.borderColors['green']}`;
-    else return `border ${Btn.borderColors['gray']}`;
   }
 
   protected togglePasswordType(password: HTMLInputElement): void {
@@ -124,6 +109,7 @@ export class AuthForm implements OnInit {
     }
 
     const form: User = this.form().value();
+
     let payload: UserPayloadLogin | UserPayloadSignup;
 
     if ((this.excludeFields() ?? []).includes('name')) {

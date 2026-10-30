@@ -41,18 +41,7 @@
   @if (formPatch()) {
     <div class="pl-5 p-2 list-decimal border border-rose-500/50 rounded-xl">
       <h2 class="mb-2 text-xl text-rose-500">Editar Perfil</h2>
-
-      <form method="post" (submit)="onPatch($event)" novalidate>
-        <app-btn
-          type="submit"
-          [ariaLabel]="`Botón para guardar los cambios en el perfil del usuario: ${profile.name}`"
-          [css]="btnRoseSlim"
-        >
-          <svg class="size-5 fill-current" viewBox="0 0 100 100">
-            <use xlink:href="svg/icon-sprite.xml#icon-edit" />
-          </svg>
-        </app-btn>
-      </form>
+      <app-profile-form class="mt-8" ($userPayload)="onPatch($event)" />
     </div>
   }
 } @else {

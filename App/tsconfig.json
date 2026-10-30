@@ -16,16 +16,16 @@
     "paths": {
       "@img/*": ["./public/img/*"],
       "@app/*": ["./src/app/*"],
-      "@shared/*": ["./src/app/shared/*"],
       "@common/*": ["./src/app/common/*"],
+      "@shared/*": ["./src/app/shared/*"],
       "@home/*": ["./src/app/home/*"],
       "@rgpd/*": ["./src/app/rgpd/*"],
       "@cookies/*": ["./src/app/cookies/*"],
       "@copyright/*": ["./src/app/copyright/*"],
       "@auth/*": ["./src/app/auth/*"],
-      "@agenda/*": ["./src/app/agenda/*"],
+      "@user/*": ["./src/app/user/*"],
       "@profile/*": ["./src/app/profile/*"],
-      "@user/*": ["./src/app/user/*"]
+      "@agenda/*": ["./src/app/agenda/*"]
     }
   },
   "angularCompilerOptions": {

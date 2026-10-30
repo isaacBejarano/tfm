@@ -13,7 +13,7 @@
         #email
         id="js-email"
         type="text"
-        [class]="setFieldStyle(form.email)"
+        [class]="validationBorder(form.email)"
         [formField]="form.email"
         autocomplete="off"
       />
@@ -42,7 +42,7 @@
           #password
           id="js-password"
           type="password"
-          [class]="setFieldStyle(form.password)"
+          [class]="validationBorder(form.password)"
           [formField]="form.password"
           autocomplete="off"
         />
@@ -81,7 +81,7 @@
           #name
           id="js-name"
           type="text"
-          [class]="setFieldStyle(form.name)"
+          [class]="validationBorder(form.name)"
           [formField]="form.name"
           autocomplete="off"
         />
