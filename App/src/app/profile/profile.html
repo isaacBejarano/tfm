@@ -39,8 +39,8 @@
   </div>
 
   @if (formPatch()) {
-    <div class="pl-5 p-2 list-decimal border border-rose-500/50 rounded-xl">
-      <h2 class="mb-2 text-xl text-rose-500">Editar Perfil</h2>
+    <div class="p-2 md:p-4 list-decimal border border-rose-500/50 rounded-xl">
+      <h2 class="mb-2 text-xl text-rose-500 text-center">Editar Perfil</h2>
       <app-profile-form class="mt-8" ($userPayload)="onPatch($event)" />
     </div>
   }

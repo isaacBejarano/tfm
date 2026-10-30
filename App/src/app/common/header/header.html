@@ -20,12 +20,40 @@
         >
           <!-- TODO: INE selector @ agenda -->
           @if (_user.roles.includes('User')) {
-            <app-btn [route]="routeTo('agendas', 'new')" label="Agenda" [css]="btnGreen" />
+            <app-btn
+              [route]="routeTo('agendas', 'new')"
+              label="Agenda"
+              [css]="`${btnGreen} flex gap-0.5 items-center`"
+            >
+              <svg class="size-5 fill-current" viewBox="0 0 100 100">
+                <use xlink:href="svg/icon-sprite.xml#icon-agenda" />
+              </svg>
+            </app-btn>
           } @else {
-            <app-btn [route]="routeTo('users')" label="Usuarios" [css]="btnBlue" />
+            <app-btn
+              [route]="routeTo('users')"
+              label="Usuarios"
+              [css]="`${btnBlue} flex gap-0.5 items-center`"
+            >
+              <svg class="size-5 fill-current" viewBox="0 0 100 100">
+                <use xlink:href="svg/icon-sprite.xml#icon-user-list" />
+              </svg>
+            </app-btn>
           }
-          <app-btn [route]="routeTo('users', _user.id)" label="Perfil" [css]="btnBlue" />
-          <app-btn label="Salir" [css]="btnRose" ($click)="logout()" />
+          <app-btn
+            [route]="routeTo('users', _user.id)"
+            label="Perfil"
+            [css]="`${btnBlue} flex gap-0.5 items-center`"
+          >
+            <svg class="size-5 fill-current" viewBox="0 0 100 100">
+              <use xlink:href="svg/icon-sprite.xml#icon-profile" />
+            </svg>
+          </app-btn>
+          <app-btn label="Salir" [css]="`${btnRose} flex gap-0.5 items-center`" ($click)="logout()">
+            <svg class="size-5 fill-current" viewBox="0 0 100 100">
+              <use xlink:href="svg/icon-sprite.xml#icon-logout" />
+            </svg>
+          </app-btn>
         </nav>
       </header>
 
@@ -59,9 +87,14 @@
         <app-btn
           [route]="routeTo('')"
           label="Acceso"
-          [css]="btnRose"
+          [css]="`${btnRose} flex gap-0.5 items-center`"
           ($click)="toggleAuthForms('login')"
-        />
+        >
+          <svg class="size-5 fill-current" viewBox="0 0 100 100">
+            <use xlink:href="svg/icon-sprite.xml#icon-login" />
+          </svg>
+        </app-btn>
+
         <app-btn
           [route]="routeTo('')"
           label="¡Regístrate!"

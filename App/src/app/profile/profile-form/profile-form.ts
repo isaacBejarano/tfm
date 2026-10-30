@@ -54,12 +54,10 @@ export class ProfileForm implements OnInit {
 
   readonly validationBorder = validationBorder;
 
-  // FIXME: remove 'btnRoseSlim' if unused
-  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
-
   readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
+
   protected readonly $userPayload = output<UserPayloadEdit>();
   private readonly _debounceForm$$ = new BehaviorSubject<UserPayloadEdit | null>(null); // UX -> block rapid multiple submit
 
@@ -67,9 +65,9 @@ export class ProfileForm implements OnInit {
     this._debounceForm$$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        filter((credentials) => credentials !== null),
+        filter((details) => details !== null),
         distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
-        tap((credentials) => this.$userPayload.emit(credentials)),
+        tap((details) => this.$userPayload.emit(details)),
         tap(() => this._debounceForm$$.next(null)),
       )
       .subscribe();

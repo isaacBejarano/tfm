@@ -4,111 +4,109 @@
   (submit)="onSubmit($event)"
   novalidate
 >
-  <div>
-    <!-- Email -->
-    <div class="pb-2">
-      <label class="inline-block mb-1" for="js-email"> Correo electrónico </label>
+  <!-- Email -->
+  <div class="pb-2">
+    <label class="inline-block mb-1" for="js-email"> Correo electrónico </label>
+    <input
+      class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+      #email
+      id="js-email"
+      type="text"
+      [class]="validationBorder(form.email)"
+      [formField]="form.email"
+      autocomplete="off"
+    />
+
+    @let errorsEmail = form.email().errors();
+    @if (form.email().dirty() && errorsEmail) {
+      <ul>
+        @for (error of errorsEmail; track error.kind) {
+          {{ error.kind }}
+          <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+            @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
+              {{ error.message }}
+            }
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <!-- Password -->
+  <div class="pb-2">
+    <label class="inline-block mb-1" for="js-password"> Contraseña </label>
+    <div class="flex items-center">
       <input
-        class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-        #email
-        id="js-email"
-        type="text"
-        [class]="validationBorder(form.email)"
-        [formField]="form.email"
+        class="w-full p-1 mr-2 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+        #password
+        id="js-password"
+        type="password"
+        [class]="validationBorder(form.password)"
+        [formField]="form.password"
         autocomplete="off"
       />
 
-      @let errorsEmail = form.email().errors();
-      @if (form.email().dirty() && errorsEmail) {
-        <ul>
-          @for (error of errorsEmail; track error.kind) {
-            {{ error.kind }}
-            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
-                {{ error.message }}
-              }
-            </li>
-          }
-        </ul>
-      }
+      <app-btn
+        ($click)="togglePasswordType(password)"
+        ariaLabel="Botón para mostrar y ocultar la contraseña"
+        [css]="btnGraySlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
+        </svg>
+      </app-btn>
     </div>
 
-    <!-- Password -->
-    <div class="pb-2">
-      <label class="inline-block mb-1" for="js-password"> Contraseña </label>
-      <div class="flex items-center">
-        <input
-          class="w-full p-1 mr-2 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-          #password
-          id="js-password"
-          type="password"
-          [class]="validationBorder(form.password)"
-          [formField]="form.password"
-          autocomplete="off"
-        />
-
-        <app-btn
-          ($click)="togglePasswordType(password)"
-          ariaLabel="Botón para mostrar y ocultar la contraseña"
-          [css]="btnGraySlim"
-        >
-          <svg class="size-5 fill-current" viewBox="0 0 100 100">
-            <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
-          </svg>
-        </app-btn>
-      </div>
-
-      @let errorsPassword = form.password().errors();
-      @if (form.password().dirty() && errorsPassword) {
-        <ul>
-          @for (error of errorsPassword; track error.kind) {
-            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
-                {{ error.message }}
-              }
-            </li>
-          }
-        </ul>
-      }
-    </div>
-
-    <!-- Name -->
-    @if (!(excludeFields() ?? []).includes('name')) {
-      <div class="pb-2">
-        <label class="inline-block mb-1" for="js-name"> Nombre </label>
-        <input
-          class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-          #name
-          id="js-name"
-          type="text"
-          [class]="validationBorder(form.name)"
-          [formField]="form.name"
-          autocomplete="off"
-        />
-      </div>
+    @let errorsPassword = form.password().errors();
+    @if (form.password().dirty() && errorsPassword) {
+      <ul>
+        @for (error of errorsPassword; track error.kind) {
+          <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+            @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
+              {{ error.message }}
+            }
+          </li>
+        }
+      </ul>
     }
-
-    <!-- FIXME: remove debug auto -->
-    <app-btn
-      type="button"
-      label="Debug: Auto Credentials USER"
-      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
-      ($click)="autoLogin('User')"
-    />
-    <app-btn
-      type="button"
-      label="Debug: Auto Credentials ADMIN"
-      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
-      ($click)="autoLogin('Admin')"
-    />
-    <app-btn
-      type="button"
-      label="Debug: Auto Credentials SUPER"
-      [css]="`mt-4 mx-auto block ${btnRedSlim}`"
-      ($click)="autoLogin('Super')"
-    />
-
-    <!-- Submit -->
-    <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />
   </div>
+
+  <!-- Name -->
+  @if (!(excludeFields() ?? []).includes('name')) {
+    <div class="pb-2">
+      <label class="inline-block mb-1" for="js-name"> Nombre </label>
+      <input
+        class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+        #name
+        id="js-name"
+        type="text"
+        [class]="validationBorder(form.name)"
+        [formField]="form.name"
+        autocomplete="off"
+      />
+    </div>
+  }
+
+  <!-- FIXME: remove debug auto -->
+  <app-btn
+    type="button"
+    label="Debug: Auto Credentials USER"
+    [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+    ($click)="autoLogin('User')"
+  />
+  <app-btn
+    type="button"
+    label="Debug: Auto Credentials ADMIN"
+    [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+    ($click)="autoLogin('Admin')"
+  />
+  <app-btn
+    type="button"
+    label="Debug: Auto Credentials SUPER"
+    [css]="`mt-4 mx-auto block ${btnRedSlim}`"
+    ($click)="autoLogin('Super')"
+  />
+
+  <!-- Submit -->
+  <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />
 </form>

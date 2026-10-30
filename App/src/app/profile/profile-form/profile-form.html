@@ -4,69 +4,67 @@
   (submit)="onSubmit($event)"
   novalidate
 >
-  <div>
-    <!-- Name -->
-    <div class="pb-2">
-      <label class="inline-block mb-1" for="js-name"> Nombre </label>
+  <!-- Name -->
+  <div class="pb-2">
+    <label class="inline-block mb-1" for="js-name"> Nombre </label>
+    <input
+      class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+      #name
+      id="js-name"
+      type="text"
+      [class]="validationBorder(form.name)"
+      [formField]="form.name"
+      autocomplete="off"
+    />
+  </div>
+
+  <!-- Password -->
+  <div class="pb-2">
+    <label class="inline-block mb-1" for="js-password"> Contraseña </label>
+    <div class="flex items-center">
       <input
-        class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-        #name
-        id="js-name"
-        type="text"
-        [class]="validationBorder(form.name)"
-        [formField]="form.name"
+        class="w-full p-1 mr-2 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+        #password
+        id="js-password"
+        type="password"
+        [class]="validationBorder(form.password)"
+        [formField]="form.password"
         autocomplete="off"
       />
+
+      <app-btn
+        ($click)="togglePasswordType(password)"
+        ariaLabel="Botón para mostrar y ocultar la contraseña"
+        [css]="btnGraySlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
+        </svg>
+      </app-btn>
     </div>
 
-    <!-- Password -->
-    <div class="pb-2">
-      <label class="inline-block mb-1" for="js-password"> Contraseña </label>
-      <div class="flex items-center">
-        <input
-          class="w-full p-1 mr-2 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
-          #password
-          id="js-password"
-          type="password"
-          [class]="validationBorder(form.password)"
-          [formField]="form.password"
-          autocomplete="off"
-        />
-
-        <app-btn
-          ($click)="togglePasswordType(password)"
-          ariaLabel="Botón para mostrar y ocultar la contraseña"
-          [css]="btnGraySlim"
-        >
-          <svg class="size-5 fill-current" viewBox="0 0 100 100">
-            <use [attr.xlink:href]="[togglePasswordIcon(password)]" />
-          </svg>
-        </app-btn>
-      </div>
-
-      @let errorsPassword = form.password().errors();
-      @if (form.password().dirty() && errorsPassword) {
-        <ul>
-          @for (error of errorsPassword; track error.kind) {
-            <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
-              @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
-                {{ error.message }}
-              }
-            </li>
-          }
-        </ul>
-      }
-    </div>
-
-    <!-- Submit -->
-    <app-btn
-      type="submit"
-      [ariaLabel]="`Botón para guardar los cambios en el perfil del usuario: ${form.name}`"
-      [css]="`mt-4 mx-auto block ${btnRoseSlim}`"
-    >
-      <svg class="size-5 fill-current" viewBox="0 0 100 100">
-        <use xlink:href="svg/icon-sprite.xml#icon-edit" />
-      </svg>
-    </app-btn>
+    @let errorsPassword = form.password().errors();
+    @if (form.password().dirty() && errorsPassword) {
+      <ul>
+        @for (error of errorsPassword; track error.kind) {
+          <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+            @if (['required', 'minLength', 'pattern'].includes(error.kind)) {
+              {{ error.message }}
+            }
+          </li>
+        }
+      </ul>
+    }
   </div>
+
+  <!-- Submit -->
+  <app-btn
+    type="submit"
+    label="Guardar"
+    [css]="`mt-4 mx-auto block ${btnRoseSlim} flex gap-0.5 items-center`"
+  >
+    <svg class="size-5 fill-current" viewBox="0 0 100 100">
+      <use xlink:href="svg/icon-sprite.xml#icon-save" />
+    </svg>
+  </app-btn>
 </form>
