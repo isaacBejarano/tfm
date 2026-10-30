@@ -1,7 +1,8 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Rgpd } from '@rgpd/rgpd';
+
+import { Rgpd } from './rgpd';
 
 describe('RGPD', () => {
   beforeEach(() => {

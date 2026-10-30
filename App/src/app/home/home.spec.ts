@@ -1,7 +1,8 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Home } from '@home/home';
+
+import { Home } from './home';
 
 describe('Home', () => {
   beforeEach(() => {
