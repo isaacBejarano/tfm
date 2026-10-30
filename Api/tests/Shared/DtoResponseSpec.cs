@@ -7,13 +7,13 @@ public class DtoResponseSpec : IDisposable {
   public void Dispose() { }
 
   // ~before each (ctor)
-  private static readonly DtoResponse<object> _DtoResponseEmpty = new([], "Response Empty Items");
-  private static readonly DtoResponse<int> _DtoResponseFull = new([1, 2, 3], "Response With Items");
+  private static readonly ResponseDto<object> _DtoResponseEmpty = new([], "Response Empty Items");
+  private static readonly ResponseDto<int> _DtoResponseFull = new([1, 2, 3], "Response With Items");
 
   [Fact]
   public void DtoResponse_Items_CANBE_arrayOf_empty_object() {
-    Assert.IsType<DtoResponse<object>>(_DtoResponseEmpty);
-    Assert.IsNotType<DtoResponse<object>>(_DtoResponseFull);
+    Assert.IsType<ResponseDto<object>>(_DtoResponseEmpty);
+    Assert.IsNotType<ResponseDto<object>>(_DtoResponseFull);
   }
 
   [Fact]
@@ -24,8 +24,8 @@ public class DtoResponseSpec : IDisposable {
 
   [Fact]
   public void DtoResponse_Items_CANBE_arrayOf_typed_object() {
-    Assert.IsType<DtoResponse<int>>(_DtoResponseFull);
-    Assert.IsNotType<DtoResponse<int>>(_DtoResponseEmpty);
+    Assert.IsType<ResponseDto<int>>(_DtoResponseFull);
+    Assert.IsNotType<ResponseDto<int>>(_DtoResponseEmpty);
   }
 
   [Fact]
