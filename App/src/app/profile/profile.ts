@@ -89,10 +89,10 @@ export class Profile {
 
 /* CRUD PERMISSIONS
  *
- * Role 'User'  can -RUD itself       -> loggedUserId === id (User)
- * Role 'Admin' can -RUD role 'User'  -> loggedUserId !== id (User)
- * Role 'Admin' can -RU- itself       -> loggedUserId === id (Admin)
- * Role 'Super' can -RUD role 'User'  -> loggedUserId !== id (User)
- * Role 'Super' can -RU- role 'Admin' -> loggedUserId !== id (Admin)
- * Role 'Super' can -RU- itself       -> loggedUserId === id (Super)
+ * Role 'User'  can -RUD itself -✅-✅
+ * Role 'Admin' can -RUD role 'User' -- --
+ * Role 'Admin' can -RU- itself -✅--
+ * Role 'Super' can -RUD role 'User' -- --
+ * Role 'Super' can -RU- role 'Admin' -- --
+ * Role 'Super' can -RU- itself -✅--
  */
