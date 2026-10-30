@@ -274,7 +274,7 @@ public class UserController(
   // DELETE "/users/:id"
   [HttpDelete("{id:Guid}")]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}, {nameof(UserRole.User)}")]
-  public ActionResult<ResponseDto<UserDto>> ProfileDelete(Guid id) {
+  public ActionResult<ResponseDto<object>> ProfileDelete(Guid id) {
     // VALIDATION within 'id:Guid'
     ////
 

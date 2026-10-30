@@ -16,11 +16,9 @@ type AppPaths =
   | '**'
   // PRIVATE
   | 'users' // list all users <- of [roles: User] when 'Admin'; of [roles: User, Admin] when 'Super'
-  | 'users/:id' // user profile details (show profile, selected zone, veggies to plant) <- [ID: Self] when 'User'; [ID: User, Self] when 'Admin'; [ID: User, Admin, Self] when 'Super'
-  | 'users/:id/edit' // user profile edit (only profile, no zones, no veggies) <- [ID: Self] when 'User'; [ID: User, Self] when 'Admin'; [ID: User, Admin, Self] when 'Super'
+  | 'users/:id' // CRUD by role of logged user upon profile
   | 'agendas/new' // create user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
-  | 'agendas/:id' // read user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
-  | 'agendas/:id/edit'; // edit user weekly agenda <- only to add or remove veggies, not zones <- [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
+  | 'agendas/:id'; // CRUD by role 'User'
 type AppRote = Omit<Route, 'path'> & {
   path: AppPaths;
   redirectTo?: AppPaths | RedirectFunction;
@@ -68,13 +66,6 @@ const routes: AppRotes = [
     loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
     canActivate: [authenticated],
   },
-  // TODO: Reuse Profile compo. just GET by ID or PATCH by ID
-  // {
-  //   title: `${title} | Edición de Perfil de Usuario`,
-  //   path: 'users/:id/edit',
-  //   loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
-  //   canActivate: [authenticated],
-  // },
   {
     title: `${title} | Nueva Agenda de Usuario`,
     path: 'agendas/new',
@@ -84,12 +75,6 @@ const routes: AppRotes = [
   {
     title: `${title} | Agenda de Usuario`,
     path: 'agendas/:id',
-    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
-    canActivate: [authenticated, authUser],
-  },
-  {
-    title: `${title} | Edición de Agenda de Usuario`,
-    path: 'agendas/:id/edit',
     loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
     canActivate: [authenticated, authUser],
   },

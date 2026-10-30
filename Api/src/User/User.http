@@ -131,6 +131,36 @@ Content-Type: application/json
   "name":"Adhoc User 4"
 }
 
+### FIXME: comment <- Debugging 'User' PROFILE CRUD -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"Dorofeeva@yopmail.com",
+  "password":"Bb@12345",
+  "name":"DEBUG Dorofeeva"
+}
+
+### FIXME: comment <- Debugging 'Admin' PROFILE CRUD -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"Tribunal@yopmail.com",
+  "password":"Tribunal@uoc2026",
+  "name":"DEBUG Tribunal"
+}
+
+### FIXME: comment <- Debugging 'Super' PROFILE CRUD -> 201 Created
+POST {{Api}}/users
+Content-Type: application/json
+
+{
+  "email":"Super@yopmail.com",
+  "password":"Super@uoc2026",
+  "name":"DEBUG Super"
+}
+
 
 
 ### GET "/users"
@@ -343,7 +373,7 @@ Authorization: {{TokenAccessOfSeedUser10}}
 }
 
 
-### PATCH "/users/:id" - (all patches) - Authenticated role 'User' can only UPDATE itself -> 200 OK
+### PATCH "/users/:id" - Authenticated role 'User' can only UPDATE itself -> 200 OK
 PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser10}}

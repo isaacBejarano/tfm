@@ -8,7 +8,7 @@ import { UserRole } from '@user/user-model.type';
 export const authAdminAndSuper: CanActivateFn = (route, state) => {
   const _router = inject(Router);
   const _snackbarSrv = inject(SnackbarService);
-  const _roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
+  const _roles: UserRole[] = inject(StoreService).state().userLogged?.roles ?? [];
   const isRoleAdminOrSuper: boolean = _roles.every((role) => !['User'].includes(role));
 
   if (!isRoleAdminOrSuper) {

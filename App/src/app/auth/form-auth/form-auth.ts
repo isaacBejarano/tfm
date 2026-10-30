@@ -25,14 +25,13 @@ import { Btn } from '@shared/components/btn/btn';
   `,
 })
 export class FormAuth implements OnInit {
-  // DI
-  private readonly _destroyRef = inject(DestroyRef);
-
   // I/O
   readonly excludeFields = input<(keyof (UserPayloadLogin & UserPayloadSignup))[]>();
 
-  // MODEL + FORM
+  // DI
+  private readonly _destroyRef = inject(DestroyRef);
 
+  // MODEL
   private readonly _defaultUser = signal<User>({
     id: '',
     agendaIds: [],
@@ -42,6 +41,7 @@ export class FormAuth implements OnInit {
     roles: ['User'],
   });
 
+  // FORM
   protected readonly form = form(this._defaultUser, (field) => {
     // email
     required(field.email, { message: "El campo 'Correo electrónico' es obligatorio." });

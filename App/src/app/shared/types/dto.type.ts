@@ -9,5 +9,6 @@ type ResponseDto<T> = {
 
 // DTO item T
 type UserDto = Omit<User, 'password'>;
+type UserPatch = Pick<User, 'name'> & { password: string | null };
 
-export type { ResponseDto, UserDto };
+export type { ResponseDto, UserDto, UserPatch };

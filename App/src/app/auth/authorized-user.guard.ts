@@ -8,7 +8,7 @@ import { UserRole } from '@user/user-model.type';
 export const authUser: CanActivateFn = (route, state) => {
   const _router = inject(Router);
   const _snackbarSrv = inject(SnackbarService);
-  const _roles: UserRole[] = inject(StoreService).state().loggedUser?.roles ?? [];
+  const _roles: UserRole[] = inject(StoreService).state().userLogged?.roles ?? [];
   const isRoleUser: boolean = _roles.every((role) => !['Admin', 'Super'].includes(role));
 
   if (!isRoleUser) {

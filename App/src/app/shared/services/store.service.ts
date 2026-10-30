@@ -6,7 +6,8 @@ import { UserDto } from '@shared/types/dto.type';
 export type Store = {
   formAuth: FormType;
   accesToken: string;
-  loggedUser: UserDto | null;
+  userLogged: UserDto | null;
+  userProfile: UserDto | null;
 };
 
 @Service()
@@ -17,7 +18,8 @@ export class StoreService {
   private readonly _store = signal<Store>({
     formAuth: '',
     accesToken: '',
-    loggedUser: null,
+    userLogged: null,
+    userProfile: null,
   });
 
   readonly state = computed(() => this._store());

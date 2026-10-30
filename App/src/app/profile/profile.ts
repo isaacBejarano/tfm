@@ -1,25 +1,36 @@
-import { HttpClient, HttpStatusCode } from '@angular/common/http';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { Component, DestroyRef, inject, Signal, signal } from '@angular/core';
+import { filter, map, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
-import { WebService } from '@shared/services/web.service';
-import { ResponseDto, UserDto } from '@shared/types/dto.type';
+import { Store, StoreService } from '../shared/services/store.service';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
   imports: [Btn],
+  styles: `
+    :host {
+      display: block;
+      margin: auto;
+      max-width: var(--w-tablet);
+    }
+  `,
 })
 export class Profile {
   // DI
-  private readonly _http = inject(HttpClient);
-  private readonly _webSrv = inject(WebService);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _userSrv = inject(UserService);
+  private readonly _storeSrv = inject(StoreService);
+
+  // MODEL
+  ////
+
+  readonly store: Signal<Store> = this._storeSrv.state;
 
   // CTRL
   ////
@@ -27,8 +38,7 @@ export class Profile {
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
   readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
   readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
-
-  protected readonly _user = signal<UserDto | null>(null);
+  protected readonly formPatch = signal<boolean>(false);
 
   constructor() {
     this._router.events
@@ -37,51 +47,52 @@ export class Profile {
         filter((e) => e instanceof NavigationEnd),
         map(() => this._activatedRoute),
         filter((route) => route !== null),
-        map((route) => route.snapshot.params['id']),
-        switchMap((loggedUserId) => this._getProfile(loggedUserId)),
+        map((route) => route.snapshot.params['id'] as string), // ID of userProfile (from URL path var)
+        tap((id) => this._profileRead(id)),
       )
       .subscribe();
   }
 
-  private _getProfile(targetUserId: string): Observable<UserDto> {
-    // FIXME: La API ya valida la visibilidad y cRUD por role.
-    // No hace falta duplicar logica AQUI?
-
-    // TODO: Edit Cases
-    // Role 'User'  can CRUD itself       -> loggedUserId === targetUserId (User)
-    // Role 'Admin' can CRUD itself       -> loggedUserId === targetUserId (Admin)
-    // Role 'Admin' can CRUD role 'User'  -> loggedUserId !== targetUserId (User)
-    // Role 'Super' can CRUD itself       -> loggedUserId === targetUserId (Super)
-    // Role 'Super' can CRUD role 'User'  -> loggedUserId !== targetUserId (User)
-    // Role 'Super' can CRUD role 'Admin' -> loggedUserId !== targetUserId (Admin)
-    // Role 'Super' and 'Admin' can ONLY DELETE role 'User'
-    // There is only 1 'Super'
-
-    // TODO: extract into User SRV
-    return this._http
-      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + `/users/${targetUserId}`, {
-        responseType: 'json',
-        observe: 'response',
-      })
-      .pipe(
-        filter((res) => res.status === HttpStatusCode.Ok),
-        map((res) => res.body),
-        filter((body) => body !== null),
-        filter((dto) => dto.count === 1),
-        map((dto) => dto.items[0]),
-        tap((user) => this._user.set(user)),
-      );
+  private _profileRead(id: string) {
+    this._userSrv
+      .profileRead(id)
+      .pipe(tap((profile) => this._storeSrv.setState('userProfile', profile)))
+      .subscribe(); // 1-time susbs
   }
-
-  protected readonly patch = signal<boolean>(false);
 
   protected action(action: 'patch' | 'delete', id: string) {
-    action === 'patch' ? this.patch.set(true) : alert('DELETE FIXME:' + id);
+    action === 'patch'
+      ? this.formPatch.update((open) => !open)
+      : this._userSrv
+          .profileDelete(id)
+          .pipe(
+            tap(() => {
+              this._storeSrv.setState('userProfile', null);
+              // self deletion
+              if (this._storeSrv.state().userLogged?.id === id) {
+                this._storeSrv.setState('userLogged', null);
+                this._router.navigate(['']);
+              }
+            }),
+          )
+          .subscribe(); // 1-time subs
   }
 
-  protected onSubmit(e: Event) {
+  protected onPatch(e: Event) {
     e.preventDefault();
-    alert('PATCH FIXME:');
-    setTimeout(() => this.patch.set(false), 250);
+
+    // this._userSrv.profileDelete(id); // TODO: FORM
+
+    setTimeout(() => this.formPatch.set(false), 250);
   }
 }
+
+/* CRUD PERMISSIONS
+ *
+ * Role 'User'  can -RUD itself       -> loggedUserId === id (User)
+ * Role 'Admin' can -RUD role 'User'  -> loggedUserId !== id (User)
+ * Role 'Admin' can -RU- itself       -> loggedUserId === id (Admin)
+ * Role 'Super' can -RUD role 'User'  -> loggedUserId !== id (User)
+ * Role 'Super' can -RU- role 'Admin' -> loggedUserId !== id (Admin)
+ * Role 'Super' can -RU- itself       -> loggedUserId === id (Super)
+ */

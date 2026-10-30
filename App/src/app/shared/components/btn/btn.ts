@@ -21,8 +21,6 @@ import { RouterLinkWithHref } from '@angular/router';
   `,
 })
 export class Btn {
-  // DUMMY
-
   // I/O
   readonly type = input<'button' | 'submit'>('button');
   readonly ariaLabel = input<string>(); // for btn without text (e.g. with icons only)
@@ -31,6 +29,9 @@ export class Btn {
   readonly route = input<string>();
   readonly css = input<string>();
   protected readonly $click = output<void>();
+
+  // DUMMY
+  ////
 
   protected onClick(e: Event) {
     e.stopPropagation();

@@ -50,7 +50,7 @@ export class AuthService {
         filter((dto) => dto.count === 1),
         map((res) => res.items[0]),
         tap((user) => {
-          this._storeSrv.setState('loggedUser', user);
+          this._storeSrv.setState('userLogged', user);
           this._storeSrv.setState('formAuth', '');
         }),
       );

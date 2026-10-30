@@ -1,11 +1,10 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, inject, input, Signal } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AppPathFragments } from '@app/app.routes';
 import { FormType } from '@app/auth/types/form.type';
 import { Btn } from '@shared/components/btn/btn';
-import { StoreService } from '@shared/services/store.service';
-import { UserDto } from '../../shared/types/dto.type';
+import { Store, StoreService } from '@shared/services/store.service';
 
 @Component({
   imports: [Btn],
@@ -13,15 +12,15 @@ import { UserDto } from '../../shared/types/dto.type';
   templateUrl: './header.html',
 })
 export class Header {
+  // I/O
+  readonly legend = input.required<string>();
+
   // DI
   private readonly _storeSrv = inject(StoreService);
   private readonly _router = inject(Router);
 
   // CTRL
   ////
-
-  // I/O
-  readonly legend = input.required<string>();
 
   readonly btnRose: string = Btn.style('rose', 'outline', 'normal', ['raise', 'fade', '3d-rose']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', 'fade', '3d-gray']);
@@ -32,7 +31,7 @@ export class Header {
     '3d-green',
   ]);
 
-  readonly loggedUser = computed<UserDto | null>(() => this._storeSrv.state().loggedUser);
+  readonly store: Signal<Store> = this._storeSrv.state;
 
   toggleAuthForms(state: FormType) {
     this._storeSrv.setState('formAuth', state);
@@ -40,7 +39,7 @@ export class Header {
 
   logout() {
     this._storeSrv.setState('accesToken', '');
-    this._storeSrv.setState('loggedUser', null);
+    this._storeSrv.setState('userLogged', null);
     this._storeSrv.setState('formAuth', '');
     this._router.navigate(['']);
   }
