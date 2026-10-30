@@ -15,8 +15,8 @@ import { User, UserPayloadLogin, UserPayloadSignup, UserRole } from '@app/user/u
 import { Btn } from '@shared/components/btn/btn';
 
 @Component({
-  selector: 'app-form-auth',
-  templateUrl: './form-auth.html',
+  selector: 'app-auth-form',
+  templateUrl: './auth-form.html',
   imports: [Btn, FormField],
   styles: `
     :host {
@@ -24,7 +24,7 @@ import { Btn } from '@shared/components/btn/btn';
     }
   `,
 })
-export class FormAuth implements OnInit {
+export class AuthForm implements OnInit {
   // I/O
   readonly excludeFields = input<(keyof (UserPayloadLogin & UserPayloadSignup))[]>();
 

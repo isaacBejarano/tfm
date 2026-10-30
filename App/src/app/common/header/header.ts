@@ -2,7 +2,7 @@ import { Component, inject, input, Signal } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AppPathFragments } from '@app/app.routes';
-import { FormType } from '@app/auth/types/form.type';
+import { AuthFormType } from '@app/auth/auth-form/auth-form.type';
 import { Btn } from '@shared/components/btn/btn';
 import { Store, StoreService } from '@shared/services/store.service';
 
@@ -33,7 +33,7 @@ export class Header {
 
   readonly store: Signal<Store> = this._storeSrv.state;
 
-  toggleAuthForms(state: FormType) {
+  toggleAuthForms(state: AuthFormType) {
     this._storeSrv.setState('formAuth', state);
   }
 

@@ -1,10 +1,10 @@
 import { computed, Service, signal } from '@angular/core';
 
-import { FormType } from '@app/auth/types/form.type';
+import { AuthFormType } from '@app/auth/auth-form/auth-form.type';
 import { UserDto } from '@shared/types/dto.type';
 
 export type Store = {
-  formAuth: FormType;
+  formAuth: AuthFormType;
   accesToken: string;
   userLogged: UserDto | null;
   userProfile: UserDto | null;

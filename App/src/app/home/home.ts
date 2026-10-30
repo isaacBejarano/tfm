@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { FormAuth } from '@app/auth/form-auth/form-auth';
+import { AuthForm } from '@app/auth/auth-form/auth-form';
 import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { AuthService } from '@auth/auth.service';
 import { StoreService } from '@shared/services/store.service';
@@ -10,7 +10,7 @@ import { tap } from 'rxjs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
-  imports: [FormAuth],
+  imports: [AuthForm],
 })
 export class Home implements OnDestroy {
   // DI

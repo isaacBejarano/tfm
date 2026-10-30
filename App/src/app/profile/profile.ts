@@ -81,7 +81,7 @@ export class Profile {
   protected onPatch(e: Event) {
     e.preventDefault();
 
-    // this._userSrv.profileDelete(id); // TODO: FORM
+    // TODO: FORM
 
     setTimeout(() => this.formPatch.set(false), 250);
   }
