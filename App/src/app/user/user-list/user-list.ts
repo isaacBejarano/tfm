@@ -2,8 +2,8 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs';
-import { UserDto } from '../shared/types/dto.type';
-import { UserService } from './user.service';
+import { UserDto } from '../../shared/types/dto.type';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-list',

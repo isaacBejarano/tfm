@@ -6,13 +6,13 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
 import { SnackbarService } from '../common/snackbar/snackbar.service';
 import { Store, StoreService } from '../shared/services/store.service';
-import { UserPayloadEdit } from '../user/user-model.type';
-import { UserService } from '../user/user.service';
 import { ProfileForm } from './profile-form/profile-form';
+import { UserPayloadEdit } from './user-model.type';
+import { UserService } from './user.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.html',
+  selector: 'app-user',
+  templateUrl: './user.html',
   imports: [Btn, ProfileForm],
   styles: `
     :host {
@@ -22,7 +22,7 @@ import { ProfileForm } from './profile-form/profile-form';
     }
   `,
 })
-export class Profile {
+export class User {
   // DI
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);

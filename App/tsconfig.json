@@ -24,7 +24,7 @@
       "@copyright/*": ["./src/app/copyright/*"],
       "@auth/*": ["./src/app/auth/*"],
       "@user/*": ["./src/app/user/*"],
-      "@profile/*": ["./src/app/profile/*"],
+      "@profile/*": ["./src/app/user/profile/*"],
       "@agenda/*": ["./src/app/agenda/*"]
     }
   },

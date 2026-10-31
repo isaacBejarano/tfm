@@ -15,6 +15,10 @@ import { Btn } from '@shared/components/btn/btn';
         <app-btn label="Política de Cookies" route="cookies" [css]="btnGray" />
         <app-btn label="Propiedad Intelectual" route="copyright" [css]="btnGray" />
       </nav>
+
+      <small class="py-2 text-xs block text-center">
+        Copyright (c) {{ year }} Isaac Bejarano
+      </small>
     </footer>
   `,
 })
@@ -24,4 +28,6 @@ export class Footer {
     'fade',
     '3d-gray',
   ]); // DUMMY
+
+  protected readonly year: string = new Date().getFullYear().toString();
 }

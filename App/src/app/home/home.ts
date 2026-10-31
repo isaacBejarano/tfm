@@ -36,7 +36,7 @@ export class Home implements OnDestroy {
           user.roles.every((role) => role !== 'User')
             ? this._router.navigate(['users']) // admin, super
             : user.agendaIds.length === 0 || user.agendaIds.includes(GUID_EMPTY) // user
-              ? this._router.navigate(['agendas', 'new'])
+              ? this._router.navigate(['agendas'])
               : this._router.navigate(['agendas', user.agendaIds[0]]);
         }),
       )

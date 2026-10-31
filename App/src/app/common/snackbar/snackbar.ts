@@ -5,7 +5,7 @@ import { SnackbarService } from '@app/common/snackbar/snackbar.service';
 import { IconSnackbar } from '@app/shared/types/icons.type';
 
 @Component({
-  selector: 'app-snack',
+  selector: 'app-snackbar',
   templateUrl: './snackbar.html',
 })
 export class Snackbar {

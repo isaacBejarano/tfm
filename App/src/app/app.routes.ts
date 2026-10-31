@@ -15,10 +15,10 @@ type AppPaths =
   | 'copyright'
   | '**'
   // PRIVATE
-  | 'users' // list all users <- of [roles: User] when 'Admin'; of [roles: User, Admin] when 'Super'
+  | 'users' // User List <- for role 'Admin' and 'Super' (inferior users listed)
   | 'users/:id' // CRUD by role of logged user upon profile
-  | 'agendas/new' // create user weekly agenda <- only [roles: User] when 'User'; 'Admin' & 'Super' have no agendas.
-  | 'agendas/:id'; // CRUD by role 'User'
+  | 'agendas' // Agendas for role 'User'
+  | 'agendas/:id'; // CRUD for role 'User'
 type AppRote = Omit<Route, 'path'> & {
   path: AppPaths;
   redirectTo?: AppPaths | RedirectFunction;
@@ -57,19 +57,19 @@ const routes: AppRotes = [
   {
     title: `${title} | Lista de Usuarios`,
     path: 'users',
-    loadComponent: () => import('@user/user-list').then((m) => m.UserList), // lazy
+    loadComponent: () => import('@user/user-list/user-list').then((m) => m.UserList), // lazy
     canActivate: [authenticated, authAdminAndSuper],
   },
   {
     title: `${title} | Perfil de Usuario`,
     path: 'users/:id',
-    loadComponent: () => import('@profile/profile').then((m) => m.Profile), // lazy
+    loadComponent: () => import('@user/user').then((m) => m.User), // lazy
     canActivate: [authenticated],
   },
   {
     title: `${title} | Nueva Agenda de Usuario`,
-    path: 'agendas/new',
-    loadComponent: () => import('@agenda/agenda').then((m) => m.Agenda), // lazy
+    path: 'agendas',
+    loadComponent: () => import('@agenda/agenda-list/agenda-list').then((m) => m.AgendaList), // lazy
     canActivate: [authenticated, authUser],
   },
   {

@@ -2,9 +2,14 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-agenda',
-  template: `
-    <h1 class="text-2xl text-rose-500 text-center">Agenda</h1>
-    <p class="text-center">En construcción...</p>
+  templateUrl: './agenda.html',
+  // imports: [Btn, ProfileForm],
+  styles: `
+    :host {
+      display: block;
+      margin: auto;
+      max-width: var(--w-tablet);
+    }
   `,
 })
 export class Agenda {}

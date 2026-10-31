@@ -21,8 +21,8 @@
           <!-- TODO: INE selector @ agenda -->
           @if (_user.roles.includes('User')) {
             <app-btn
-              [route]="routeTo('agendas', 'new')"
-              label="Agenda"
+              [route]="routeTo('agendas')"
+              label="Agendas"
               [css]="`${btnGreen} flex gap-0.5 items-center`"
             >
               <svg class="size-5 fill-current" viewBox="0 0 100 100">
