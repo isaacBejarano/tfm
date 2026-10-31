@@ -4,7 +4,21 @@
 
 @if (profile) {
   <div class="pl-4 p-2 mb-4 list-decimal border border-blue-500/50 rounded-xl">
+    <!-- FIXME: Admin y Super -->
+    @if (true) {
+      <app-btn
+        ($click)="back()"
+        ariaLabel="Botón para volver a la lista de usuarios"
+        [css]="btnGraySlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-arrow-back" />
+        </svg>
+      </app-btn>
+    }
+
     <h2 class="mb-2 text-xl text-blue-500">Detalles</h2>
+
     <ul>
       <li>
         <span class="text-blue-500 mr-1"> Nombre: </span>

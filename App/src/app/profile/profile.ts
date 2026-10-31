@@ -70,14 +70,14 @@ export class Profile {
       : this._userSrv
           .profileDelete(id)
           .pipe(
-            tap(() => {
+            tap((c) => {
               this._storeSrv.setState('userProfile', null);
               setTimeout(() => this.formPatch.set(false), 250);
-              // self deletion
+              // 'User' self deletion vs. 'Admin'|'Super' deletion upon 'User'
               if (this._storeSrv.state().userLogged?.id === id) {
                 this._storeSrv.setState('userLogged', null);
-                this._router.navigate(['']);
-              }
+                setTimeout(() => this._router.navigate(['']), 4000);
+              } else setTimeout(() => this._router.navigate(['users']), 4000);
             }),
           )
           .subscribe(); // 1-time subs
@@ -109,14 +109,18 @@ export class Profile {
       .subscribe(); // 1-time susbs
     setTimeout(() => this.formPatch.set(false), 250);
   }
+
+  protected back() {
+    setTimeout(() => this._router.navigate(['users']), 250);
+  }
 }
 
-/* CRUD PERMISSIONS
+/* CRUD PERMISSIONS TODO: test all positiva cases
  *
  * Role 'User'  can -RUD itself -✅✅✅
- * Role 'Admin' can -RUD role 'User' -- --
+ * Role 'Admin' can -RUD role 'User' -✅✅✅
  * Role 'Admin' can -RU- itself -✅✅-
- * Role 'Super' can -RUD role 'User' -- --
- * Role 'Super' can -RU- role 'Admin' -- --
+ * Role 'Super' can -RUD role 'User' -✅✅-
+ * Role 'Super' can -RU- role 'Admin' -✅✅-
  * Role 'Super' can -RU- itself -✅✅-
  */

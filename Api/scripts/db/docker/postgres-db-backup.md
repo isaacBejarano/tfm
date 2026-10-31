@@ -39,6 +39,14 @@ docker exec -t tfm-server-postgres rm ./tmp/backup_db_tfm_3.tar
     docker exec -t tfm-server-postgres pg_dump -U postgres -d db_tfm -F tar -f ./tmp/backup_db_tfm_20261030_0208.tar
     ```
 2. Now, use `pgAdmin` to make a silly change to a record. Then...
+  - Enter the DB from within the container and check the silly change persisted:
+    ```Bash
+    docker exec -it tfm-server-postgres psql -U postgres -d db_tfm
+    ```
+    - `\l` 
+    - `\c` 
+    - `\d` 
+    - `\d tfm_users` 
   - Close pgAdmin so it does not interfere with docker
 3. Apply the **RESTORE**
   -  
@@ -49,14 +57,10 @@ docker exec -t tfm-server-postgres rm ./tmp/backup_db_tfm_3.tar
     ```Bash
     docker exec -it tfm-server-postgres psql -U postgres -d db_tfm
     ```
-  - Enter the DB from within the container and check the silly change persisted:
-    ```Bash
-    docker exec -it tfm-server-postgres psql -U postgres -d db_tfm
-    ```
-  - `\l` 
-  - `\c` 
-  - `\d` 
-  - `\d tfm_users` 
+    - `\l` 
+    - `\c` 
+    - `\d` 
+    - `\d tfm_users` 
   - ```SQL
     SELECT * FROM tfm_users;
     ```
