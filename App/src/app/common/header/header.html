@@ -1,10 +1,10 @@
-@let _user = store().userLogged;
+@let userLogged = store().userLogged;
 
 <div
   class="w-full sticky top-0 bg-linear-to-b from-mist-950 from-90% to-mist-950/50 border border-mist-900/75"
 >
   <!-- PRIVATE -->
-  @if (_user !== null) {
+  @if (userLogged !== null) {
     <div class="max-w-(--w-desktop) mx-auto p-2">
       <!-- BRAND -->
       <header class="flex md:gap-8">
@@ -19,7 +19,7 @@
           class="ml-4 p-2 flex justify-center gap-4 2xl:gap-6 text-[min(10dvw,12px)] 2xl:text-[min(10dvw,1rem)]"
         >
           <!-- TODO: INE selector @ agenda -->
-          @if (_user.roles.includes('User')) {
+          @if (userLogged.roles.includes('User')) {
             <app-btn
               [route]="routeTo('agendas')"
               label="Agendas"
@@ -28,6 +28,7 @@
               <svg class="size-5 fill-current" viewBox="0 0 100 100">
                 <use xlink:href="svg/icon-sprite.xml#icon-agenda" />
               </svg>
+              <!-- <use xlink:href="svg/icon-sprite.xml#icon-list" /> -->
             </app-btn>
           } @else {
             <app-btn
@@ -41,7 +42,7 @@
             </app-btn>
           }
           <app-btn
-            [route]="routeTo('users', _user.id)"
+            [route]="routeTo('users', userLogged.id)"
             label="Perfil"
             [css]="`${btnBlue} flex gap-0.5 items-center`"
           >

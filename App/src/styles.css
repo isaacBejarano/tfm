@@ -10,6 +10,9 @@
 
 @theme {
   /* CUSTOM CSS VARS */
+
+  /* iPhone 12Pro */
+  --w-mobile: 390px;
   /* iPad Mini */
   --w-tablet: 768px;
   /* big screen */

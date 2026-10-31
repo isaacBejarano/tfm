@@ -6,6 +6,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
 import { SnackbarService } from '../common/snackbar/snackbar.service';
 import { Store, StoreService } from '../shared/services/store.service';
+import { checkGuidv7 } from '../shared/utils/params.util';
 import { ProfileForm } from './profile-form/profile-form';
 import { UserPayloadEdit } from './user-model.type';
 import { UserService } from './user.service';
@@ -77,7 +78,7 @@ export class User {
               this._storeSrv.setState('userProfile', null);
               setTimeout(() => this.formPatch.set(false), 250);
               // 'User' self deletion vs. 'Admin'|'Super' deletion upon 'User'
-              if (this._storeSrv.state().userLogged?.id === id) {
+              if (this.selfEdit(id)) {
                 this._storeSrv.setState('userLogged', null);
                 setTimeout(() => this._router.navigate(['']), 4000);
               } else setTimeout(() => this._router.navigate(['users']), 4000);
@@ -111,6 +112,11 @@ export class User {
       )
       .subscribe(); // 1-time susbs
     setTimeout(() => this.formPatch.set(false), 250);
+  }
+
+  protected selfEdit(id: string): never | boolean {
+    checkGuidv7(id);
+    return this._storeSrv.state().userLogged?.id === id;
   }
 
   protected back() {
