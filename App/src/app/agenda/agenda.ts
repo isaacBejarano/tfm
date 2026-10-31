@@ -31,7 +31,7 @@ export class Agenda {
         map(() => this._activatedRoute),
         filter((route) => route !== null),
         map((route) => route.snapshot.params['id'] as string), // ID of agenda (from URL path var)
-        tap((id) => console.warn(id)),
+        tap((id) => console.warn('Retriveing AGENDA ' + id)), // TODO: get Agenda by Id
       )
       .subscribe();
   }

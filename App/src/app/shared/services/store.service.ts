@@ -8,7 +8,6 @@ export type Store = {
   accesToken: string;
   userLogged: UserDto | null;
   userProfile: UserDto | null;
-  isAgendaLoaded: boolean;
 };
 
 @Service()
@@ -21,7 +20,6 @@ export class StoreService {
     accesToken: '',
     userLogged: null,
     userProfile: null,
-    isAgendaLoaded: false, // FIXME: it is actually being used?
   });
 
   readonly state = computed(() => this._store());

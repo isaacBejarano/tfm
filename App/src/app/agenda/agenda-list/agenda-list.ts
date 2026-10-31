@@ -21,19 +21,23 @@ export class AgendaList {
   // DI
   private readonly _router = inject(Router);
 
-  // FIXME: types
+  // CTRL
+  ////
+
   protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
     'raise',
     '3d-gray',
   ]);
 
+  // FIXME: type Agenda
+  private readonly _guidMock = GUID_EMPTY.slice(0, GUID_EMPTY.length - 1);
   protected readonly agendas = signal<any[]>([
     {
-      id: GUID_EMPTY,
+      id: this._guidMock + '1',
       title: 'Agenda 1 - otoño',
     },
     {
-      id: GUID_EMPTY,
+      id: this._guidMock + '2',
       title: 'Agenda 2 - invierno',
     },
   ]);

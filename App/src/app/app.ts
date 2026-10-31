@@ -57,9 +57,9 @@ export class App implements OnDestroy {
   });
 
   private readonly _overlayOutletForSnackbar: OverlayRef = this._overlay.create({
-    positionStrategy: this._overlay.position().global().centerHorizontally().top(),
+    positionStrategy: this._overlay.position().global().centerHorizontally().bottom('15dvh'),
     scrollStrategy: this._overlay.scrollStrategies.reposition(),
-    hasBackdrop: true,
+    hasBackdrop: false,
     backdropClass: 'bg-transparent',
   });
 
