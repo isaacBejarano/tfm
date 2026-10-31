@@ -12,7 +12,7 @@ export class SnackbarService {
   readonly defaults: SnackbarConfig = {
     msg: '...',
     open: false,
-    snackbarIcon: 'icon-check',
+    snackbarIcon: 'icon-info',
   };
 
   private readonly _open$$ = new BehaviorSubject<boolean>(this.defaults.open);

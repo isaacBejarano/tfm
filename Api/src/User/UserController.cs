@@ -144,9 +144,9 @@ public class UserController(
     // Role 'Admin' can READ itself + rol 'User'
     // Role 'Super' can READ ALL roles (there's only 1 'Super')
     if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.User)}' sólo puede acceder a su propio perfil.");
     else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != targetUser.Id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede acceder a su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.Admin)}' sólo puede acceder a su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
@@ -202,9 +202,9 @@ public class UserController(
     // Role 'Admin' can UPDATE itself + rol 'User'
     // Role 'Super' can UPDATE ALL roles (there's only 1 'Super')
     if (User.IsInRole(nameof(UserRole.User)) && loggedUserId != targetUser.Id.ToString())
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede editar su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.User)}' sólo puede editar su propio perfil.");
     else if (User.IsInRole(nameof(UserRole.Admin)) && loggedUserId != id.ToString() && !targetUser.Roles.Contains(nameof(UserRole.User)))
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' sólo puede editar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.Admin)}' sólo puede editar su propio perfil o perfiles de rol '{nameof(UserRole.User)}'.");
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);
 
@@ -307,11 +307,11 @@ public class UserController(
     // Role 'Super' can DELETE ONLY role 'User'
     if (User.IsInRole(nameof(UserRole.User))
       && loggedUserId != targetUser.Id.ToString()) {
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.User)}' sólo puede eliminar su propio perfil.");
     }
     else if ((User.IsInRole(nameof(UserRole.Admin)) || User.IsInRole(nameof(UserRole.Super)))
       && !targetUser.Roles.Contains(nameof(UserRole.User))) {
-      resErr = new ResponseDto<UserDto>([], $"Usuario con rol '{nameof(UserRole.Admin)}' o '{nameof(UserRole.Super)}' sólo puede eliminar perfiles de rol '{nameof(UserRole.User)}'.");
+      resErr = new ResponseDto<UserDto>([], $"El usuario con rol '{nameof(UserRole.Admin)}' o '{nameof(UserRole.Super)}' sólo puede eliminar perfiles de rol '{nameof(UserRole.User)}'.");
     }
 
     if (resErr != null) return StatusCode(StatusCodes.Status403Forbidden, resErr);

@@ -22,6 +22,6 @@ export class Snackbar {
 
   readonly icon = toSignal<IconSnackbar, IconSnackbar>(
     this._snackbarSrv.icon$(), // unsubscribed by toSignal
-    { initialValue: 'icon-check' },
+    { initialValue: 'icon-info' },
   );
 }

@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, Signal, signal } from '@angular/core';
-import { filter, map, tap } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, takeUntil, tap, timer } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -90,14 +90,21 @@ export class Profile {
       .pipe(
         tap((profile) => {
           this._storeSrv.setState('userProfile', profile);
-          if (patch.password) {
-            this._snackbarSrv
-              .setIcon('icon-check')
-              .setMsg('El cambio de contraseña surtirá efecto al reiniciar sesión.')
-              .notify()
-              .during(4000);
-          }
         }),
+        switchMap(() =>
+          this._snackbarSrv.notifying$().pipe(
+            takeUntil(timer(5000)),
+            distinctUntilChanged(),
+            filter((open) => !open && patch.password !== null),
+            tap(() =>
+              this._snackbarSrv
+                .setIcon('icon-info')
+                .setMsg('El cambio de contraseña surtirá efecto al reiniciar sesión.')
+                .notify()
+                .during(4000),
+            ),
+          ),
+        ),
       )
       .subscribe(); // 1-time susbs
     setTimeout(() => this.formPatch.set(false), 250);

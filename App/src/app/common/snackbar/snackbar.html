@@ -6,6 +6,7 @@
     viewBox="0 0 100 100"
     [class.text-lime-500]="icon() === 'icon-check'"
     [class.text-rose-500]="icon() === 'icon-warning'"
+    [class.text-sky-500]="icon() === 'icon-info'"
   >
     <use [attr.xlink:href]="[`./svg/icon-sprite.xml#${icon()}`]" />
   </svg>
