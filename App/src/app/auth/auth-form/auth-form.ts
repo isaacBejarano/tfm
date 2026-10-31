@@ -65,11 +65,14 @@ export class AuthForm implements OnInit {
 
   readonly validationBorder = validationBorder;
 
-  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
-  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
+  protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
+    'raise',
+    '3d-gray',
+  ]);
+  protected readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
 
   // FIXME: remove debug auto
-  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
+  protected readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
 
   protected readonly $userPayload = output<UserPayloadLogin | UserPayloadSignup>();
   private readonly _debounceForm$$ = new BehaviorSubject<

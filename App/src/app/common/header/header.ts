@@ -22,10 +22,22 @@ export class Header {
   // CTRL
   ////
 
-  readonly btnRose: string = Btn.style('rose', 'outline', 'normal', ['raise', 'fade', '3d-rose']);
-  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', 'fade', '3d-gray']);
-  readonly btnBlue: string = Btn.style('blue', 'outline', 'normal', ['raise', 'fade', '3d-blue']);
-  readonly btnGreen: string = Btn.style('green', 'outline', 'normal', [
+  protected readonly btnRose: string = Btn.style('rose', 'outline', 'normal', [
+    'raise',
+    'fade',
+    '3d-rose',
+  ]);
+  protected readonly btnGray: string = Btn.style('gray', 'outline', 'normal', [
+    'raise',
+    'fade',
+    '3d-gray',
+  ]);
+  protected readonly btnBlue: string = Btn.style('blue', 'outline', 'normal', [
+    'raise',
+    'fade',
+    '3d-blue',
+  ]);
+  protected readonly btnGreen: string = Btn.style('green', 'outline', 'normal', [
     'raise',
     'fade',
     '3d-green',

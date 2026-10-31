@@ -59,9 +59,15 @@ export class ProfileForm implements OnInit {
   // private readonly _store: Signal<Store> = this._storeSrv.state;
   private readonly _profile: UserDto | null = this._storeSrv.state().userProfile;
 
-  readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
-  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
-  readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
+  protected readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', [
+    'raise',
+    '3d-rose',
+  ]);
+  protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
+    'raise',
+    '3d-gray',
+  ]);
+  protected readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
 
   protected readonly $userPayload = output<UserPayloadEdit & { id: string }>();
   private readonly _debounceForm$$ = new BehaviorSubject<(UserPayloadEdit & { id: string }) | null>(

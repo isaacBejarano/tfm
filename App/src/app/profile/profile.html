@@ -4,20 +4,38 @@
 
 @if (profile) {
   <div class="pl-4 p-2 mb-4 list-decimal border border-blue-500/50 rounded-xl">
-    <!-- FIXME: Admin y Super -->
-    @if (true) {
+    <header class="flex gap-4 my-2 mb-4">
+      <!-- Actions -->
       <app-btn
         ($click)="back()"
         ariaLabel="Botón para volver a la lista de usuarios"
-        [css]="btnGraySlim"
+        [css]="btnBlueSlim"
       >
         <svg class="size-5 fill-current" viewBox="0 0 100 100">
           <use xlink:href="svg/icon-sprite.xml#icon-arrow-back" />
         </svg>
       </app-btn>
-    }
 
-    <h2 class="mb-2 text-xl text-blue-500">Detalles</h2>
+      <app-btn
+        ($click)="action('patch', profile.id)"
+        [ariaLabel]="`Botón para editar al usuario '${profile.name}'`"
+        [css]="btnGraySlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-edit" />
+        </svg>
+      </app-btn>
+
+      <app-btn
+        ($click)="action('delete', profile.id)"
+        [ariaLabel]="`Botón para eliminar la cuenta del usuario '${profile.name}'`"
+        [css]="btnRedSlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-trash" />
+        </svg>
+      </app-btn>
+    </header>
 
     <ul>
       <li>
@@ -29,31 +47,10 @@
         <span> {{ profile.email }} </span>
       </li>
     </ul>
-    <!-- Actions -->
-    <div class="mb-2 mt-4 flex gap-4">
-      <app-btn
-        ($click)="action('patch', profile.id)"
-        [ariaLabel]="`Botón para editar al usuario '${profile.name}'`"
-        [css]="btnGraySlim"
-      >
-        <svg class="size-5 fill-current" viewBox="0 0 100 100">
-          <use xlink:href="svg/icon-sprite.xml#icon-edit" />
-        </svg>
-      </app-btn>
-      <app-btn
-        ($click)="action('delete', profile.id)"
-        [ariaLabel]="`Botón para eliminar la cuenta del usuario '${profile.name}'`"
-        [css]="btnRedSlim"
-      >
-        <svg class="size-5 fill-current" viewBox="0 0 100 100">
-          <use xlink:href="svg/icon-sprite.xml#icon-trash" />
-        </svg>
-      </app-btn>
-    </div>
   </div>
 
   @if (formPatch()) {
-    <div class="p-2 md:p-4 list-decimal border border-rose-500/50 rounded-xl">
+    <div class="p-2 md:p-4 md:pb-6 list-decimal border border-rose-500/50 rounded-xl">
       <h2 class="mb-2 text-xl text-rose-500 text-center">Editar Perfil</h2>
       <app-profile-form class="mt-8" ($userPayload)="onPatch($event)" />
     </div>
@@ -61,3 +58,5 @@
 } @else {
   <p class="text-red-500">No hay usuario visible.</p>
 }
+
+<!-- TODO: Better UX -> StyoreSrv to load data from RAM if already fetched. Thus showing less excesive snackbars -->

@@ -69,7 +69,7 @@ public class UserController(
   // GET "/users"
   [HttpGet]
   [Authorize(Roles = $"{nameof(UserRole.Admin)}, {nameof(UserRole.Super)}")]
-  public ActionResult<ResponseDto<UserDto>> List() {
+  public ActionResult<ResponseDto<UserDto>> ProfileList() {
     // Authorized 'User' as 'ClaimsPrincipal' inspects its JWT CLAIMS
     ////
 

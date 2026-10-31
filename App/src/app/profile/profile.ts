@@ -39,9 +39,12 @@ export class Profile {
   // CTRL
   ////
 
-  readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
-  readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
-  readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
+  protected readonly btnBlueSlim: string = Btn.style('blue', 'transparent', 'normal', ['raise']);
+  protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
+    'raise',
+    '3d-gray',
+  ]);
+  protected readonly btnRedSlim: string = Btn.style('red', 'outline', 'slim', ['raise', '3d-red']);
   protected readonly formPatch = signal<boolean>(false);
 
   constructor() {
@@ -120,7 +123,7 @@ export class Profile {
  * Role 'User'  can -RUD itself -✅✅✅
  * Role 'Admin' can -RUD role 'User' -✅✅✅
  * Role 'Admin' can -RU- itself -✅✅-
- * Role 'Super' can -RUD role 'User' -✅✅-
+ * Role 'Super' can -RUD role 'User' -✅✅✅
  * Role 'Super' can -RU- role 'Admin' -✅✅-
  * Role 'Super' can -RU- itself -✅✅-
  */

@@ -72,4 +72,19 @@ export class UserService {
         map((dto) => dto.items[0]),
       );
   }
+
+  profileList(): Observable<UserDto[]> {
+    return this._http
+      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + '/users', {
+        responseType: 'json',
+        observe: 'response',
+      })
+      .pipe(
+        filter((res) => res.status === HttpStatusCode.Ok),
+        map((res) => res.body),
+        filter((body) => body !== null),
+        filter((dto) => dto.count > 0),
+        map((dto) => dto.items),
+      );
+  }
 }

@@ -48,7 +48,7 @@ export class Btn {
 
   static style(
     color: 'gray' | 'rose' | 'blue' | 'green' | 'red',
-    look: 'outline' = 'outline',
+    look: 'outline' | 'transparent' = 'outline',
     shape: 'normal' | 'slim' = 'normal',
     effects: ('raise' | 'fade' | '3d-rose' | '3d-blue' | '3d-gray' | '3d-green' | '3d-red')[] = [
       'raise',
@@ -64,7 +64,8 @@ export class Btn {
 
     const looks = {
       outline: 'border rounded-xl',
-      // solid, transparent...
+      transparent: 'rounded-xl',
+      // solid...
     };
 
     const shapes = {
