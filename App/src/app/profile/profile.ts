@@ -4,6 +4,7 @@ import { filter, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
+import { SnackbarService } from '../common/snackbar/snackbar.service';
 import { Store, StoreService } from '../shared/services/store.service';
 import { UserPayloadEdit } from '../user/user-model.type';
 import { UserService } from '../user/user.service';
@@ -28,6 +29,7 @@ export class Profile {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _userSrv = inject(UserService);
   private readonly _storeSrv = inject(StoreService);
+  private readonly _snackbarSrv = inject(SnackbarService);
 
   // MODEL
   ////
@@ -64,12 +66,13 @@ export class Profile {
 
   protected action(action: 'patch' | 'delete', id: string) {
     action === 'patch'
-      ? this.formPatch.update((open) => !open)
+      ? setTimeout(() => this.formPatch.update((open) => !open), 250)
       : this._userSrv
           .profileDelete(id)
           .pipe(
             tap(() => {
               this._storeSrv.setState('userProfile', null);
+              setTimeout(() => this.formPatch.set(false), 250);
               // self deletion
               if (this._storeSrv.state().userLogged?.id === id) {
                 this._storeSrv.setState('userLogged', null);
@@ -80,21 +83,33 @@ export class Profile {
           .subscribe(); // 1-time subs
   }
 
-  protected onPatch(patch: UserPayloadEdit) {
-    console.table(patch);
-
-    // TODO: FORM
-
+  protected onPatch(payload: UserPayloadEdit & { id: string }) {
+    const patch: UserPayloadEdit = { name: payload.name, password: payload.password };
+    this._userSrv
+      .profileUpdate(payload.id, patch)
+      .pipe(
+        tap((profile) => {
+          this._storeSrv.setState('userProfile', profile);
+          if (patch.password) {
+            this._snackbarSrv
+              .setIcon('icon-check')
+              .setMsg('El cambio de contraseña surtirá efecto al reiniciar sesión.')
+              .notify()
+              .during(4000);
+          }
+        }),
+      )
+      .subscribe(); // 1-time susbs
     setTimeout(() => this.formPatch.set(false), 250);
   }
 }
 
 /* CRUD PERMISSIONS
  *
- * Role 'User'  can -RUD itself -✅-✅
+ * Role 'User'  can -RUD itself -✅✅✅
  * Role 'Admin' can -RUD role 'User' -- --
- * Role 'Admin' can -RU- itself -✅--
+ * Role 'Admin' can -RU- itself -✅✅-
  * Role 'Super' can -RUD role 'User' -- --
  * Role 'Super' can -RU- role 'Admin' -- --
- * Role 'Super' can -RU- itself -✅--
+ * Role 'Super' can -RU- itself -✅✅-
  */

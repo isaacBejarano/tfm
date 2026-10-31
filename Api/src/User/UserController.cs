@@ -108,7 +108,7 @@ public class UserController(
     string userRolesSubstr = userRoles.Length == 1
         ? $"con rol '{userRoles[0]}'"
         : userRoles.Length > 1
-        ? $"con roles '{string.Join("'|'", userRoles)}'"
+        ? $"con roles '{string.Join("', '", userRoles)}'"
         : "sin roles";
     var dto = new ResponseDto<UserDto>(items, $"Aceso exitoso a la lista de usuarios {userRolesSubstr}.");
     return StatusCode(StatusCodes.Status200OK, dto);
@@ -211,14 +211,22 @@ public class UserController(
     // PATCHING
     ////
 
-    // payload -> patched class
-    UserPatch patch = new() {
-      Password = null,
-      Name = null
-    };
-
     // TODO: extract Hashing VALIDATION into SRV? (for Profile CRUD)?
 
+    // payload -> patched class
+    UserPatch patch = new() {
+      Password = targetUser.Password,
+      Name = targetUser.Name
+    };
+
+    // Here payload's nulls mean no willing of modifying those fields
+    if (payload.Password == null && payload.Name == null) {
+      var patchErr = new ResponseDto<UserDto>([], "No se pasó ningún campo de usuario a modificar.");
+      return StatusCode(StatusCodes.Status422UnprocessableEntity, patchErr);
+    }
+
+    // update UserPatch
+    if (payload.Name != null) patch.Name = payload.Name;
     if (payload.Password != null) {
       // HASHING -> payload Password
       ////////
@@ -239,15 +247,13 @@ public class UserController(
       }
     }
 
-    if (payload.Name != null) patch.Name = payload.Name;
-
     // ITEMS - UPDATE
     ////
 
     // patched class -> entity
     User? patchedUser = _userRepoSrv.Patch(id, patch);
     if (patchedUser == null) {
-      var patchErr = new ResponseDto<UserDto>([], "No se pudo modificar ningún dato del usuario.");
+      var patchErr = new ResponseDto<UserDto>([], "No se modificó el usuario.");
       return StatusCode(StatusCodes.Status409Conflict, patchErr);
     }
 

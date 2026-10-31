@@ -54,7 +54,7 @@ export class AuthForm implements OnInit {
     maxLength(field.password, 16); // Adds MAX_LENGTH property to HTML input
     pattern(field.password, REGEX_PASSWORD, {
       message:
-        "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.",
+        "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y uno de los siguientes carácteres especiales: `~!@#$%^&*()_+-={}|[]:\"\";'<>?,./",
     });
     // name
     maxLength(field.name, 25); // Adds MAX_LENGTH property to HTML input
@@ -121,7 +121,7 @@ export class AuthForm implements OnInit {
       payload = {
         email: form.email,
         password: form.password,
-        name: this.form.name().value().trim() === '' ? null : form.name,
+        name: form.name.trim() === '' ? null : form.name,
       } as UserPayloadSignup;
     }
 

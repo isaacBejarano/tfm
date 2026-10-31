@@ -6,9 +6,10 @@ import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 import { User, UserPayloadEdit } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
 import { REGEX_PASSWORD } from '@shared/constants/regex';
+import { StoreService } from '@shared/services/store.service';
 import { validationBorder } from '@shared/utils/form-field.util';
-
-// FIXME: cleanup
+import { GUID_EMPTY } from '../../shared/constants/unit';
+import { UserDto } from '../../shared/types/dto.type';
 
 @Component({
   selector: 'app-profile-form',
@@ -23,6 +24,7 @@ import { validationBorder } from '@shared/utils/form-field.util';
 export class ProfileForm implements OnInit {
   // DI
   private readonly _destroyRef = inject(DestroyRef);
+  private readonly _storeSrv = inject(StoreService);
 
   // MODEL
   private readonly _defaultUser = signal<User>({
@@ -45,7 +47,7 @@ export class ProfileForm implements OnInit {
     maxLength(field.password, 16); // Adds MAX_LENGTH property to HTML
     pattern(field.password, REGEX_PASSWORD, {
       message:
-        "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.",
+        "El campo 'Contraseña' debe incluir al menos una mayúscula, una minúscula, un número y uno de los siguientes carácteres especiales: `~!@#$%^&*()_+-={}|[]:\"\";'<>?,./",
     });
   });
 
@@ -54,12 +56,17 @@ export class ProfileForm implements OnInit {
 
   readonly validationBorder = validationBorder;
 
+  // private readonly _store: Signal<Store> = this._storeSrv.state;
+  private readonly _profile: UserDto | null = this._storeSrv.state().userProfile;
+
   readonly btnRoseSlim: string = Btn.style('rose', 'outline', 'slim', ['raise', '3d-rose']);
   readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', ['raise', '3d-gray']);
   readonly btnGray: string = Btn.style('gray', 'outline', 'normal', ['raise', '3d-gray']);
 
-  protected readonly $userPayload = output<UserPayloadEdit>();
-  private readonly _debounceForm$$ = new BehaviorSubject<UserPayloadEdit | null>(null); // UX -> block rapid multiple submit
+  protected readonly $userPayload = output<UserPayloadEdit & { id: string }>();
+  private readonly _debounceForm$$ = new BehaviorSubject<(UserPayloadEdit & { id: string }) | null>(
+    null,
+  ); // UX -> block rapid multiple submit
 
   ngOnInit(): void {
     this._debounceForm$$
@@ -71,6 +78,16 @@ export class ProfileForm implements OnInit {
         tap(() => this._debounceForm$$.next(null)),
       )
       .subscribe();
+
+    this._loadFormOnEdit();
+  }
+
+  private _loadFormOnEdit() {
+    // const profile = this._store().userProfile;
+    if (this._profile) {
+      this.form.name().value.set(this._profile.name);
+      this.form.password().value.set('');
+    }
   }
 
   protected togglePasswordType(password: HTMLInputElement): void {
@@ -95,8 +112,9 @@ export class ProfileForm implements OnInit {
     const form: User = this.form().value();
 
     this._debounceForm$$.next({
-      name: form.name,
-      password: form.password,
+      id: this._profile?.id ?? GUID_EMPTY,
+      name: form.name.trim() === '' ? null : form.name,
+      password: form.password.trim() === '' ? null : form.password,
     });
   }
 }

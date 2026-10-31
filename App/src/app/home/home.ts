@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthForm } from '@app/auth/auth-form/auth-form';
 import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
 import { AuthService } from '@auth/auth.service';
+import { GUID_EMPTY } from '@shared/constants/unit';
 import { StoreService } from '@shared/services/store.service';
 import { tap } from 'rxjs';
 
@@ -34,8 +35,7 @@ export class Home implements OnDestroy {
         tap((user) => {
           user.roles.every((role) => role !== 'User')
             ? this._router.navigate(['users']) // admin, super
-            : user.agendaIds.length === 0 ||
-                user.agendaIds.includes('00000000-0000-0000-0000-000000000000') // user
+            : user.agendaIds.length === 0 || user.agendaIds.includes(GUID_EMPTY) // user
               ? this._router.navigate(['agendas', 'new'])
               : this._router.navigate(['agendas', user.agendaIds[0]]);
         }),

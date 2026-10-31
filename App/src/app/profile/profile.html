@@ -4,8 +4,19 @@
 
 @if (profile) {
   <div class="pl-4 p-2 mb-4 list-decimal border border-blue-500/50 rounded-xl">
+    <h2 class="mb-2 text-xl text-blue-500">Detalles</h2>
+    <ul>
+      <li>
+        <span class="text-blue-500 mr-1"> Nombre: </span>
+        <span> {{ profile.name }} </span>
+      </li>
+      <li>
+        <span class="text-blue-500 mr-1"> Correo Electrónico: </span>
+        <span> {{ profile.email }} </span>
+      </li>
+    </ul>
     <!-- Actions -->
-    <div class="my-2 flex gap-4">
+    <div class="mb-2 mt-4 flex gap-4">
       <app-btn
         ($click)="action('patch', profile.id)"
         [ariaLabel]="`Botón para editar al usuario '${profile.name}'`"
@@ -25,17 +36,6 @@
         </svg>
       </app-btn>
     </div>
-
-    <h2 class="mb-2 text-xl text-blue-500">Detalles</h2>
-
-    <ul class="list-disc ml-4">
-      <li>
-        {{ profile.email }}
-      </li>
-      <li>
-        {{ profile.name }}
-      </li>
-    </ul>
   </div>
 
   @if (formPatch()) {

@@ -1,4 +1,4 @@
-/** Include at least one uppercase letter, one lowercase letter, one number, and one special character */
+/** Include at least one uppercase letter, one lowercase letter, one number, and one of the following special characters [`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./] */
 const REGEX_PASSWORD =
   /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./])[0-9a-zA-Z`~!@#$%^&*()_+\-={}|[\]\\:"";'<>?,./]+$/;
 

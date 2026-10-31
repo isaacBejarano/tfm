@@ -37,9 +37,12 @@ public class UserRepositoryService(
   // PATCH "/users/:id"
   public User? Patch(Guid id, UserPatch patch) {
     ArgumentNullException.ThrowIfNull(patch);
+    ArgumentException.ThrowIfNullOrWhiteSpace(patch.Name);
+    ArgumentException.ThrowIfNullOrWhiteSpace(patch.Password);
     User? user = ReadById(id);
-    if (!string.IsNullOrEmpty(patch.Password)) user?.Password = patch.Password;
-    if (!string.IsNullOrEmpty(patch.Name)) user?.Name = patch.Name;
+    if (user == null) return null;
+    user.Password = patch.Password; // hash outside!
+    user.Name = patch.Name;
     return _ctx.SaveChanges() > 0 ? user : null; // affectedRows ~1
   }
 

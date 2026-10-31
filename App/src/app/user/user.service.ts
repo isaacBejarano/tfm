@@ -1,11 +1,12 @@
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { inject, Service, Signal } from '@angular/core';
-import { EMPTY, filter, map, Observable, of } from 'rxjs';
+import { EMPTY, filter, map, Observable } from 'rxjs';
 
-import { ResponseDto, UserDto, UserPatch } from '@app/shared/types/dto.type';
+import { ResponseDto, UserDto } from '@app/shared/types/dto.type';
 import { checkGuidv7 } from '@app/shared/utils/params.util';
 import { Store, StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
+import { UserPayloadEdit } from './user-model.type';
 
 @Service()
 export class UserService {
@@ -36,32 +37,6 @@ export class UserService {
       );
   }
 
-  profileUpdate(id: string, patch: UserPatch): never | Observable<UserDto> {
-    checkGuidv7(id);
-
-    const dto: UserDto = {
-      id: '[]',
-      agendaIds: [],
-      email: '[]',
-      name: '[]',
-      roles: [],
-    };
-    return of(dto); // FIXME:
-
-    // return this._http
-    //   .post<ResponseDto<Object>>(this._webSrv.domain.api.get() + '/users', payload, {
-    //     responseType: 'json',
-    //     observe: 'response',
-    //   })
-    //   .pipe(
-    //     filter((res) => res.status === HttpStatusCode.Created),
-    //     map((res) => res.body),
-    //     filter((body) => body !== null),
-    //     map((body) => body.items),
-    //     tap(() => this._storeSrv.setState('formAuth', 'login')),
-    //   );
-  }
-
   profileDelete(id: string): never | Observable<Object> {
     checkGuidv7(id);
 
@@ -78,6 +53,23 @@ export class UserService {
         map((res) => res.body),
         filter((dto) => dto !== null),
         filter((dto) => dto.count === 0), // was deleted
+      );
+  }
+
+  profileUpdate(id: string, patch: UserPayloadEdit): never | Observable<UserDto> {
+    checkGuidv7(id);
+
+    return this._http
+      .patch<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + `/users/${id}`, patch, {
+        responseType: 'json',
+        observe: 'response',
+      })
+      .pipe(
+        filter((res) => res.status === HttpStatusCode.Ok),
+        map((res) => res.body),
+        filter((dto) => dto !== null),
+        filter((dto) => dto.count === 1),
+        map((dto) => dto.items[0]),
       );
   }
 }

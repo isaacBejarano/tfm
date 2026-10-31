@@ -141,7 +141,7 @@ Content-Type: application/json
   "name":"DEBUG Dorofeeva"
 }
 
-### FIXME: comment <- Debugging 'Admin' PROFILE CRUD -> 201 Created
+### FIXME: TODO: comment <- Debugging 'Admin' PROFILE CRUD -> 201 Created
 POST {{Api}}/users
 Content-Type: application/json
 
@@ -160,6 +160,17 @@ Content-Type: application/json
   "password":"Super@uoc2026",
   "name":"DEBUG Super"
 }
+
+### FIXME: comment <- Debugging 'User' PROFILE UPDATE -> 201 Created
+PATCH {{Api}}/users/01a18f0b-b62d-716e-aa31-4f3d468c5cfe
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxYTE4ZjBiLWI2MmQtNzE2ZS1hYTMxLTRmM2Q0NjhjNWNmZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkRvcm9mZWV2YUB5b3BtYWlsLmNvbSIsImp0aSI6IjAxYTE4ZjlmLTUzMmUtN2E5OS04Mjc0LWM5NWU3MzA3NzdhZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJuYmYiOjE3OTM0MTA5NDUsImV4cCI6MTc5MzQxMTI0NSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzAxMiIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAifQ.AoixlpcAGwQoMG4kLWW6v0vTVInBQIhmjPw19mrzEKQ
+
+{
+  "name": null,
+  "password": null
+}
+
 
 
 
