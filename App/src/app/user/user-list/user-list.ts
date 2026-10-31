@@ -29,7 +29,7 @@ export class UserList {
   protected readonly users = signal<UserDto[]>([]);
 
   protected profile(id: string) {
-    this._router.navigate(['users', id]);
+    setTimeout(() => this._router.navigate(['users', id]), 250);
   }
 
   constructor() {

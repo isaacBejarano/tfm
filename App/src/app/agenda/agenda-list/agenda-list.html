@@ -1,2 +1,27 @@
 <h1 class="text-2xl text-rose-500 text-center">Agendas</h1>
 <p class="text-center">En construcción...</p>
+
+<app-btn ariaLabel="Botón para crear una nueva agenda" [css]="btnGraySlim">
+  <svg class="size-5 fill-current" viewBox="0 0 100 100">
+    <use xlink:href="svg/icon-sprite.xml#icon-icon-agenda-new" />
+  </svg>
+</app-btn>
+
+<!-- TODO: CDK virtual scroll -->
+<ol class="p-2 border border-blue-500/25 rounded-xl">
+  @for (agenda of agendas(); track agenda.id; let idx = $index) {
+    <li
+      class="mb-2 p-2 border border-rose-500/25 rounded-xl cursor-pointer hover:bg-rose-700/5 active:bg-rose-500/8"
+      (click)="agendaManagment(agenda.id)"
+    >
+      <ul class="ml-2">
+        <li>
+          <span class="text-rose-500"> Correo Electrónico: </span>
+          {{ agenda.title }}
+        </li>
+      </ul>
+    </li>
+  } @empty {
+    <li class="text-red-500">No hay agendas visibles.</li>
+  }
+</ol>

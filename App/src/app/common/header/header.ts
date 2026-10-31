@@ -53,7 +53,7 @@ export class Header {
     this._storeSrv.setState('accesToken', '');
     this._storeSrv.setState('userLogged', null);
     this._storeSrv.setState('formAuth', '');
-    this._router.navigate(['']);
+    setTimeout(() => this._router.navigate(['']), 250);
   }
 
   routeTo(path: AppPathFragments, id?: string): string {
@@ -62,6 +62,6 @@ export class Header {
 
   clearHome() {
     this._storeSrv.setState('formAuth', '');
-    this._router.navigate(['']);
+    setTimeout(() => this._router.navigate(['']), 250);
   }
 }

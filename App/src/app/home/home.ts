@@ -34,10 +34,10 @@ export class Home implements OnDestroy {
       .pipe(
         tap((user) => {
           user.roles.every((role) => role !== 'User')
-            ? this._router.navigate(['users']) // admin, super
+            ? setTimeout(() => this._router.navigate(['users']), 250) // admin, super
             : user.agendaIds.length === 0 || user.agendaIds.includes(GUID_EMPTY) // user
-              ? this._router.navigate(['agendas'])
-              : this._router.navigate(['agendas', user.agendaIds[0]]);
+              ? setTimeout(() => this._router.navigate(['agendas']), 250)
+              : setTimeout(() => this._router.navigate(['agendas', user.agendaIds[0]]), 250);
         }),
       )
       .subscribe(); // 1-time subscription
