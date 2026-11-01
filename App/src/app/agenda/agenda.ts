@@ -29,14 +29,44 @@ export class Agenda {
   private readonly _activatedRoute = inject(ActivatedRoute);
   readonly languageSrv = inject(LanguageService);
 
+  // MODEL
+  protected readonly agenda = signal<DtoAgenda | null>(null); // src
+
   // CTRL
   ////
 
   protected readonly sameDate = sameDate; // Utils
   protected readonly today = new Date();
-  protected readonly currentWeekGrid = signal<Date[]>([]); // UI
-  protected readonly currentWeekMonday = signal<Date | null>(null); // UI
-  protected readonly agenda = signal<DtoAgenda | null>(null); // Model src
+
+  // UI
+
+  protected readonly currentWeekGrid = signal<Date[]>([]);
+  protected readonly currentWeekMonday = signal<Date | null>(null);
+  protected readonly icons: Record<GardenAction, GardenIcon> = {
+    seeding: '🌱',
+    watering: '💧',
+    rain: '☔',
+    harvest: '🚜',
+    blossom: '🌼',
+    snow: '⛄',
+    sun: '🌞',
+    clouds: '⛅',
+  };
+  protected readonly colors: Record<GardenAction, string> = {
+    seeding: 'text-lime-300',
+    watering: 'text-sky-300',
+    rain: 'text-blue-300',
+    harvest: 'text-amber-300',
+    blossom: 'text-pink-300',
+    snow: 'text-white/75',
+    sun: 'text-yellow-300',
+    clouds: 'text-purple-300',
+  };
+  protected readonly btnGreenSlim: string = Btn.style('green', 'outline', 'slim', ['raise']);
+  protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
+    'raise',
+    '3d-gray',
+  ]);
 
   constructor() {
     this._router.events
@@ -187,64 +217,7 @@ export class Agenda {
       .subscribe();
   }
 
-  // days in Agenda View grid must render after 'currentWeekMonday'
-  private _renderWeekGrid() {
-    const daysAfterWeekMonday: Date[] = [];
-
-    for (let i = 0; i < 7; i++) {
-      daysAfterWeekMonday.push(this._daysAfterMonday(i));
-    }
-
-    this.currentWeekGrid.set(daysAfterWeekMonday);
-  }
-
-  // planning is future -> +int
-  private _daysAfterMonday(days: number): Date {
-    if (days < 0) throw new Error('ERROR: Added days must be positive or 0.');
-    const afterMonday = structuredClone(this.currentWeekMonday()!);
-    afterMonday.setDate(afterMonday.getDate() + days);
-    return afterMonday;
-  }
-
-  protected resetWeekMonday(slide: 'prev' | 'next') {
-    const monday = structuredClone(this.currentWeekMonday()!);
-    monday.setDate(monday.getDate() + (slide === 'prev' ? -7 : 7));
-    this.currentWeekMonday.set(monday);
-    this._renderWeekGrid();
-  }
-
-  protected readonly icons: Record<GardenAction, GardenIcon> = {
-    seeding: '🌱',
-    watering: '💧',
-    rain: '☔',
-    harvest: '🚜',
-    blossom: '🌼',
-    snow: '⛄',
-    sun: '🌞',
-    clouds: '⛅',
-  };
-
-  protected readonly colors: Record<GardenAction, string> = {
-    seeding: 'text-lime-300',
-    watering: 'text-sky-300',
-    rain: 'text-blue-300',
-    harvest: 'text-amber-300',
-    blossom: 'text-pink-300',
-    snow: 'text-white/75',
-    sun: 'text-yellow-300',
-    clouds: 'text-purple-300',
-  };
-
-  protected readonly btnGreenSlim: string = Btn.style('green', 'outline', 'slim', ['raise']);
-  protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
-    'raise',
-    '3d-gray',
-  ]);
-
-  protected getCurrentWeekTasks(day: Date): GardenTask[] {
-    return this.agenda()!.gardenTasks.filter((task) => sameDate(task.date, day));
-  }
-
+  // sets 'currentWeekMonday'
   private _setWeekMonday(): void {
     const today: Date = structuredClone(this.today); // e.g. today Wed 28, or Sun 8
     const dayIdx: number = today.getDay(); // e.g. Wed is index 3 of 7, Sun is 0 <- [Sun..Sat]
@@ -267,6 +240,39 @@ export class Agenda {
     this.currentWeekMonday.set(today);
   }
 
+  // days in Agenda View grid must render after 'currentWeekMonday'
+  private _renderWeekGrid() {
+    const daysAfterWeekMonday: Date[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      daysAfterWeekMonday.push(this._daysAfterMonday(i));
+    }
+
+    this.currentWeekGrid.set(daysAfterWeekMonday);
+  }
+
+  // planning is future -> +int
+  private _daysAfterMonday(days: number): Date {
+    if (days < 0) throw new Error('ERROR: Added days must be positive or 0.');
+    const afterMonday = structuredClone(this.currentWeekMonday()!);
+    afterMonday.setDate(afterMonday.getDate() + days);
+    return afterMonday;
+  }
+
+  // nav to other week grids
+  protected resetWeekMonday(slide: 'prev' | 'next') {
+    const monday = structuredClone(this.currentWeekMonday()!);
+    monday.setDate(monday.getDate() + (slide === 'prev' ? -7 : 7));
+    this.currentWeekMonday.set(monday);
+    this._renderWeekGrid();
+  }
+
+  protected getCurrentWeekTasks(day: Date): GardenTask[] {
+    return this.agenda()!.gardenTasks.filter((task) => sameDate(task.date, day));
+  }
+
+  // UI utils
+
   protected isCurrentWeek(): boolean {
     const currentWeekSunday: Date = structuredClone(this.currentWeekMonday()!);
     const dayOfMonthAsTime: number = currentWeekSunday.getDate() + 6;
@@ -282,12 +288,12 @@ export class Agenda {
     return this.colors[action];
   }
 
-  // TODO:
-  protected backToWeek() {
-    alert('volver a cargar ESTA SEMANA');
-  }
-
   protected back() {
     setTimeout(() => this._router.navigate(['agendas']), 250);
+  }
+
+  protected backToWeek() {
+    this._setWeekMonday();
+    this._renderWeekGrid();
   }
 }
