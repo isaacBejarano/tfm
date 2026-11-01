@@ -1,4 +1,4 @@
-using Api.Shared;
+using Api.Dto;
 
 namespace Api.Tests.Shared;
 

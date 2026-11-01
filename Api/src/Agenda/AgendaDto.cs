@@ -6,8 +6,8 @@ public record DtoAgenda(
   Guid Id,
   Guid UserId, // FK
   string Title,
-  Season SeasonStart,
-  // Week[] Weeks
+  Season SeasonStart
+// Week[] Weeks
 );
 // TODO: Agenda needs :Audit because Creation date is TODAY -> render Agenda View
 
