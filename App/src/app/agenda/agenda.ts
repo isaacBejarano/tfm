@@ -62,7 +62,8 @@ export class Agenda {
     sun: 'text-yellow-300',
     clouds: 'text-purple-300',
   };
-  protected readonly btnGreenSlim: string = Btn.style('green', 'outline', 'slim', ['raise']);
+  protected readonly btnGreenOutlineSlim: string = Btn.style('green', 'outline', 'slim', ['raise']);
+  protected readonly btnGreenSlim: string = Btn.style('green', 'transparent', 'slim', ['raise']);
   protected readonly btnGraySlim: string = Btn.style('gray', 'outline', 'slim', [
     'raise',
     '3d-gray',
@@ -261,10 +262,12 @@ export class Agenda {
 
   // nav to other week grids
   protected resetWeekMonday(slide: 'prev' | 'next') {
-    const monday = structuredClone(this.currentWeekMonday()!);
-    monday.setDate(monday.getDate() + (slide === 'prev' ? -7 : 7));
-    this.currentWeekMonday.set(monday);
-    this._renderWeekGrid();
+    setTimeout(() => {
+      const monday = structuredClone(this.currentWeekMonday()!);
+      monday.setDate(monday.getDate() + (slide === 'prev' ? -7 : 7));
+      this.currentWeekMonday.set(monday);
+      this._renderWeekGrid();
+    }, 250);
   }
 
   protected getCurrentWeekTasks(day: Date): GardenTask[] {
@@ -292,8 +295,10 @@ export class Agenda {
     setTimeout(() => this._router.navigate(['agendas']), 250);
   }
 
-  protected backToWeek() {
-    this._setWeekMonday();
-    this._renderWeekGrid();
+  protected backToCurrentWeek() {
+    setTimeout(() => {
+      this._setWeekMonday();
+      this._renderWeekGrid();
+    }, 250);
   }
 }

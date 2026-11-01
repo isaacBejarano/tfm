@@ -33,6 +33,8 @@ export class AgendaList {
     '3d-gray',
   ]);
 
+  readonly newAgenda = signal<boolean>(false);
+
   // Model src
   // FIXME: get real Agenda by User Id & remove MOCKS
   private readonly _guidMock = GUID_EMPTY.slice(0, GUID_EMPTY.length - 1);
@@ -61,6 +63,6 @@ export class AgendaList {
   }
 
   protected agendaNew() {
-    alert('NUEVA AGENDA: En construcción');
+    setTimeout(() => this.newAgenda.update((open) => !open), 250);
   }
 }
