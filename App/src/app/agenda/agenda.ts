@@ -4,85 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, tap } from 'rxjs';
 
+import { DtoAgenda, GardenAction, GardenIcon, GardenTask } from '@agenda/agenda-dto.type';
+import { Season } from '@agenda/agenda.enum';
 import { Btn } from '@shared/components/btn/btn';
-
-enum FitoElement {
-  capsaicine,
-  alicine,
-  antocianine,
-  flavonoids,
-  polyphenols,
-  carotenoids,
-  fitoestrogens,
-  phytosterols,
-  empty,
-}
-
-export enum Season {
-  Winter,
-  Spring,
-  Summer,
-  Fall,
-}
-
-type Crop = {
-  id: string; // guuid
-  // taxonomy
-  vernacular: string;
-  taxonList?: string;
-  species?: string;
-  // health
-  healthBenefit?: string;
-  fitoElements?: FitoElement;
-  // desc
-  habitat?: string;
-  soilType?: string;
-  soilComposition?: string;
-  stem?: string;
-  leaves?: string;
-  roots?: string;
-  buds?: string;
-  flowers?: string;
-  fruits?: string;
-  // care
-  exposureSun?: string;
-  exposureHeat?: string;
-  exposureCold?: string;
-  exposureMoist?: string;
-  exposureWind?: string;
-  exposureRain?: string;
-  watering?: string;
-  pollination?: string;
-  fertilization?: string;
-  fruitCare?: string;
-  evapoCoeficient?: string;
-  // menaces
-  plagueVertebrates?: string[];
-  plagueBugs?: string[];
-  plagueFungae?: string[];
-  plagueUnicellular?: string[];
-};
-
-export type DtoAgenda = {
-  id: string; // guuid
-  userId: string; // guuid -> 1 user has many agendas
-  title: string;
-  created: string; // agenda's TODAY Date
-  seasonStart: Season; // Season
-  gardenTasks: GardenTask[];
-};
-
-type GardenTask = {
-  id: string; // guuid
-  agendaId: string; // guuid -> 1 agenda has many tasks
-  date: Date;
-  action: GardenAction;
-  crops: Crop[];
-};
-
-type GardenIcon = '🌱' | '💧' | '☔' | '🌼' | '⛄' | '🌞' | '⛅' | '🚜';
-type GardenAction =
-  'watering' | 'seeding' | 'harvest' | 'rain' | 'blossom' | 'snow' | 'sun' | 'clouds';
+import { LanguageService } from '@shared/services/lang.service';
+import { sameDate } from '@shared/utils/date.util';
 
 @Component({
   selector: 'app-agenda',
@@ -101,10 +27,12 @@ export class Agenda {
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
+  readonly languageSrv = inject(LanguageService);
 
   // CTRL
   ////
 
+  protected readonly sameDate = sameDate; // Utils
   protected readonly today = new Date();
   protected readonly currentWeekGrid = signal<Date[]>([]); // UI
   protected readonly currentWeekMonday = signal<Date | null>(null); // UI
@@ -314,7 +242,7 @@ export class Agenda {
   ]);
 
   protected getCurrentWeekTasks(day: Date): GardenTask[] {
-    return this.agenda()!.gardenTasks.filter((task) => this.sameDate(task.date, day));
+    return this.agenda()!.gardenTasks.filter((task) => sameDate(task.date, day));
   }
 
   private _setWeekMonday(): void {
@@ -352,75 +280,6 @@ export class Agenda {
 
   protected getColor(action: GardenAction): string {
     return this.colors[action];
-  }
-
-  // TODO: duplicated at route "agendas/"" -> use Utils
-  protected toLangSeason(local: 'es', season: Season): string {
-    return local === 'es' ? this.seasonToES(season) : '';
-  }
-  protected seasonToES(season: Season): string {
-    const seasonES: Record<Season, string> = {
-      [Season.Fall]: 'Otoño',
-      [Season.Winter]: 'Invierno',
-      [Season.Spring]: 'Primavera',
-      [Season.Summer]: 'Verano',
-    };
-    return seasonES[season];
-  }
-  // TODO: Utils 'Date'
-  protected sameDate(dateA: Date, dateB: Date): boolean {
-    return dateA.getTime() === dateB.getTime();
-  }
-
-  // TODO: lang SRV
-  // dayToCA, dayToGa, dayToPT, dayToAST, dayToAN, dayToOC, dayToEU <- iberian langs
-  protected toLangGardenAction(local: 'es', action: GardenAction): string {
-    return local === 'es' ? this.gardenActionToES(action) : '';
-  }
-  protected gardenActionToES(action: GardenAction): string {
-    const actionES: Record<GardenAction, string> = {
-      watering: 'Riego',
-      seeding: 'Siembra',
-      harvest: 'Cosecha',
-      blossom: 'Floración',
-      rain: 'Lluvia',
-      snow: 'Nieve',
-      sun: 'Sol',
-      clouds: 'Nubles',
-    };
-    return actionES[action];
-  }
-  protected toLangDay(local: 'es', day: string | null): string {
-    return local === 'es' ? this.dayToES(day) : (day ?? '');
-  }
-  protected dayToES(day: string | null): never | string {
-    if (!day) throw new Error('ERROR: day string required.');
-    const daysES: Record<string, string> = {
-      monday: 'Lunes',
-      tuesday: 'Martes',
-      wednesday: 'Miércoles',
-      thursday: 'Jueves',
-      friday: 'Viernes',
-      saturday: 'Sábado',
-      sunday: 'Domingo',
-    };
-    return daysES[day.toLowerCase()];
-  }
-  protected toLangMonth(local: 'es', month: string | null): string {
-    return local === 'es' ? this.monthToES(month) : (month ?? '');
-  }
-  protected monthToES(month: string | null): never | string {
-    if (!month) throw new Error('ERROR: month string required.');
-    const _month: string[] = month.split(' ');
-    const head: string = _month[0] ?? '';
-    const tail: string = _month[1] ?? '';
-    const monthsES: Record<string, string> = {
-      jan: 'Ene',
-      apr: 'Abr',
-      aug: 'Ago',
-      dec: 'Dic',
-    };
-    return `${head} ${monthsES[tail.toLowerCase()] ?? tail}`;
   }
 
   // TODO:

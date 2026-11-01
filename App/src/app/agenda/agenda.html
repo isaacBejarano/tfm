@@ -21,7 +21,7 @@
         </span>
         -
         <span class="text-mauve-400 truncate">
-          {{ toLangSeason('es', _agenda.seasonStart) }}
+          {{ languageSrv.toLangSeason('es', _agenda.seasonStart) }}
         </span>
       </span>
     </h1>
@@ -85,13 +85,13 @@
           <!-- DAY -->
           <h2 class="mb-3 relative">
             <span class="block font-semibold text-mauve-300 uppercase">
-              {{ toLangDay('es', day | date: 'EEEE' : '') }}
+              {{ languageSrv.toLangDay('es', day | date: 'EEEE' : '') }}
             </span>
             <span
               class="font-bold text-lg"
               [class]="sameDate(day, _today) ? 'text-blue-500' : 'text-mauve-400'"
             >
-              {{ toLangMonth('es', day | date: 'd MMM' : '') }}
+              {{ languageSrv.toLangMonth('es', day | date: 'd MMM' : '') }}
             </span>
 
             @if (sameDate(day, _today)) {
@@ -107,7 +107,7 @@
               <li [class]="getColor(task.action)">
                 <span class="block font-bold uppercase mb-1">
                   {{ getIcon(task.action) }}
-                  {{ toLangGardenAction('es', task.action) }}
+                  {{ languageSrv.toLangGardenAction('es', task.action) }}
                 </span>
                 <ul class="pl-4 text-left space-y-0.5">
                   @for (crop of task.crops; track crop.id) {

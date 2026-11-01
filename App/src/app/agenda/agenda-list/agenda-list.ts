@@ -1,10 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-
 import { Router } from '@angular/router';
+
+import { DtoAgenda } from '@agenda/agenda-dto.type';
+import { Season } from '@agenda/agenda.enum';
 import { Btn } from '@shared/components/btn/btn';
-import { GUID_EMPTY } from '../../shared/constants/unit';
-import { checkGuidv7 } from '../../shared/utils/params.util';
-import { DtoAgenda, Season } from '../agenda';
+import { GUID_EMPTY } from '@shared/constants/unit';
+import { LanguageService } from '@shared/services/lang.service';
+import { checkGuidv7 } from '@shared/utils/params.util';
 
 @Component({
   selector: 'app-agenda-list',
@@ -21,6 +23,7 @@ import { DtoAgenda, Season } from '../agenda';
 export class AgendaList {
   // DI
   private readonly _router = inject(Router);
+  readonly languageSrv = inject(LanguageService);
 
   // CTRL
   ////
@@ -59,19 +62,5 @@ export class AgendaList {
 
   protected agendaNew() {
     alert('NUEVA AGENDA: En construcción');
-  }
-
-  // TODO: duplicated -> use utils
-  protected toLangSeason(local: 'es', season: Season): string {
-    return local === 'es' ? this.seasonToES(season) : '';
-  }
-  protected seasonToES(season: Season): string {
-    const seasonES: Record<Season, string> = {
-      [Season.Fall]: 'Otoño',
-      [Season.Winter]: 'Invierno',
-      [Season.Spring]: 'Primavera',
-      [Season.Summer]: 'Verano',
-    };
-    return seasonES[season];
   }
 }
