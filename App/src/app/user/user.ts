@@ -75,8 +75,10 @@ export class User {
           .profileDelete(id)
           .pipe(
             tap((c) => {
-              this._storeSrv.setState('userProfile', null);
-              setTimeout(() => this.formPatch.set(false), 250);
+              setTimeout(() => {
+                this.formPatch.set(false);
+                this._storeSrv.setState('userProfile', null);
+              }, 250);
               // 'User' self deletion vs. 'Admin'|'Super' deletion upon 'User'
               if (this.selfEdit(id)) {
                 this._storeSrv.setState('userLogged', null);

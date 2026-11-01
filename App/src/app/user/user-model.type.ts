@@ -1,5 +1,5 @@
 type User = {
-  id: string;
+  id: string; // guuid
   agendaIds: string[];
   email: string;
   password: string; // nullable when sent as Edit paylaod

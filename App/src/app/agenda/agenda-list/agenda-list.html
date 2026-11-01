@@ -1,8 +1,8 @@
-<h1 class="text-2xl text-green-500 text-center">Agendas</h1>
+<h1 class="mt-4 mb-6 2xl:mb-10 text-2xl text-green-500 text-center">Agendas</h1>
 
 <app-btn
   ariaLabel="Botón para crear una nueva agenda"
-  [css]="`my-4 ${btnGraySlim}`"
+  [css]="`m-2 ${btnGraySlim}`"
   ($click)="agendaNew()"
 >
   <svg class="size-5 fill-current" viewBox="0 0 100 100">
@@ -11,15 +11,20 @@
 </app-btn>
 
 <!-- TODO: CDK virtual scroll -->
-<ol class="p-2 border border-green-500/25 rounded-xl">
+<ol class="p-2">
   @for (agenda of agendas(); track agenda.id; let idx = $index) {
     <li
-      class="mb-2 p-2 border border-rose-500/25 rounded-xl cursor-pointer hover:bg-rose-700/5 active:bg-rose-500/8"
+      class="mb-2 p-2 border border-green-500/25 rounded-xl cursor-pointer hover:bg-green-700/5 active:bg-green-500/8"
       (click)="agendaManagment(agenda.id)"
     >
       <ul class="ml-2">
-        <li>
-          {{ agenda.title }}
+        <li class="flex justify-between">
+          <span class="inline-block">
+            {{ agenda.title }}
+          </span>
+          <span class="inline-block text-mauve-400">
+            {{ toLangSeason('es', agenda.seasonStart) }}
+          </span>
         </li>
       </ul>
     </li>

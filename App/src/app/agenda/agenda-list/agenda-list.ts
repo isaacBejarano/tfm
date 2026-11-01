@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Btn } from '@shared/components/btn/btn';
 import { GUID_EMPTY } from '../../shared/constants/unit';
 import { checkGuidv7 } from '../../shared/utils/params.util';
+import { DtoAgenda, Season } from '../agenda';
 
 @Component({
   selector: 'app-agenda-list',
@@ -29,16 +30,25 @@ export class AgendaList {
     '3d-gray',
   ]);
 
-  // FIXME: type Agenda
+  // Model src
+  // FIXME: get real Agenda by User Id & remove MOCKS
   private readonly _guidMock = GUID_EMPTY.slice(0, GUID_EMPTY.length - 1);
-  protected readonly agendas = signal<any[]>([
+  protected readonly agendas = signal<DtoAgenda[]>([
     {
       id: this._guidMock + '1',
-      title: 'Agenda 1 - otoño',
+      created: new Date().toISOString(), // ~today
+      userId: '00000000-0000-0000-0000-000000000001',
+      title: 'Agenda 1',
+      seasonStart: Season.Fall,
+      gardenTasks: [],
     },
     {
       id: this._guidMock + '2',
-      title: 'Agenda 2 - invierno',
+      created: new Date().toISOString(), // ~today
+      userId: '00000000-0000-0000-0000-000000000001',
+      title: 'Agenda 2',
+      seasonStart: Season.Winter,
+      gardenTasks: [],
     },
   ]);
 
@@ -49,5 +59,19 @@ export class AgendaList {
 
   protected agendaNew() {
     alert('NUEVA AGENDA: En construcción');
+  }
+
+  // TODO: duplicated -> use utils
+  protected toLangSeason(local: 'es', season: Season): string {
+    return local === 'es' ? this.seasonToES(season) : '';
+  }
+  protected seasonToES(season: Season): string {
+    const seasonES: Record<Season, string> = {
+      [Season.Fall]: 'Otoño',
+      [Season.Winter]: 'Invierno',
+      [Season.Spring]: 'Primavera',
+      [Season.Summer]: 'Verano',
+    };
+    return seasonES[season];
   }
 }

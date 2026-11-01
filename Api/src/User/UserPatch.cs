@@ -1,4 +1,4 @@
-namespace Api.Shared;
+namespace Api.Dto;
 
 public class UserPatch {
   public string? Password { get; set; }

@@ -1,2 +1,128 @@
-<h1 class="text-2xl text-green-500 text-center">Agenda</h1>
-<p class="text-center">En construcción...</p>
+@let _today = today;
+@let _agenda = agenda();
+@let _currentWeekMonday = currentWeekMonday();
+
+@if (_today && _agenda && _currentWeekMonday) {
+  <header class="md:w-md mt-4 2xl:mb-4 mx-auto flex justify-between items-center gap-2">
+    <h1 class="flex gap-2 items-center">
+      <app-btn
+        ($click)="back()"
+        ariaLabel="Botón para volver a la lista de agendas"
+        [css]="btnGreenSlim"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-arrow-back" />
+        </svg>
+      </app-btn>
+
+      <span class="block max-w-[235px] md:max-w-[305px] lg:max-xl-[165px] text-2xl">
+        <span class="text-green-500 truncate">
+          {{ _agenda.title }}
+        </span>
+        -
+        <span class="text-mauve-400 truncate">
+          {{ toLangSeason('es', _agenda.seasonStart) }}
+        </span>
+      </span>
+    </h1>
+
+    <!-- TODO: back to TODAY -->
+    <app-btn
+      label="Semana actual"
+      [css]="`${btnGreenSlim} flex gap-0.5 items-center`"
+      ($click)="backToWeek()"
+    >
+    </app-btn>
+
+    <!-- TODO: A FUTUR: week selector miniwidget from this year, to jump directly there -->
+  </header>
+
+  <div class="p-2">
+    <!-- nav week -->
+    <div class="w-full mb-4 md:mb-6 flex justify-center">
+      <app-btn
+        ariaLabel="Botón para navegar a la semana anterior"
+        [css]="`my-4 ${btnGraySlim}`"
+        ($click)="resetWeekMonday('prev')"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-chevron-left" />
+        </svg>
+      </app-btn>
+
+      <span class="mx-4 self-center text-sm md:text-lg text-mauve-400">
+        Semana del
+        <span [class]="isCurrentWeek() ? 'text-green-500/90' : 'text-mauve-300/90'">
+          {{ _currentWeekMonday | date: 'dd/MM/yyyy' }}
+        </span>
+      </span>
+
+      <app-btn
+        ariaLabel="Botón para navegar a la semana siguiente"
+        [css]="`my-4 ${btnGraySlim}`"
+        ($click)="resetWeekMonday('next')"
+      >
+        <svg class="size-5 fill-current" viewBox="0 0 100 100">
+          <use xlink:href="svg/icon-sprite.xml#icon-chevron-right" />
+        </svg>
+      </app-btn>
+    </div>
+
+    <!-- task / day (cards) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-7 gap-4">
+      @for (day of currentWeekGrid(); track day.getTime()) {
+        @let currentWeekTasks = getCurrentWeekTasks(day);
+
+        <div
+          class="p-3 rounded-xl shadow-lg"
+          [class]="[
+            currentWeekTasks.some((task) => task?.action) ? 'bg-green-600/5' : '',
+            sameDate(day, _today) ? 'border-blue-500/50' : 'border-green-700/15',
+            sameDate(day, _today) ? 'border-2' : 'border-1',
+            sameDate(day, _today) ? 'shadow-blue-900/15' : 'shadow-green-900/15',
+          ]"
+        >
+          <!-- DAY -->
+          <h2 class="mb-3 relative">
+            <span class="block font-semibold text-mauve-300 uppercase">
+              {{ toLangDay('es', day | date: 'EEEE' : '') }}
+            </span>
+            <span
+              class="font-bold text-lg"
+              [class]="sameDate(day, _today) ? 'text-blue-500' : 'text-mauve-400'"
+            >
+              {{ toLangMonth('es', day | date: 'd MMM' : '') }}
+            </span>
+
+            @if (sameDate(day, _today)) {
+              <div
+                class="size-[24px] absolute top-0 right-0 bg-[url(/img/favicon.webp)] bg-no-repeat bg-contain"
+              ></div>
+            }
+          </h2>
+
+          <!-- TASKS -->
+          <ul class="flex flex-col gap-4">
+            @for (task of currentWeekTasks; track task.id) {
+              <li [class]="getColor(task.action)">
+                <span class="block font-bold uppercase mb-1">
+                  {{ getIcon(task.action) }}
+                  {{ toLangGardenAction('es', task.action) }}
+                </span>
+                <ul class="pl-4 text-left space-y-0.5">
+                  @for (crop of task.crops; track crop.id) {
+                    <li class="list-disc font-extralight">{{ crop.vernacular }}</li>
+                  }
+                </ul>
+              </li>
+            } @empty {
+              <li class="text-mauve-300/75 italic text-left">Ninguna tarea programada para hoy</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <li class="text-red-500">No hay ninguna agenda disponible.</li>
+}

@@ -1,4 +1,4 @@
-namespace Api.Shared;
+namespace Api.Dto;
 
 public record ResponseDto<T>(
   T[] Items,

@@ -1,10 +1,10 @@
 @let profile = store().userProfile;
 
-<h1 class="mb-4 text-2xl text-blue-500 text-center">Perfil de Usuario</h1>
+<h1 class="mt-4 mb-6 2xl:mb-10 text-2xl text-blue-500 text-center">Perfil de Usuario</h1>
 
 @if (profile) {
-  <div class="pl-4 p-2 mb-4 list-decimal border border-blue-500/50 rounded-xl">
-    <header class="flex gap-4 my-2 mb-4">
+  <div class="pl-4 p-2 mb-4">
+    <header class="flex items-center gap-4 my-2 mb-4">
       <!-- Actions -->
       @if (!selfEdit(profile.id)) {
         <app-btn
@@ -52,8 +52,8 @@
   </div>
 
   @if (formPatch()) {
-    <div class="p-2 md:p-4 md:pb-6 list-decimal border border-rose-500/50 rounded-xl">
-      <h2 class="mb-2 text-xl text-rose-500 text-center">Editar Perfil</h2>
+    <div class="p-2">
+      <h2 class="text-xl text-mauve-400 text-center">Editar Perfil</h2>
       <app-profile-form class="mt-8" ($userPayload)="onPatch($event)" />
     </div>
   }

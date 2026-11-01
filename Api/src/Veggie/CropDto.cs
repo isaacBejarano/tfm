@@ -1,6 +1,8 @@
+namespace Api.Dto;
 
 // TODO: Create a Model and Migration
-public record Veggie {
+public record Crop {
+  public Guid Id { get; init; }
   // taxonomy
   public string Vernacular { get; init; } = "";
   public string[] TaxonList { get; init; } = [];
@@ -41,5 +43,5 @@ public record Veggie {
 // TODO: Create a Model and Migration (all vbeggies in the sys to consult)
 // this can be a public endpoint? or private with no role-based AuthZ
 public record Catalogue(
-  Veggie[] Veggies
+  Crop[] Crops
 );

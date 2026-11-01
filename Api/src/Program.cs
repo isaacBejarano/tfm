@@ -1,11 +1,10 @@
 global using Api.Database;
+global using Api.Dto;
 global using Api.Enums;
 global using Api.Interfaces;
 global using Api.Models;
 global using Api.Payloads;
 global using Api.Repositories;
-global using Api.Shared;
-
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;

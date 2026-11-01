@@ -1,4 +1,4 @@
-namespace Api.Shared;
+namespace Api.Dto;
 
 public record UserDto(
   Guid Id,
