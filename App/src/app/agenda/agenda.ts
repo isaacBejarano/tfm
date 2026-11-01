@@ -4,11 +4,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, tap } from 'rxjs';
 
-import { DtoAgenda, GardenAction, GardenIcon, GardenTask } from '@agenda/agenda-dto.type';
+import { DtoAgenda } from '@agenda/agenda-dto.type';
+import { GardenAction, GardenTask } from '@agenda/agenda-model.type';
 import { Season } from '@agenda/agenda.enum';
 import { Btn } from '@shared/components/btn/btn';
 import { LanguageService } from '@shared/services/lang.service';
 import { sameDate } from '@shared/utils/date.util';
+// TODO: cerate barrels to import all files from @agenda for example
+
+type GardenIcon = '🌱' | '💧' | '☔' | '🌼' | '⛄' | '🌞' | '⛅' | '🚜';
 
 @Component({
   selector: 'app-agenda',
@@ -267,7 +271,7 @@ export class Agenda {
       monday.setDate(monday.getDate() + (slide === 'prev' ? -7 : 7));
       this.currentWeekMonday.set(monday);
       this._renderWeekGrid();
-    }, 250);
+    }, 100);
   }
 
   protected getCurrentWeekTasks(day: Date): GardenTask[] {

@@ -2,10 +2,10 @@ import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { filter, map, Observable, tap } from 'rxjs';
 
-import { ResponseDto, UserDto } from '@app/shared/types/dto.type';
-import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
+import { ResponseDto } from '@app/shared/types/dto.type';
 import { StoreService } from '@shared/services/store.service';
 import { WebService } from '@shared/services/web.service';
+import { UserDto, UserPayloadLogin, UserPayloadSignup } from '../user/user-dto.type';
 
 @Service()
 export class AuthService {

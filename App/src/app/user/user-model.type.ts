@@ -1,18 +1,16 @@
 type User = {
   id: string; // guuid
-  agendaIds: string[];
   email: string;
   password: string; // nullable when sent as Edit paylaod
   name: string; // nullable when sent as Signup or Edit paylaod
+  // FK
+  agendaIds: string[];
   roles: UserRole[];
 };
 
-type UserPayloadSignup = Pick<User, 'email' | 'password'> & { name: string | null };
-type UserPayloadLogin = Pick<User, 'email' | 'password'>;
-type UserPayloadEdit = { password: string | null; name: string | null };
 type UserRole = 'User' | 'Admin' | 'Super';
 
-export type { User, UserPayloadEdit, UserPayloadLogin, UserPayloadSignup, UserRole };
+export type { User, UserRole };
 
 /*
  * VALIDATIONS [id]

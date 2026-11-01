@@ -3,13 +3,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { form, FormField, maxLength, minLength, pattern } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { User, UserPayloadEdit } from '@app/user/user-model.type';
+import { User } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
 import { REGEX_PASSWORD } from '@shared/constants/regex';
 import { StoreService } from '@shared/services/store.service';
 import { validationBorder } from '@shared/utils/form-field.util';
-import { GUID_EMPTY } from '../../shared/constants/unit';
-import { UserDto } from '../../shared/types/dto.type';
+import { GUID_EMPTY } from '../../shared/constants/guuid-unit';
+import { UserDto, UserPayloadEdit } from '../user-dto.type';
+// TODO: cerate barrels to import all files from @agenda for example
 
 @Component({
   selector: 'app-profile-form',

@@ -1,7 +1,7 @@
 import { Service } from '@angular/core';
 
 import { Season } from '@agenda/agenda.enum';
-import { GardenAction } from '../../agenda/agenda-dto.type';
+import { GardenAction } from '../../agenda/agenda-model.type';
 
 @Service()
 export class LanguageService {

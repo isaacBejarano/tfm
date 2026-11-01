@@ -3,10 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { User, UserPayloadLogin, UserPayloadSignup, UserRole } from '@app/user/user-model.type';
+import { User, UserRole } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
 import { REGEX_EMAIL, REGEX_PASSWORD } from '@shared/constants/regex';
 import { validationBorder } from '@shared/utils/form-field.util';
+import { UserPayloadLogin, UserPayloadSignup } from '../../user/user-dto.type';
 
 @Component({
   selector: 'app-auth-form',

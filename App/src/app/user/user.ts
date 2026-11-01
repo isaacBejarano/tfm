@@ -8,8 +8,9 @@ import { SnackbarService } from '../common/snackbar/snackbar.service';
 import { Store, StoreService } from '../shared/services/store.service';
 import { checkGuidv7 } from '../shared/utils/params.util';
 import { ProfileForm } from './profile-form/profile-form';
-import { UserPayloadEdit } from './user-model.type';
+import { UserPayloadEdit } from './user-dto.type';
 import { UserService } from './user.service';
+// TODO: cerate barrels to import all files from @agenda for example
 
 @Component({
   selector: 'app-user',

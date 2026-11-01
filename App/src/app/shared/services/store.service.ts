@@ -1,7 +1,7 @@
 import { computed, Service, signal } from '@angular/core';
 
 import { AuthFormType } from '@app/auth/auth-form/auth-form.type';
-import { UserDto } from '@shared/types/dto.type';
+import { UserDto } from '../../user/user-dto.type';
 
 export type Store = {
   formAuth: AuthFormType;

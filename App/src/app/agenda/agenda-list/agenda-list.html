@@ -10,7 +10,12 @@
   </svg>
 </app-btn>
 
-@if (!newAgenda()) {
+@if (formNew()) {
+  <div class="p-2">
+    <h2 class="text-xl text-mauve-400 text-center">Nueva Agenda</h2>
+    <app-agenda-form class="mt-8" ($agendaPayload)="onCreate($event)" />
+  </div>
+} @else {
   <!-- TODO: CDK virtual scroll -->
   <ol class="p-2">
     @for (agenda of agendas(); track agenda.id; let idx = $index) {

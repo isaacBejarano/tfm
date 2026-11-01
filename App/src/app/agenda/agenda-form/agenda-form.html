@@ -1,0 +1,43 @@
+<form
+  class="max-w-125 mx-auto p-4 flex flex-col bg-stone-500/10 border border-stone-500 rounded-sm shadow-sm"
+  method="post"
+  (submit)="onSubmit($event)"
+  novalidate
+>
+  <!-- Title -->
+  <div class="pb-2">
+    <label class="inline-block mb-1" for="js-name"> Título </label>
+    <input
+      class="w-full p-1 rounded-sm hover:bg-stone-500/15 text-amber-200/75"
+      #title
+      id="js-name"
+      type="text"
+      [class]="validationBorder(form.title)"
+      [formField]="form.title"
+      autocomplete="off"
+    />
+    @let titlePassword = form.title().errors();
+    @if (form.title().dirty() && titlePassword) {
+      <ul>
+        @for (error of titlePassword; track error.kind) {
+          <li class="px-3 py-1 my-0.5 text-amber-200 font-light bg-red-500/10 rounded-sm">
+            @if (['required', 'maxLength'].includes(error.kind)) {
+              {{ error.message }}
+            }
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <!-- Submit -->
+  <app-btn
+    type="submit"
+    label="Crear"
+    [css]="`mt-4 mx-auto block ${btnRoseSlim} flex gap-0.5 items-center`"
+  >
+    <svg class="size-5 fill-current" viewBox="0 0 100 100">
+      <use xlink:href="svg/icon-sprite.xml#icon-save" />
+    </svg>
+  </app-btn>
+</form>

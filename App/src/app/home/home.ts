@@ -2,11 +2,11 @@ import { Component, computed, inject, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AuthForm } from '@app/auth/auth-form/auth-form';
-import { UserPayloadLogin, UserPayloadSignup } from '@app/user/user-model.type';
+import { GUID_EMPTY } from '@app/shared/constants/guuid-unit';
 import { AuthService } from '@auth/auth.service';
-import { GUID_EMPTY } from '@shared/constants/unit';
 import { StoreService } from '@shared/services/store.service';
 import { tap } from 'rxjs';
+import { UserPayloadLogin, UserPayloadSignup } from '../user/user-dto.type';
 
 @Component({
   selector: 'app-home',

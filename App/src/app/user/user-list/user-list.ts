@@ -2,8 +2,9 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs';
-import { UserDto } from '../../shared/types/dto.type';
+import { UserDto } from '../user-dto.type';
 import { UserService } from '../user.service';
+// TODO: cerate barrels to import all files from @agenda for example
 
 @Component({
   selector: 'app-user-list',
