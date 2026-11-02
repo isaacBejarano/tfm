@@ -61,14 +61,14 @@ public class AuthController(
 
     // jwt config
 
-    var _expires = uint.Parse(_config["AccessToken:Expires"]!); // FIXME: set to 6 hours if no Refresh Token available
+    var _expires = uint.Parse(_config["AccessToken:Expires"]!); // 15 min. to have a minimum UX
     var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AccessToken:SecretKey"]!));
     var tokenAccess = new JwtSecurityToken(
         issuer: _config["AccessToken:Issuer"]!,
         audience: _config["AccessToken:Audience"]!,
         claims,
         notBefore: DateTimeOffset.UtcNow.UtcDateTime,
-        expires: DateTimeOffset.UtcNow.AddMinutes(_expires).UtcDateTime, // TODO: FASE 2: set to 1 week
+        expires: DateTimeOffset.UtcNow.AddMinutes(_expires).UtcDateTime, // TODO: FASE 2: set to 1 day (or 1 week)
         signingCredentials: new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256)
     );
 

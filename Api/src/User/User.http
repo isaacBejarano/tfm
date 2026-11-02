@@ -335,7 +335,7 @@ PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser10}}
 
-### PATCH "/users/:id" - (null patches) -> 400 Bad Request
+### PATCH "/users/:id" - (null patches) -> 422 Unprocessable Entity
 PATCH {{Api}}/users/{{IdOfNewUser}}
 Content-Type: application/json
 Authorization: {{TokenAccessOfSeedUser10}}
@@ -343,6 +343,16 @@ Authorization: {{TokenAccessOfSeedUser10}}
 {
   "name":null,
   "password":null
+}
+
+### PATCH "/users/:id" - (null patches) -> 400 Bad Request
+PATCH {{Api}}/users/{{IdOfNewUser}}
+Content-Type: application/json
+Authorization: {{TokenAccessOfSeedUser10}}
+
+{
+  "name":"",
+  "password":""
 }
 
 ### PATCH "/users/:id" - (change Name) -> 200 OK

@@ -90,9 +90,8 @@ export class ProfileForm implements OnInit {
   }
 
   private _loadFormOnEdit() {
-    // const profile = this._store().userProfile;
     if (this._profile) {
-      this.form.name().value.set(this._profile.name);
+      this.form.name().value.set(this._profile.name ?? ''); //NG01921: Text inputs should use empty strings to represent null values.
       this.form.password().value.set('');
     }
   }
@@ -120,8 +119,8 @@ export class ProfileForm implements OnInit {
 
     this._debounceForm$$.next({
       id: this._profile?.id ?? GUID_EMPTY,
-      name: form.name.trim() === '' ? null : form.name,
-      password: form.password.trim() === '' ? null : form.password,
+      name: form.name?.trim() === '' ? null : form.name,
+      password: form.password?.trim() === '' ? null : form.password,
     });
   }
 }

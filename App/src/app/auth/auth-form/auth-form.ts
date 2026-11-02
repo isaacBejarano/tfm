@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from 'rxjs';
 
-import { User, UserRole } from '@app/user/user-model.type';
+import { User } from '@app/user/user-model.type';
 import { Btn } from '@shared/components/btn/btn';
 import { REGEX_EMAIL, REGEX_PASSWORD } from '@shared/constants/regex';
 import { validationBorder } from '@shared/utils/form-field.util';
@@ -130,26 +130,5 @@ export class AuthForm implements OnInit {
     }
 
     this._debounceForm$$.next(payload);
-  }
-
-  // FIXME: DEBUG
-  autoLogin(role: UserRole): void {
-    const payloadLogin: UserPayloadLogin =
-      role === 'User'
-        ? {
-            email: 'Dorofeeva@yopmail.com',
-            password: 'Bb@12345',
-          }
-        : role === 'Admin'
-          ? {
-              email: 'Tribunal@yopmail.com',
-              password: 'Tribunal@uoc2026',
-            }
-          : {
-              email: 'Super@yopmail.com',
-              password: 'Super@uoc2026',
-            };
-
-    this._debounceForm$$.next(payloadLogin);
   }
 }
