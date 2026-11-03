@@ -44,7 +44,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kazka@yopmail.com",
+  "email":"{{$dotenv USER_14_EMAIL}}",
   "password":""
 }
 
@@ -53,7 +53,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kazka@yopmail.com",
+  "email":"{{$dotenv USER_14_EMAIL}}",
   "password":"1234567"
 }
 
@@ -62,7 +62,7 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kazka@yopmail.com",
+  "email":"{{$dotenv USER_14_EMAIL}}",
   "password":"12345678"
 }
 
@@ -80,18 +80,18 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
+  "email":"{{$dotenv USER_1_EMAIL}}",
   "password":"Aa@00000"
 }
 
-### <- Signup this new user at POST "/users" (Kazka@yopmail.com)
+### User.http <- First, signup this new user at POST "/users" (USER_14_EMAIL)
 ### POST "/auth" - Login (right credentials of NEW USER with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kazka@yopmail.com",
-  "password":"Ff@12345"
+  "email":"{{$dotenv USER_14_EMAIL}}",
+  "password":"{{$dotenv USER_14_PASS}}"
 }
 
 ### POST "/auth" - Login (right credentials of SEED USER 1 with Role 'User') -> 200 OK
@@ -99,8 +99,8 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Kalush@yopmail.com",
-  "password":"Aa@12345"
+  "email":"{{$dotenv USER_1_EMAIL}}",
+  "password":"{{$dotenv USER_1_PASS}}"
 }
 
 ### POST "/auth" - Login (right credentials of SEED USER 2 with Role 'User') -> 200 OK
@@ -108,26 +108,26 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Dorofeeva@yopmail.com",
-  "password":"Bb@12345"
+  "email":"{{$dotenv USER_2_EMAIL}}",
+  "password":"{{$dotenv USER_1_PASS}}"
 }
 
-### POST "/auth" - Login (right credentials of SEED ADMIN 1 with Role 'Admin') -> 200 OK
+### POST "/auth" - Login (right credentials of SEED ADMIN 11 with Role 'Admin') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Tribunal@yopmail.com",
-  "password":"Tribunal@uoc2026"
+  "email":"{{$dotenv USER_11_EMAIL}}",
+  "password":"{{$dotenv USER_11_PASS}}"
 }
 
-### POST "/auth" - Login (right credentials of SEED ADMIN 2 with Role 'Admin') -> 200 OK
+### POST "/auth" - Login (right credentials of SEED ADMIN 12 with Role 'Admin') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Admin@yopmail.com",
-  "password":"Admin@uoc2026"
+  "email":"{{$dotenv USER_12_EMAIL}}",
+  "password":"{{$dotenv USER_12_PASS}}"
 }
 
 ### POST "/auth" - Login (right credentials of SEED SUPERADMIN with Role 'Super') -> 200 OK
@@ -135,35 +135,35 @@ POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"Super@yopmail.com",
-  "password":"Super@uoc2026"
+  "email":"{{$dotenv USER_13_EMAIL}}",
+  "password":"{{$dotenv USER_13_PASS}}"
 }
 
 
-### POST "/auth" - Login (right credentials of ADHOC USER 2 with Role 'User') -> 200 OK
+### POST "/auth" - Login (right credentials of ADHOC USER 15 with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"User2@yopmail.com",
-  "password":"User2@00000"
+  "email":"{{$dotenv USER_15_EMAIL}}",
+  "password":"{{$dotenv USER_15_PASS}}"
 }
 
-### POST "/auth" - Login (right credentials of ADHOC USER 3 with Role 'User') -> 200 OK
+### POST "/auth" - Login (right credentials of ADHOC USER 16 with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "email":"User3@yopmail.com",
-  "password":"User3@00000"
+  "email":"{{$dotenv USER_16_EMAIL}}",
+  "password":"{{$dotenv USER_16_PASS}}"
 }
 
-### POST "/auth" - Login (right credentials of ADHOC USER 4 with Role 'User') -> 200 OK
+### POST "/auth" - Login (right credentials of ADHOC USER 17 with Role 'User') -> 200 OK
 POST {{Api}}/auth
 Content-Type: application/json
 
 {
-  "password":"User4@00000",
-  "name":"Adhoc User 4"
+  "email":"{{$dotenv USER_17_EMAIL}}",
+  "password":"{{$dotenv USER_17_PASS}}"
 }
 

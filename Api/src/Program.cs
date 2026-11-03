@@ -5,6 +5,7 @@ global using Api.Interfaces;
 global using Api.Models;
 global using Api.Payloads;
 global using Api.Repositories;
+
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -180,5 +181,6 @@ if (api.Environment.IsDevelopment()) {
 api.MapControllers();
 
 
-// 6. API run //
+// 6. API SEEDING & RUN
+api.UserSeed(); // ad-hoc custom static method to avoid sensitive data tracked in migration snapshots
 api.Run();

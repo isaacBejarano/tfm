@@ -30,7 +30,6 @@ public class UserController(
 
     // payload -> model
     User model = new() {
-      AgendaIds = [],
       Id = Guid.CreateVersion7(),
       Email = payload.Email,
       Password = payloadPasswordHashed,

@@ -9,10 +9,6 @@ namespace Api.Models;
 [Index(nameof(Email), IsUnique = true)]
 public class User : Audit {
   public required Guid Id { get; set; } // Guid.CreateVersion7()
-
-  // FIXME: wrong RELATRION 'AgendaIds'. OK -> UserId in Agenda as FK
-  public required Guid[] AgendaIds { get; set; } = []; // [Guid.CreateVersion7()]
-
   public required string Email { get; set; }
   public required string Password { get; set; }
   public required string[] Roles { get; set; } = [];
