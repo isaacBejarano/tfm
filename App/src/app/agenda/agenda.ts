@@ -33,8 +33,10 @@ export class Agenda {
   private readonly _activatedRoute = inject(ActivatedRoute);
   readonly languageSrv = inject(LanguageService);
 
-  // MODEL
-  protected readonly agenda = signal<DtoAgenda | null>(null); // src
+  // MODEL FIXME: TYPE is now MOCKED, use REAL
+  protected readonly agenda = signal<
+    (Omit<DtoAgenda, 'gardenTasks'> & { gardenTasks: any[] }) | null
+  >(null); // src
 
   // CTRL
   ////
@@ -93,9 +95,9 @@ export class Agenda {
             id: agendaId,
             userId: '10000000-0000-0000-0000-000000000000',
             title: agendaId === '00000000-0000-0000-0000-000000000001' ? 'Agenda 1' : 'Agenda 2',
+            created: new Date('2026-11-01T19:08:35.429Z').toISOString(), // ~today
             seasonStart:
               agendaId === '00000000-0000-0000-0000-000000000001' ? Season.Fall : Season.Winter,
-            created: new Date('2026-11-01T19:08:35.429Z').toISOString(), // ~today
             gardenTasks: [
               // watering
               {

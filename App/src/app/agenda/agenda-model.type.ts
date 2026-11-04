@@ -53,6 +53,10 @@ type Crop = {
   plagueBugs?: string[];
   plagueFungae?: string[];
   plagueUnicellular?: string[];
+  // friends
+  predators: string[];
+  fitoVaccines: string[];
+  cleaning: string[]; // Potasic Soap, etc.
 };
 
 type GardenAction =
