@@ -2,7 +2,7 @@
 
 @if (formAuth === 'signup') {
   <h1 class="text-2xl text-blue-500 text-center">Registro</h1>
-  <app-auth-form class="mt-8" ($userPayload)="signup($event)" />
+  <app-auth-form class="mt-8" ($userPayload)="signup($event)" [hasPrivacyPolicy]="true" />
 } @else if (formAuth === 'login') {
   <h1 class="text-2xl text-rose-500 text-center">Acceso</h1>
   <app-auth-form class="mt-8" ($userPayload)="login($event)" [excludeFields]="['name']" />

@@ -22,18 +22,20 @@ import { UserPayloadLogin, UserPayloadSignup } from '../../user/user-dto.type';
 export class AuthForm implements OnInit {
   // I/O
   readonly excludeFields = input<(keyof (UserPayloadLogin & UserPayloadSignup))[]>();
+  readonly hasPrivacyPolicy = input<boolean>(false);
 
   // DI
   private readonly _destroyRef = inject(DestroyRef);
 
   // MODEL
-  private readonly _defaultUser = signal<User>({
+  private readonly _defaultUser = signal<User & { hasRgpd: boolean }>({
     id: '',
     agendaIds: [],
     email: '',
     password: '',
     name: '',
     roles: [],
+    hasRgpd: false,
   });
 
   // FORM
@@ -109,6 +111,13 @@ export class AuthForm implements OnInit {
       this.form.email().markAsDirty();
       this.form.password().markAsDirty();
       this.form.name().markAsDirty();
+      return;
+    }
+
+    if (this.hasPrivacyPolicy() && !this.form.hasRgpd().value()) {
+      alert(
+        'Para poder usar la aplicación, lee la "Política de Protección de Datos" y acepta haciendo clic en el checkbox del formulario de registro',
+      );
       return;
     }
 

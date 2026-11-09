@@ -22,6 +22,6 @@ describe('RGPD', () => {
     const fixture = TestBed.createComponent(Rgpd);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Política de Privacidad');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Política de Protección de Datos');
   });
 });

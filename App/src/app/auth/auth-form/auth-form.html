@@ -87,6 +87,18 @@
     </div>
   }
 
+  <!-- TODO: API rechaza login si aceptacon de RPGD -->
+  <!-- Accept Privacy Policy -->
+  @if (hasPrivacyPolicy()) {
+    <div class="mt-2 mb-4">
+      <input #rgpd type="checkbox" id="js-rgpd" [formField]="form.hasRgpd" />
+      <label class="ml-2 cursor-pointer" for="js-rgpd">
+        Leer y aceptar la
+        <span class="text-sky-500 underline">Política de Protección de Datos</span>
+      </label>
+    </div>
+  }
+
   <!-- Submit -->
   <app-btn type="submit" label="Enviar" [css]="`mt-4 mx-auto block ${btnGray}`" />
 </form>
