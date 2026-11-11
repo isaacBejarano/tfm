@@ -1,4 +1,6 @@
-> Solution version: `0.0.0-alfa`
+> Solution version: `0.0.1-alfa` 
+
+[![Monorepo CI/CD](https://github.com/isaacBejarano/tfm/actions/workflows/actions.yaml/badge.svg)](https://github.com/isaacBejarano/tfm/actions/workflows/actions.yaml)
 
 # 🚀 Angular App
 
