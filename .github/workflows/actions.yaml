@@ -9,7 +9,7 @@ on:
 jobs:
   # job 1 - API / https://docs.github.com/es/actions/tutorials/build-and-test-code/net
   cicd-dotnet:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: Api
@@ -28,7 +28,7 @@ jobs:
       - run: dotnet test --project=tests/Api.Tests.csproj --no-build --configuration Release
   # job 2 - App
   cicd-angular:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-22.04
     needs: cicd-dotnet
     defaults:
       run:
