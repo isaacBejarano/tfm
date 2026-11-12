@@ -17,6 +17,12 @@ volumes:
   data-postgres:
     # driver: default
 
+networks:
+  # The presence of these objects is sufficient to define them
+  backend:
+  ipam:
+    driver: default
+
 # configs #
 
 # secrets #
@@ -24,3 +30,5 @@ volumes:
 # include #
 
 # models #
+
+# TODO: include PostgreSQL to API OCI + create folder in VPS for Postgre volumes
