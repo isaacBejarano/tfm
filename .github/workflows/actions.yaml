@@ -41,7 +41,7 @@ jobs:
           cache: true
           cache-dependency-path: "**/*.csproj"
       - name: Restoring dependencies...
-        run: dotnet restore Api.csproj # not required but good for faster builds by using cached deps
+        run: dotnet restore Api.csproj --runtime linux-x64 # not required but good for faster builds by using cached deps
       - name: Compiling...
         run: dotnet publish Api.csproj --output ./publish --no-restore --configuration Release --runtime linux-x64 --self-contained true # runtime is VPS's uname
       - name: Delete API old files from VPS
