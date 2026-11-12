@@ -42,7 +42,7 @@ jobs:
           cache-dependency-path: "Api/**/*.csproj"
       - run: dotnet restore src/Api.csproj
       - run: dotnet publish src/Api.csproj --no-restore --configuration Release -o ./publish
-      - name: Copy APi files to VPS
+      - name: Copy API files to VPS
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
