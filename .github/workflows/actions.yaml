@@ -25,7 +25,7 @@ jobs:
       - run: dotnet build src/Api.csproj --no-restore --configuration Release
       - run: dotnet build tests/Api.Tests.csproj --no-restore --configuration Release
       - run: dotnet test --project=tests/Api.Tests.csproj --no-build --configuration Release
-  # JOB 2 - API Deploy OCI to VPS -> https://github.com/appleboy/scp-action/tree/master/ & https://github.com/appleboy/ssh-action/tree/v1/
+  # JOB 2 - API Deploy (OCI to VPS) -> https://github.com/appleboy/scp-action/tree/master/ & https://github.com/appleboy/ssh-action/tree/v1/
   cicd-dotnet-deploy:
     runs-on: ubuntu-22.04
     needs: cicd-dotnet-test
