@@ -48,6 +48,7 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
           source: "Api/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
           target: "/var/www/html" # reading permission!
           # TODO: remove old publish before copying new compilation
@@ -57,6 +58,7 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
           script: |
             caddy validate --config Caddyfile
             sudo systemctl reload caddy
