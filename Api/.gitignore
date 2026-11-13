@@ -494,5 +494,5 @@ $RECYCLE.BIN/
 *.key
 
 # TODO: Docker Compose standarized volume names
-datab-maria/*
+data-maria/*
 data-postgres/*

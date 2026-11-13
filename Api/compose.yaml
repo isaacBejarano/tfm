@@ -3,25 +3,25 @@
 
 services:
   db:
-    container_name: tfm-server-postgres
+    container_name: ${DB_CONTAINER_NAME}
     image: postgres
     restart: always
     ports:
-      - '5432:5432'
+      - ${DB_CONTAINER_PORTS}
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PW} # masterpassword for Server superuser 'postgres'
     volumes:
-      - ./data-postgres:/var/lib/postgresql # "container config (v18+) --> /var/lib/postgresql
+      - ${POSTGRES_VOLUMES}
 
 volumes:
   data-postgres:
-    # driver: default
-
-networks:
-  # The presence of these objects is sufficient to define them
-  backend:
-  ipam:
     driver: default
+
+# networks:
+#   # The presence of these objects is sufficient to define them
+#   backend:
+#   ipam:
+#     driver: default
 
 # configs #
 

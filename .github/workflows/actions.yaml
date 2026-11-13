@@ -61,6 +61,15 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
           source: "Api/src/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
           target: "/var/www/html" # reading permission!
+      - name: Copy compose.yaml to VPS to virtualize the DB
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
+          source: "Api/src/publish/*,Api/compose.yaml" # Añade aquí la ruta exacta de tu compose
+          target: "/var/www/html"
       - name: Restart Caddy Server in VPS
         uses: appleboy/ssh-action@v1
         with:
