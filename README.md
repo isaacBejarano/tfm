@@ -225,10 +225,10 @@ docker compose --file compose.dev.yaml up --detach
 
 Once the virtualized server is running, access to any created DB is granted. The default DB is 'postgres'. Further DB must be created by the **Backend**, by using the **PSQL Terminal** or by using a **Client** like `pgAdmin`.
 
-Connect to default `postgres` Maintenance DB running inside the composed container `tfm-server-postgres psql`.
+Connect to default `postgres` Maintenance DB running inside the composed container `kubello-db psql`.
 
 ```bash
-docker exec -it tfm-server-postgres psql --username postgres 
+docker exec -it kubello-db psql --username postgres 
 ```
 List DB on the **PSQL Terminal** with `\l`.
 Then exit the PSQL Terminal with `\q`.
@@ -237,7 +237,7 @@ In this project, a custom DB for the projec's API was created with the **SQL scr
 To connect to it (DB `db_tfm`) with the custom user `isk` recently added to the Server, one can log in to that DB using a Postgres Client like `PgAdmin` (version 4) or you can us the `PSQL` **CLI** via Terminal, similarly to the way the previous connection using default user `postgres` worked.
 
 ```bash
-docker exec -it tfm-server-postgres psql --username isk --dbname db_tfm
+docker exec -it kubello-db psql --username isk --dbname db_tfm
 ```
 ...and keep using **PSQL comands** like the previous `\l` or `\q`.
 
