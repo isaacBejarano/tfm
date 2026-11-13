@@ -70,6 +70,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
           source: "Api/compose.yaml"
           target: "/var/www/html"
+          # TODO: copy .env & settings.json
       - name: Restart Caddy Server in VPS
         uses: appleboy/ssh-action@v1
         with:

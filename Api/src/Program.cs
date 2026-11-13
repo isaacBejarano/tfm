@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -139,6 +140,12 @@ builder.Services
 // 3. API build //
 var api = builder.Build();
 
+if (!api.Environment.IsDevelopment()) {
+  // Apply migrations on prod
+  using var scope = api.Services.CreateScope();
+  var ctx = scope.ServiceProvider.GetRequiredService<SessionContext>();
+  ctx.Database.Migrate();
+}
 
 // 4. MIDDLEWARE (Use)
 ////
