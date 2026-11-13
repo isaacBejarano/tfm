@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: rm -rf /var/www/html/Api
+          script: sudo rm -rf /var/www/html/Api
           # FIXME: stop postgres container first!
       - name: Copy API files to VPS
         uses: appleboy/scp-action@v1
@@ -80,7 +80,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
           script: |
-            caddy validate --config Caddyfile
+            sudo caddy validate --config Caddyfile
             sudo systemctl reload caddy
   # JOB 3 - App Test (OCI will deploy via Netlify)
   cicd-angular:
