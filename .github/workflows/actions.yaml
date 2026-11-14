@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/html
-            sudo docker compose down
+            if [ -f compose.yml ]; then sudo docker compose down; fi
       - name: 3. Remove API old files
         uses: appleboy/ssh-action@v1
         with:
@@ -69,7 +69,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo rm -rf /var/www/html/Api
+          script: sudo rm -rf /var/www/html/Api/src # deja el volume!
+          # FIXME: don't remove volume!
       - name: 4. Copy API new files
         uses: appleboy/scp-action@v1
         with:
@@ -88,7 +89,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             cd /var/www/html
-            sudo docker compose up --detach
+            if [ -f compose.yml ]; then sudo docker compose up --detach; fi
       - name: 6. Restart Kübello service
         uses: appleboy/ssh-action@v1
         with:
@@ -104,9 +105,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
-          script: |
-            sudo caddy validate --config Caddyfile
-            sudo systemctl reload caddy
+          script: sudo systemctl reload caddy
   # JOB 3 - App Test (OCI will deploy via Netlify)
   cicd-angular:
     runs-on: ubuntu-22.04
