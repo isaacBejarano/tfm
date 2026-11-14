@@ -44,7 +44,25 @@ jobs:
         run: dotnet restore Api.csproj --runtime linux-x64 # not required but good for faster builds by using cached deps
       - name: Compiling...
         run: dotnet publish Api.csproj --output ./publish --no-restore --configuration Release --runtime linux-x64 --self-contained true # runtime is VPS's uname
-      - name: Delete API old files from VPS
+      - name: 1. Stop Kübello service
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: sudo systemctl stop kubello-api.service
+      - name: 2. Stop DB container
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/html
+            sudo docker compose down
+      - name: 3. Remove API old files
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -52,33 +70,40 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: sudo rm -rf /var/www/html/Api
-          # FIXME: stop postgres container first!
-      - name: Copy API files to VPS
+      - name: 4. Copy API new files
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
+          port: ${{ secrets.VPS_SSH_PORT }}
           source: "Api/src/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
           target: "/var/www/html" # reading permission!
-      - name: Copy compose.yaml to VPS to virtualize the DB
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
-          source: "Api/compose.yaml"
-          target: "/var/www/html"
-          # TODO: copy .env & settings.json
-      - name: Restart Caddy Server in VPS
+      - name: 5. Restart DB container
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_SSH_PORT }} # custom SSH port != 22
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            cd /var/www/html
+            sudo docker compose up --detach
+      - name: 6. Restart Kübello service
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: sudo systemctl restart kubello-api.service
+      - name: 6. Restart Caddy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             sudo caddy validate --config Caddyfile
             sudo systemctl reload caddy

@@ -1,5 +1,5 @@
 export const env = {
-  domainAPI: 'https://localhost:7247',
+  domainAPI: 'https://localhost:4200', // proxied
   domainSPA: 'https://localhost:4200',
   isProd: false,
 };
