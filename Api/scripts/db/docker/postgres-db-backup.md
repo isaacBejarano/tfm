@@ -38,7 +38,7 @@ docker exec -it kubello-db bash
 Once running the container's bash, just use file sys navigation as usual and copy the **.tar** backup file's name. Then exit the session.
 
 ```Bash
-cd temp
+cd tmp
 ls  
 exit
 ``` 

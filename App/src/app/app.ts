@@ -1,4 +1,13 @@
-import { Component, DestroyRef, DOCUMENT, effect, inject, OnDestroy, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  DOCUMENT,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -6,6 +15,7 @@ import { filter, map, tap } from 'rxjs';
 
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { HttpClient } from '@angular/common/http';
 import { Footer } from '@app/common/footer/footer';
 import { Header } from '@app/common/header/header';
 import { LoaderService } from '@app/common/loader/loader.service';
@@ -19,7 +29,7 @@ import { WebService } from '@shared/services/web.service';
   selector: 'app-root',
   templateUrl: './app.html',
 })
-export class App implements OnDestroy {
+export class App implements OnInit, OnDestroy {
   // DI
   private readonly _docu = inject(DOCUMENT);
   private readonly _meta = inject(Meta);
@@ -30,6 +40,7 @@ export class App implements OnDestroy {
   private readonly _webSrv = inject(WebService);
   private readonly _loaderService = inject(LoaderService);
   private readonly _snackbarService = inject(SnackbarService);
+  private readonly _http = inject(HttpClient);
 
   // CTRL
   ////
@@ -111,6 +122,12 @@ export class App implements OnDestroy {
         }),
       )
       .subscribe();
+  }
+
+  // FIXME: ENV PROD - testing API
+  ngOnInit(): void {
+    const url = 'https://kubello.duckdns.org';
+    this._http.get(url + '/api/v1/smoke').subscribe(console.warn); // 1-t subs
   }
 
   ngOnDestroy(): void {

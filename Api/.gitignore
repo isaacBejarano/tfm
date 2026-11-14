@@ -66,7 +66,7 @@ project.fragment.lock.json
 artifacts/
 appsettings.json
 appsettings.Development.json
-
+appsettings.Production.json
 
 # Tye
 .tye/
