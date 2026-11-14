@@ -69,8 +69,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo rm -rf /var/www/html/Api/src # deja el volume!
-          # FIXME: don't remove volume!
+          script: sudo rm -rf /var/www/html/Api/src # Don't remove the volume
       - name: 4. Copy API new files
         uses: appleboy/scp-action@v1
         with:
@@ -98,7 +97,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: sudo systemctl restart kubello-api.service
-      - name: 6. Restart Caddy
+      - name: 7. Restart Caddy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
