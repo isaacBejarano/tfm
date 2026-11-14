@@ -19,7 +19,7 @@ export class AuthService {
 
   signup(payload: UserPayloadSignup | UserPayloadLogin): Observable<Object> {
     return this._http
-      .post<ResponseDto<Object>>(this._webSrv.domain.api.get() + '/users', payload, {
+      .post<ResponseDto<Object>>(this._webSrv.API.get() + '/users', payload, {
         responseType: 'json',
         observe: 'response',
       })
@@ -34,7 +34,7 @@ export class AuthService {
 
   login(payload: UserPayloadLogin): Observable<UserDto> {
     return this._http
-      .post<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + '/auth', payload, {
+      .post<ResponseDto<UserDto>>(this._webSrv.API.get() + '/auth', payload, {
         responseType: 'json',
         observe: 'response',
       })

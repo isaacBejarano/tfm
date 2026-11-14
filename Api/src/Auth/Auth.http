@@ -109,7 +109,7 @@ Content-Type: application/json
 
 {
   "email":"{{$dotenv USER_2_EMAIL}}",
-  "password":"{{$dotenv USER_1_PASS}}"
+  "password":"{{$dotenv USER_2_PASS}}"
 }
 
 ### POST "/auth" - Login (right credentials of SEED ADMIN 11 with Role 'Admin') -> 200 OK

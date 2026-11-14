@@ -24,7 +24,7 @@ export class UserService {
     checkGuidv7(id);
 
     return this._http
-      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + `/users/${id}`, {
+      .get<ResponseDto<UserDto>>(this._webSrv.API.get() + `/users/${id}`, {
         responseType: 'json',
         observe: 'response',
       })
@@ -44,7 +44,7 @@ export class UserService {
     if (!confirm(`Eliminar a ${this._store().userProfile?.name ?? 'este usuario'}?`)) return EMPTY; // TODO: turn PROMPT into nice Confirmation Modal
 
     return this._http
-      .delete<ResponseDto<Object>>(this._webSrv.domain.api.get() + `/users/${id}`, {
+      .delete<ResponseDto<Object>>(this._webSrv.API.get() + `/users/${id}`, {
         responseType: 'json',
         observe: 'response',
       })
@@ -60,7 +60,7 @@ export class UserService {
     checkGuidv7(id);
 
     return this._http
-      .patch<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + `/users/${id}`, patch, {
+      .patch<ResponseDto<UserDto>>(this._webSrv.API.get() + `/users/${id}`, patch, {
         responseType: 'json',
         observe: 'response',
       })
@@ -75,7 +75,7 @@ export class UserService {
 
   profileList(): Observable<UserDto[]> {
     return this._http
-      .get<ResponseDto<UserDto>>(this._webSrv.domain.api.get() + '/users', {
+      .get<ResponseDto<UserDto>>(this._webSrv.API.get() + '/users', {
         responseType: 'json',
         observe: 'response',
       })

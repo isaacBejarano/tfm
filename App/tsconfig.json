@@ -25,7 +25,8 @@
       "@auth/*": ["./src/app/auth/*"],
       "@user/*": ["./src/app/user/*"],
       "@profile/*": ["./src/app/user/profile/*"],
-      "@agenda/*": ["./src/app/agenda/*"]
+      "@agenda/*": ["./src/app/agenda/*"],
+      "@environments/*": ["./src/environments/*"]
     }
   },
   "angularCompilerOptions": {

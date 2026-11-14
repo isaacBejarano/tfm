@@ -29,7 +29,7 @@ builder.Services
   .AddScoped<IUserRepositoryService, UserRepositoryService>() // IoC/DI container
   .AddOpenApi() // https://aka.ms/aspnet/openapi
   .AddCors(opts => // policy headers
-    opts.AddPolicy("DevPolicies", policy => {
+    opts.AddPolicy("CorsAllowedOrigins", policy => {
       string[] allowedOrigins = builder.Configuration
         .GetSection("CorsSettings:AllowedOrigins")
         .Get<string[]>()
@@ -41,8 +41,7 @@ builder.Services
           .AllowAnyHeader()
           .AllowAnyMethod();
       }
-    })
-  )
+    }))
   .AddAuthorization()
   .AddAuthentication(opts => {
     // default scheme to use in authentication
@@ -151,8 +150,7 @@ if (!api.Environment.IsDevelopment()) {
 ////
 
 // headers policy
-if (api.Environment.IsDevelopment()) { api.UseCors("DevPolicies"); }
-else { api.UseCors(); } // Same Origin Policy (SOP)
+api.UseCors("CorsAllowedOrigins");
 
 // [dev mode] -> https priority by order -> launchSettings.json
 if (!api.Environment.IsDevelopment()) {

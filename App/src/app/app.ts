@@ -22,7 +22,7 @@ import { LoaderService } from '@app/common/loader/loader.service';
 import { Snackbar } from '@app/common/snackbar/snackbar';
 import { SnackbarService } from '@app/common/snackbar/snackbar.service';
 import { Loader } from '@common/loader/loader';
-import { WebService } from '@shared/services/web.service';
+import { env } from '@environments/environment';
 
 @Component({
   imports: [RouterOutlet, Header, Footer],
@@ -37,7 +37,6 @@ export class App implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _overlay = inject(Overlay);
-  private readonly _webSrv = inject(WebService);
   private readonly _loaderService = inject(LoaderService);
   private readonly _snackbarService = inject(SnackbarService);
   private readonly _http = inject(HttpClient);
@@ -91,7 +90,7 @@ export class App implements OnInit, OnDestroy {
             console.error('SEO config.');
             return;
           }
-          canonical.setAttribute('href', `${this._webSrv.domain.prod.host}/${path}`);
+          canonical.setAttribute('href', `${env.domainAPI}/${path}`);
           robots.setAttribute('content', 'follow, index');
         }),
       )
@@ -124,10 +123,8 @@ export class App implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  // FIXME: ENV PROD - testing API
   ngOnInit(): void {
-    const url = 'https://kubello.duckdns.org';
-    this._http.get(url + '/api/v1/smoke').subscribe(console.warn); // 1-t subs
+    if (env.isProd) this._http.get(env.domainAPI + '/api/v1/smoke').subscribe(console.warn); // 1-t subs
   }
 
   ngOnDestroy(): void {
