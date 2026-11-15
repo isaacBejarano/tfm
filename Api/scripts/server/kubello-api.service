@@ -6,8 +6,8 @@ After=network.target
 User=ubuntu
 Group=ubuntu
 ExecStart=/var/www/html/Api/src/publish/Api
-Restart=on-failure
-RestartSec=15
+Restart=always
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
