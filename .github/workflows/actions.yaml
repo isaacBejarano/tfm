@@ -70,7 +70,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: sudo rm -rf /var/www/html/Api/src # Don't remove the volume
-      - name: 4. Copy API new files
+      - name: 4. Copy API compiled files
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -79,7 +79,15 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           source: "Api/src/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
           target: "/var/www/html" # reading permission!
-      - name: 5. Restart DB container
+      - name: 5. Copy API setting files
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: sudo cp -r /var/www/html/settings/* /var/www/html/Api/src/publish
+      - name: 6. Restart DB container
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -89,7 +97,7 @@ jobs:
           script: |
             cd /var/www/html
             if [ -f compose.yml ]; then sudo docker compose up --detach; fi
-      - name: 6. Restart Kübello service
+      - name: 7. Restart Kübello service
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -97,7 +105,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: sudo systemctl restart kubello-api.service
-      - name: 7. Restart Caddy
+      - name: 8. Restart Caddy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
