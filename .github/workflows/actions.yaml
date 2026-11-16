@@ -44,7 +44,7 @@ jobs:
         run: dotnet restore Api.csproj --runtime linux-x64 # not required but good for faster builds by using cached deps
       - name: Compiling...
         run: dotnet publish Api.csproj --output ./publish --no-restore --configuration Release --runtime linux-x64 --self-contained true # runtime is VPS's uname
-      - name: 1. Stop Kübello service
+      - name: 1. Stop Kübello API service
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -60,7 +60,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /var/www/html
+            cd /var/www/html/Api
             if [ -f compose.yml ]; then sudo docker compose down; fi
       - name: 3. Remove API old files
         uses: appleboy/ssh-action@v1
@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo rm -rf /var/www/html/Api/src # Don't remove the volume
+          script: sudo rm -rf /var/www/html/Api/src # Don't remove the volume (/Api/<volume> or compose.yaml)
       - name: 4. Copy API compiled files
         uses: appleboy/scp-action@v1
         with:
@@ -79,14 +79,17 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           source: "Api/src/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
           target: "/var/www/html" # reading permission!
-      - name: 5. Copy API setting files
+      - name: 5. Copy API & DB setting files
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
-          script: sudo cp -r /var/www/html/settings/* /var/www/html/Api/src/publish
+          script: |
+            sudo cp /var/www/html/settings/appsettings.json /var/www/html/Api/src/publish
+            sudo cp /var/www/html/settings/appsettings.Production.json /var/www/html/Api/src/publish
+            sudo cp /var/www/html/settings/compose.yaml /var/www/html/Api/
       - name: 6. Restart DB container
         uses: appleboy/ssh-action@v1
         with:
@@ -95,7 +98,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            cd /var/www/html
+            cd /var/www/html/Api
             if [ -f compose.yml ]; then sudo docker compose up --detach; fi
       - name: 7. Restart Kübello service
         uses: appleboy/ssh-action@v1
