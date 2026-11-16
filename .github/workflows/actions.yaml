@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/html/Api
-            if [ -f compose.yml ]; then sudo docker compose down; fi
+            sudo docker compose down
       - name: 3. Remove API old files
         uses: appleboy/ssh-action@v1
         with:
@@ -90,7 +90,19 @@ jobs:
             sudo cp /var/www/html/settings/appsettings.json /var/www/html/Api/src/publish
             sudo cp /var/www/html/settings/appsettings.Production.json /var/www/html/Api/src/publish
             sudo cp /var/www/html/settings/compose.yaml /var/www/html/Api/
-      - name: 6. Restart DB container
+      - name: 6. Add permissions to OS user
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            cd /var/www/html/Api/src/publish
+            sudo chown -R ubuntu:ubuntu /var/www/html/Api/src/publish
+            cd /var/www/html/Api
+            sudo chown -R ubuntu:ubuntu /var/www/html/Api
+      - name: 7. Restart DB container
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -99,8 +111,8 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             cd /var/www/html/Api
-            if [ -f compose.yml ]; then sudo docker compose up --detach; fi
-      - name: 7. Restart Kübello service
+            sudo docker compose up --detach
+      - name: 8. Restart Kübello service
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}
@@ -108,7 +120,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: sudo systemctl restart kubello-api.service
-      - name: 8. Restart Caddy
+      - name: 9. Restart Caddy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_IP }}

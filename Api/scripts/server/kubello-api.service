@@ -5,6 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=ubuntu
+WorkingDirectory=/var/www/html/Api/src/publish
 ExecStart=/var/www/html/Api/src/publish/Api
 Restart=always
 RestartSec=10

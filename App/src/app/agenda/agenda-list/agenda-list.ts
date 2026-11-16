@@ -26,6 +26,7 @@ export class AgendaList {
   // DI
   private readonly _router = inject(Router);
   readonly languageSrv = inject(LanguageService);
+  // readonly _agendaSrv = inject(AgendaService);
 
   // CTRL
   ////
@@ -71,9 +72,7 @@ export class AgendaList {
   // TODO:
   protected onCreate(payload: AgendaPayload) {
     console.table(payload);
-    // this._agendaSrv
-    //   .profileCreate(payload)
-    //   .subscribe(); // 1-time susbs
-    setTimeout(() => this.formNew.set(false), 250);
+    // this._agendaSrv.profileCreate(payload).subscribe(); // 1-time susbs
+    // setTimeout(() => this.formNew.set(false), 250);
   }
 }

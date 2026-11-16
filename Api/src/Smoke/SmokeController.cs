@@ -7,7 +7,7 @@ namespace Api.Controllers;
 public class SmokeController() : ControllerBase {
   [HttpGet]
   public ActionResult<ResponseDto<object>> GetSmoke() {
-    var dto = new ResponseDto<object>([], "");
+    var dto = new ResponseDto<object>([], "SMOKE");
     return StatusCode(StatusCodes.Status200OK, dto);
   }
 }
