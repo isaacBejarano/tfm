@@ -38,8 +38,9 @@ builder.Services
       if (allowedOrigins.Length > 0) {
         policy
           .WithOrigins(allowedOrigins) // never use "*" for CORS. Be explicit!
-          .AllowAnyHeader()
-          .AllowAnyMethod();
+          .WithHeaders("Content-Type", "Authorization") // req
+          .WithMethods("GET", "POST", "DELETE", "PATCH") // req
+          .WithExposedHeaders("Authorization"); // res Access-Control-Expose-Headers --> So Angular can access them
       }
     }))
   .AddAuthorization()
