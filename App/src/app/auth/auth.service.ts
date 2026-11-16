@@ -39,12 +39,10 @@ export class AuthService {
         observe: 'response',
       })
       .pipe(
-        tap((res) => console.error(res)),
         filter((res) => res.status === HttpStatusCode.Ok),
-        filter((res) => res.headers.get('Authorization') !== null),
+        filter((res) => res.headers.get('authorization') !== null),
         tap((res) => {
-          console.warn(res);
-          const jwt = res.headers.get('Authorization')!;
+          const jwt = res.headers.get('authorization')!;
           this._storeSrv.setState('accesToken', jwt);
         }),
         map((res) => res.body),
@@ -52,7 +50,6 @@ export class AuthService {
         filter((dto) => dto.count === 1),
         map((res) => res.items[0]),
         tap((user) => {
-          console.dir(user);
           this._storeSrv.setState('userLogged', user);
           this._storeSrv.setState('formAuth', '');
         }),
