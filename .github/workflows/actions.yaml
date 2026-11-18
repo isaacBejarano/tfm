@@ -69,7 +69,11 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo rm -rf ${{ secrets.VPS_PATH_API }} # Don't remove config files
+            # script: Don't remove config files & Do add permissions to user
+          script: |
+            sudo rm -rf ${{ secrets.VPS_PATH_API }}
+            sudo mkdir ${{ secrets.VPS_PATH_API }}
+            sudo chown -R ubuntu:ubuntu ${{ secrets.VPS_PATH_API }}
       - name: 4. Copy API compiled files
         uses: appleboy/scp-action@v1
         with:
