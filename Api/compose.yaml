@@ -1,6 +1,7 @@
 # Infrastructure as Code (IaC) #
 ################################
 
+# It requirtes an .env file (user's vars in Linux won't be read)
 services:
   db:
     container_name: ${DB_CONTAINER_NAME}
@@ -31,4 +32,3 @@ volumes:
 
 # models #
 
-# TODO: include PostgreSQL to API OCI + create folder in VPS for Postgre volumes

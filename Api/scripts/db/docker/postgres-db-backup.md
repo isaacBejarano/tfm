@@ -18,21 +18,21 @@
 
 REMEMBER:
 <br>
-`docker exec -t kubello-db` will access the container, while `pg_dump` or `pg_restore` are tool commands. For example, the following command will use the Linux `ls` comand inside the container. Use of flag `-it` is required to execute the Bash commands within the container correclty.
+`docker exec -t <cotainer-name>` will access the container, while `pg_dump` or `pg_restore` are tool commands. For example, the following command will use the Linux `ls` comand inside the container. Use of flag `-it` is required to execute the Bash commands within the container correclty.
 
 ```Bash
-sudo docker exec -it kubello-db ls
+sudo docker exec -it <cotainer-name> ls
 ``` 
 
 Then, one can go to the `./tmp` folder and copy the backup file's name, to remove it for example.
 To do so, init the **Bash** shell from within the container, in order to be able to use file system comands like `cd`, or the `ls` command can be used straightforward instead, to access that path:
 
 ```Bash
-sudo docker exec -it kubello-db ls tmp
+sudo docker exec -it <cotainer-name> ls tmp
 ``` 
 
 ```Bash
-sudo docker exec -it kubello-db bash
+sudo docker exec -it <cotainer-name> bash
 ``` 
 
 Once running the container's bash, just use file sys navigation as usual and copy the **.tar** backup file's name. Then exit the session.
@@ -46,7 +46,7 @@ exit
 Use this command to remove failed dumps saved in the `./tmp/` folder inside the container:
 
 ```Bash
-sudo docker exec -t kubello-db rm ./tmp/backup_db_tfm_20261102_1430.tar
+sudo docker exec -t <cotainer-name> rm ./tmp/backup_db_tfm_20261102_1430.tar
 ``` 
 
 NOTE:
@@ -59,7 +59,7 @@ e.g. `backup_db_tfm_20261102_1430.tar`
 To save the dump within the container, the flag `-f` is used.
 
   e.g.
-  `sudo docker exec -t kubello-db pg_dump -U postgres -d db_tfm -F tar -f ./tmp/backup_db_tfm_20261102_1430.tar`
+  `sudo docker exec -t <cotainer-name> pg_dump -U postgres -d db_tfm -F tar -f ./tmp/backup_db_tfm_20261102_1430.tar`
 
   But, it's more recommendable to backup the DB in our host. So don't use the `-f` flag. Use `>` instead!
 
@@ -70,10 +70,10 @@ To save the dump within the container, the flag `-f` is used.
    Also, the folder `data-postgres-dumps` must exist in the root path of the VPS deployment folder. 
 
 1. Make the **DUMP**
-  - Be sure to be in the backup folder! `var/www/html/Api/data-postgres-dumps` 
+  - Be sure to be in the backup folder! `${VPS_PATH_DB_COMPOSE}/data-postgres-dumps` 
   - e.g.
     ```Bash
-    sudo docker exec kubello-db pg_dump -U postgres -d db_tfm -F tar > backup_db_tfm_20261116_2145.tar
+    sudo docker exec <cotainer-name> pg_dump -U postgres -d db_tfm -F tar > backup_db_tfm_20261116_2145.tar
     ```
 3. Now, use `pgAdmin` or `psql` within the container to make a silly change to a record.
     ```SQL
@@ -83,7 +83,7 @@ To save the dump within the container, the flag `-f` is used.
     ```       
   - Then, enter the DB from within the container and check the silly change persisted:
     ```Bash
-    sudo docker exec -it kubello-db psql -U postgres -d db_tfm
+    sudo docker exec -it <cotainer-name> psql -U postgres -d db_tfm
     ```
     - `\l` 
     - `\c` 
@@ -95,15 +95,15 @@ To save the dump within the container, the flag `-f` is used.
     - And quit **PSQL** again `\q`.
     - Close pgAdmin so it does not interfere with docker
 4. Apply the **RESTORE**
-  - Be sure to be in the backup folder! `var/www/html/Api/data-postgres-dumps` 
+  - Be sure to be in the backup folder! `${VPS_PATH_DB_COMPOSE}/data-postgres-dumps` 
   - Be sure to close any connection to the Postgres Server before applying the restore. Otherwise, it wil fail! 
   - e.g.
     ```Bash
-    sudo docker exec -i kubello-db pg_restore -U postgres -d postgres -c -C < backup_db_tfm_20261116_2145.tar
+    sudo docker exec -i <cotainer-name> pg_restore -U postgres -d postgres -c -C < backup_db_tfm_20261116_2145.tar
     ```
   - Enter the DB from within the container and check the silly change was replaced by the backed up original data:
     ```Bash
-    sudo docker exec -it kubello-db psql -U postgres -d db_tfm
+    sudo docker exec -it <cotainer-name> psql -U postgres -d db_tfm
     ```
     - `\l` 
     - `\c` 

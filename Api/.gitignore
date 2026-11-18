@@ -496,3 +496,4 @@ $RECYCLE.BIN/
 # TODO: Docker Compose standarized volume names
 data-maria/*
 data-postgres/*
+data-postgres-dumps/*

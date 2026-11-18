@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo systemctl stop kubello-api.service
+          script: sudo systemctl stop ${{ secrets.VPS_SYSTEMCTL_API }}
       - name: 2. Stop DB container
         uses: appleboy/ssh-action@v1
         with:
@@ -60,7 +60,7 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /var/www/html/Api
+            cd ${{ secrets.VPS_PATH_DB_COMPOSE }}
             sudo docker compose down
       - name: 3. Remove API old files
         uses: appleboy/ssh-action@v1
@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo rm -rf /var/www/html/Api/src # Don't remove the volume (/Api/<volume> or compose.yaml)
+          script: sudo rm -rf ${{ secrets.VPS_PATH_API }} # Don't remove config files
       - name: 4. Copy API compiled files
         uses: appleboy/scp-action@v1
         with:
@@ -77,8 +77,9 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
-          source: "Api/src/publish/*" # appleboy does not read working-directory. Use path from root to folder "publish/"
-          target: "/var/www/html" # reading permission!
+          source: "Api/src/publish/*" # 'appleboy' needs explicit path from root to "publish/"
+          target: ${{ secrets.VPS_PATH_API }} # reading permission required!
+          strip_components: 3
       - name: 5. Copy API & DB setting files
         uses: appleboy/ssh-action@v1
         with:
@@ -87,9 +88,8 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            sudo cp /var/www/html/settings/appsettings.json /var/www/html/Api/src/publish
-            sudo cp /var/www/html/settings/appsettings.Production.json /var/www/html/Api/src/publish
-            sudo cp /var/www/html/settings/compose.yaml /var/www/html/Api/
+            sudo cp ${{ secrets.VPS_APP_SETTINGS }} ${{ secrets.VPS_PATH_API }}
+            sudo cp ${{ secrets.VPS_APP_SETTINGS_PROD }} ${{ secrets.VPS_PATH_API }}
       - name: 6. Add permissions to OS user
         uses: appleboy/ssh-action@v1
         with:
@@ -98,10 +98,10 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            cd /var/www/html/Api/src/publish
-            sudo chown -R ubuntu:ubuntu /var/www/html/Api/src/publish
-            cd /var/www/html/Api
-            sudo chown -R ubuntu:ubuntu /var/www/html/Api
+            cd ${{ secrets.VPS_PATH_DB_COMPOSE }}
+            sudo chown -R ubuntu:ubuntu ${{ secrets.VPS_PATH_DB_COMPOSE }}
+            cd ${{ secrets.VPS_PATH_API }}
+            sudo chown -R ubuntu:ubuntu ${{ secrets.VPS_PATH_API }}
       - name: 7. Restart DB container
         uses: appleboy/ssh-action@v1
         with:
@@ -110,7 +110,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            cd /var/www/html/Api
+            cd ${{ secrets.VPS_PATH_DB_COMPOSE }}
             sudo docker compose up --detach
       - name: 8. Restart Kübello service
         uses: appleboy/ssh-action@v1
@@ -119,7 +119,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_SSH_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: sudo systemctl restart kubello-api.service
+          script: sudo systemctl restart ${{ secrets.VPS_SYSTEMCTL_API }}
       - name: 9. Restart Caddy
         uses: appleboy/ssh-action@v1
         with:
